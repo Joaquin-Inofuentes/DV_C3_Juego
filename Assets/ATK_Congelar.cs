@@ -14,7 +14,7 @@ public class ATK_Congelar : MonoBehaviour
     void Start()
     {
         if (anim != null) anim.speed = 0;
-
+        if(this == null) return;
         posOriginal = padre.position;
         rotOriginal = padre.rotation;
         timerActual = timer;
@@ -38,6 +38,7 @@ public class ATK_Congelar : MonoBehaviour
         if (agent == null) return;
         agent.SetDestination(destinoGuardado);
         agent.isStopped = false;
+        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
     }
 
 
@@ -52,9 +53,14 @@ public class ATK_Congelar : MonoBehaviour
 
         // Contador
         timerActual -= Time.deltaTime;
+        //Debug.Log(timerActual);
         if (timerActual <= 0)
         {
             Destroy(gameObject); // eliminar congelador
+        }
+        else
+        {
+            DetenerAgente(); // detener agente mientras se congela
         }
     }
     public void OnDestroy()

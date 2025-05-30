@@ -190,9 +190,18 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         throw new System.NotImplementedException();
     }
 
+    public bool RecibiraDobleDanoLaProximaVez = false;
+
     public override void RecibirDanio(int cantidad)
     {
         Vida -= cantidad;
+
+        if (RecibiraDobleDanoLaProximaVez)
+        {
+            Vida -= cantidad * 2; // Doble daño
+            RecibiraDobleDanoLaProximaVez = false; // Resetea el estado
+        }
+
         if (Vida <= 0)
         {
             Morir();
