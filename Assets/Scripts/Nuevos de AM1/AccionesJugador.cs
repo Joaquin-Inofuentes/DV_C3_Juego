@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,8 +18,11 @@ public class AccionesJugador : A1_Entidad
     public Transform Origen;
     private bool estaMuerto= false;
     private bool modoMelee = false;
+    public Transform puntoGolpePatada;
+    public Transform puntoGolpeEspada;
     // Agrega este campo y propiedad en tu clase AccionesJugador
     public float maxCoolDown = 0f;
+    private bool hitboxGenerada = false;
     public float CoolDown
     {
         get => _coolDown;
@@ -79,13 +83,7 @@ public class AccionesJugador : A1_Entidad
             {
                 ProyectilUsado = BolaDeFuego;
             }
-            else
-            {
-                Vector3 posicionHitbox = Origen.position + transform.forward * 2f;
-                Quaternion rotacionHitbox = transform.rotation;
-                GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox);
-                Destroy(hitbox, 1f);
-            }
+          
         }
        if (Nombre == "BolaDeHielo")
         {
@@ -95,13 +93,7 @@ public class AccionesJugador : A1_Entidad
             {
                 ProyectilUsado = BolaDeHielo;
             }
-            else
-            {
-                Vector3 posicionHitbox = Origen.position + transform.forward * 2f; 
-                Quaternion rotacionHitbox = transform.rotation;
-                GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox); 
-                Destroy(hitbox, 1f); 
-            }
+          
             anim.SetFloat("velocidad", 0);
             agent.isStopped = true;
         }
@@ -112,14 +104,7 @@ public class AccionesJugador : A1_Entidad
             {
                 ProyectilUsado = Rayo;
             }
-            else
-            {
-
-                Vector3 posicionHitbox = Origen.position + transform.forward * 2f;
-                Quaternion rotacionHitbox = transform.rotation;
-                GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox);
-                Destroy(hitbox, 1f);
-            }
+          
             anim.SetFloat("velocidad", 0);
             agent.isStopped = true;
         }
@@ -189,6 +174,31 @@ public class AccionesJugador : A1_Entidad
         float Tiempo = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
         CoolDown = Tiempo > 2 ? 2 : Tiempo;
     }
+
+    public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
+    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada,35);
+    public void GenerarHitboxPie() => GenerarHitbox(puntoGolpePatada, 10);
+    public void GenerarHitbox(Transform puntoDeGolpe, int danio)
+    {
+        if (hitboxGenerada) return;
+
+        if (hitboxCuboPrefab != null && puntoDeGolpe != null)
+        {
+            GameObject hitbox = Instantiate(hitboxCuboPrefab, puntoDeGolpe.position, puntoDeGolpe.rotation);
+            Hitbox componenteHitbox = hitbox.GetComponent<Hitbox>();
+           if (componenteHitbox != null)
+              componenteHitbox.ConfigurarDanio(danio);
+            hitboxGenerada = true;
+            Destroy(hitbox, 0.5f);
+            Invoke(nameof(ResetHitboxFlag), 0.1f); // Se puede ajustar el tiempo
+        }
+
+    }
+    private void ResetHitboxFlag()
+    {
+        hitboxGenerada = false;
+    }
+
 
     public override void Detenerse()
     {
