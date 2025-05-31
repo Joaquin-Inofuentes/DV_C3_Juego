@@ -190,6 +190,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         throw new System.NotImplementedException();
     }
 
+    public bool PrimerAtaqueAAnular = false;
+    public bool Congelado = false;
     public override void RecibirDanio(int cantidad)
     {
         Debug.Log(1);
@@ -198,6 +200,16 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             Morir();
             anim.SetBool("life", false);
+        }
+        if (Congelado)
+        {
+            if (PrimerAtaqueAAnular) 
+            { 
+                PrimerAtaqueAAnular = false;
+                return;
+            }
+            Vida -= cantidad * 2;
+            Congelado = false;
         }
     }
 

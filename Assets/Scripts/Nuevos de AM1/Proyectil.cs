@@ -92,12 +92,13 @@ public class Proyectil : MonoBehaviour
                 Destroy(efecto, 1);
                 if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Hielo"))
                 {
-                    
+                    A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
+                    EnemigoV2Real.Congelado = true;
+                    EnemigoV2Real.PrimerAtaqueAAnular = true;
                     ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;
                     Componente.anim = enemigo.anim;
-                    
                 //return;
                 }
             }
