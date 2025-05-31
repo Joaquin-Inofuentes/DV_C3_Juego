@@ -192,6 +192,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public override void RecibirDanio(int cantidad)
     {
+        Debug.Log(1);
         Vida -= cantidad;
         if (Vida <= 0)
         {

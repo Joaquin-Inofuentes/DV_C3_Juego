@@ -57,7 +57,7 @@ public class Inputs : MonoBehaviour
                  !Input.GetKey(TeclaCambioModo))
         {
             C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeHielo");
-            Debug.Log("Ataque 2 ejecutado");
+            //Debug.Log("Ataque 2 ejecutado");
         }
         else if (Input.GetKeyDown(TeclaAtaque3) &&
                  !Input.GetKey(TeclaAtaque1) &&

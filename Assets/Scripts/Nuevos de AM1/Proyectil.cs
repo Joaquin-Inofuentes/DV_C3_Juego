@@ -92,10 +92,13 @@ public class Proyectil : MonoBehaviour
                 Destroy(efecto, 1);
                 if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Hielo"))
                 {
+                    
                     ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;
                     Componente.anim = enemigo.anim;
+                    
+                //return;
                 }
             }
             enemigo.RecibirDanio(danio);

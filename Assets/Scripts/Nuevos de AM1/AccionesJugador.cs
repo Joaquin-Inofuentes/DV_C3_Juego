@@ -76,15 +76,15 @@ public class AccionesJugador : A1_Entidad
         //if (CoolDown != 0) return;
         if (_TimerManager.IsTimerCharging(6)) return; // Significa q el general se esta recargando
         _TimerManager.SetTimerToMax(6);
-        Debug.Log(1);
+        //Debug.Log(1);
         GameObject ProyectilUsado = null;
 
         if (Nombre == "BolaDeFuego")
         {
-            Debug.Log(2);
+            //Debug.Log(2);
             if (!modoMelee)
             {
-                Debug.Log(3);
+                //Debug.Log(3);
                 if (_TimerManager.IsTimerCharging(0)) return; // Significa q se esta recargando
                 anim.SetTrigger("magic1");
                 _TimerManager.SetTimerToMax(0);
@@ -92,10 +92,12 @@ public class AccionesJugador : A1_Entidad
             }
             else
             {
-                Debug.Log(4);
+                //Debug.Log(4);
                 if (_TimerManager.IsTimerCharging(3)) return; // Significa q se esta recargando
+                Debug.Log("Ver algo aca");
                 anim.SetTrigger("melee1");
                 _TimerManager.SetTimerToMax(3);
+                Debug.Log("Algo anad abie");
             }
 
         }
@@ -138,8 +140,9 @@ public class AccionesJugador : A1_Entidad
         }
 
         transform.LookAt(Destino);
+        if(ProyectilUsado == null) return;
         Vector3 direccion = (Destino - Origen.transform.position).normalized;
-        Debug.Log(Nombre + " " + Destino, gameObject);
+        //Debug.Log(Nombre + " " + Destino, gameObject);
         GameObject Ataque = Instantiate(
             ProyectilUsado,
             Origen.transform.position,

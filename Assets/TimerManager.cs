@@ -54,9 +54,9 @@ public class TimerManager : MonoBehaviour
             // 📏 Actualiza UI del cooldown
             if (cooldownBars[i] != null)
             {
-                if (_AccionesDeJugador.modoMelee && i <= 3) continue;
-                if (!_AccionesDeJugador.modoMelee && i >= 3) continue;
-                Debug.Log("Se esta actualizando el timer de este indice " + i);
+                if (_AccionesDeJugador.modoMelee && i <= 2) continue;
+                else if (!_AccionesDeJugador.modoMelee && i >= 3) continue;
+                //Debug.Log("Se esta actualizando el timer de este indice " + i);
                 float width = isTimerZero[i] ? barMaxWidth : timersPercent[i] * barMaxWidth;
                 Vector2 size = cooldownBars[i].sizeDelta;
                 cooldownBars[i].sizeDelta = new Vector2(width, size.y);
