@@ -16,8 +16,8 @@ public class AccionesJugador : A1_Entidad
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
     public Transform Origen;
-    private bool estaMuerto= false;
-    private bool modoMelee = false;
+    private bool estaMuerto = false;
+    public bool modoMelee = false;
     public Transform puntoGolpePatada;
     public Transform puntoGolpeEspada;
     // Agrega este campo y propiedad en tu clase AccionesJugador
@@ -65,7 +65,7 @@ public class AccionesJugador : A1_Entidad
         {
             Detenerse();
         }
-      
+
         ActualizarBarraCoolDown();
     }
 
@@ -73,70 +73,99 @@ public class AccionesJugador : A1_Entidad
     {
         if (estaMuerto) return;
         // Joaco_ Indica q animacion se esta ejecutando
-        if (CoolDown != 0) return;
+        //if (CoolDown != 0) return;
+        if (_TimerManager.IsTimerCharging(6)) return; // Significa q el general se esta recargando
+        _TimerManager.SetTimerToMax(6);
+        Debug.Log(1);
         GameObject ProyectilUsado = null;
-       
-        if(Nombre == "BolaDeFuego")
+
+        if (Nombre == "BolaDeFuego")
         {
-            anim.SetTrigger(modoMelee ? "melee1" : "magic1");
+            Debug.Log(2);
             if (!modoMelee)
             {
+                Debug.Log(3);
+                if (_TimerManager.IsTimerCharging(0)) return; // Significa q se esta recargando
+                anim.SetTrigger("magic1");
+                _TimerManager.SetTimerToMax(0);
                 ProyectilUsado = BolaDeFuego;
             }
-          
+            else
+            {
+                Debug.Log(4);
+                if (_TimerManager.IsTimerCharging(3)) return; // Significa q se esta recargando
+                anim.SetTrigger("melee1");
+                _TimerManager.SetTimerToMax(3);
+            }
+
         }
-       if (Nombre == "BolaDeHielo")
+        if (Nombre == "BolaDeHielo")
         {
-            
-            anim.SetTrigger(modoMelee ? "melee2" : "magic2");
+
             if (!modoMelee)
             {
+                if (_TimerManager.IsTimerCharging(1)) return; // Significa q se esta recargando
+                anim.SetTrigger("magic2");
                 ProyectilUsado = BolaDeHielo;
+                _TimerManager.SetTimerToMax(1);
             }
-          
+            else
+            {
+                if (_TimerManager.IsTimerCharging(4)) return; // Significa q se esta recargando
+                anim.SetTrigger("melee2");
+                _TimerManager.SetTimerToMax(4);
+            }
             anim.SetFloat("velocidad", 0);
             agent.isStopped = true;
         }
-       if (Nombre == "Rayo")
+        if (Nombre == "Rayo")
         {
-            anim.SetTrigger(modoMelee ? "melee3" : "magic3"); //nuevo
             if (!modoMelee)
             {
+                if (_TimerManager.IsTimerCharging(2)) return; // Significa q se esta recargando
+                anim.SetTrigger("magic3"); //nuevo
                 ProyectilUsado = Rayo;
+                _TimerManager.SetTimerToMax(2);
             }
-          
+            else
+            {
+                if (_TimerManager.IsTimerCharging(5)) return; // Significa q se esta recargando
+                anim.SetTrigger("melee3"); //nuevo
+                _TimerManager.SetTimerToMax(5);
+            }
             anim.SetFloat("velocidad", 0);
             agent.isStopped = true;
         }
+
         transform.LookAt(Destino);
-        Vector3 direccion =(Destino - Origen.transform.position).normalized;
+        Vector3 direccion = (Destino - Origen.transform.position).normalized;
         Debug.Log(Nombre + " " + Destino, gameObject);
         GameObject Ataque = Instantiate(
-            ProyectilUsado, 
-            Origen.transform.position, 
+            ProyectilUsado,
+            Origen.transform.position,
             Quaternion.LookRotation(direccion));
 
-            if (Ataque.GetComponent<Proyectil>() != null)
-            {
-                Ataque.GetComponent<Proyectil>().Creador = gameObject;
-                Ataque.GetComponent<Proyectil>().AutoDestruir = true;
-            }
-
-            Rigidbody rb = Ataque.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(direccion * fuerzaDisparo);
-            }
-       
-     /*   else
+        if (Ataque.GetComponent<Proyectil>() != null)
         {
-            Vector3 posicionHitbox = Origen.position + transform.forward * 1.5f; // 🔴 NUEVO
-            Quaternion rotacionHitbox = transform.rotation; // 🔴 NUEVO
-
-            GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox); // 🔴 NUEVO
-            Destroy(hitbox, 0.5f); // 🔴 NUEVO
+            Ataque.GetComponent<Proyectil>().Creador = gameObject;
+            Ataque.GetComponent<Proyectil>().AutoDestruir = true;
         }
-        */
+
+        Rigidbody rb = Ataque.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(direccion * fuerzaDisparo);
+        }
+
+        /*   else
+           {
+               Vector3 posicionHitbox = Origen.position + transform.forward * 1.5f; // 🔴 NUEVO
+               Quaternion rotacionHitbox = transform.rotation; // 🔴 NUEVO
+
+               GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox); // 🔴 NUEVO
+               Destroy(hitbox, 0.5f); // 🔴 NUEVO
+           }
+           */
         Invoke("RegistrarCoolDown", 0.1f);
     }
 
@@ -176,7 +205,7 @@ public class AccionesJugador : A1_Entidad
     }
 
     public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
-    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada,35);
+    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada, 35);
     public void GenerarHitboxPie() => GenerarHitbox(puntoGolpePatada, 10);
     public void GenerarHitbox(Transform puntoDeGolpe, int danio)
     {
@@ -186,8 +215,8 @@ public class AccionesJugador : A1_Entidad
         {
             GameObject hitbox = Instantiate(hitboxCuboPrefab, puntoDeGolpe.position, puntoDeGolpe.rotation);
             Hitbox componenteHitbox = hitbox.GetComponent<Hitbox>();
-           if (componenteHitbox != null)
-              componenteHitbox.ConfigurarDanio(danio);
+            if (componenteHitbox != null)
+                componenteHitbox.ConfigurarDanio(danio);
             hitboxGenerada = true;
             Destroy(hitbox, 0.5f);
             Invoke(nameof(ResetHitboxFlag), 0.1f); // Se puede ajustar el tiempo
@@ -218,7 +247,7 @@ public class AccionesJugador : A1_Entidad
         //Debug.Log(2);
 
     }
-   
+
 
     public override void Morir()
     {
@@ -238,13 +267,14 @@ public class AccionesJugador : A1_Entidad
     public Color Color_FueAvistado;
     public Color Color_Muere;
     public Color Color_SeCura;
+    public TimerManager _TimerManager;
 
     public override void RecibirDanio(int cantidad)
     {
         Vida -= cantidad;
         Debug.Log(gameObject.name + " Recibio daño de " + cantidad + " le queda " + Vida, gameObject);
         Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
-        if (Vida <= 0) 
+        if (Vida <= 0)
         {
             Morir();
             Invoke("CargaEscenaDerrota", 3f);
@@ -267,37 +297,39 @@ public class AccionesJugador : A1_Entidad
     }
     public Vector3 Destino;
     // Update is called once per frame
+    public GameObject IndicadoresMelee;
     void Update()
     {
-        
+
         CargarBarraDeCoolDown();
 
-     //  if (CoolDown > 0)
-         //   CoolDown -= Time.deltaTime;
-       // if (CoolDown < 0)
-           // CoolDown = 0;
+        //  if (CoolDown > 0)
+        //   CoolDown -= Time.deltaTime;
+        // if (CoolDown < 0)
+        // CoolDown = 0;
 
         float velocidadActual = agent.velocity.magnitude;
         anim.SetFloat("velocidad", velocidadActual);
         if (Vector3.Distance(gameObject.transform.position, Destino) < 1)
         {
             Detenerse();
-           
+
         }
         //if nuevo
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             modoMelee = !modoMelee; // alterna entre melee y rango
-
             if (modoMelee)
             {
+                IndicadoresMelee.SetActive(true);
                 Debug.Log("Modo cambiado a MELEE");
                 anim.SetLayerWeight(0, 0f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 1f); // capa 1 = Melee
-                
+
             }
             else
             {
+                IndicadoresMelee.SetActive(false);
                 Debug.Log("Modo cambiado a rango");
                 anim.SetLayerWeight(0, 1f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 0f); // capa 1 = Melee
@@ -361,6 +393,6 @@ public class AccionesJugador : A1_Entidad
         {
             interactivo.Interactuar();
         }
-        Debug.DrawLine(col.transform.position,gameObject.transform.position);
+        Debug.DrawLine(col.transform.position, gameObject.transform.position);
     }
 }

@@ -46,7 +46,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             AnimacionActual = clips[0].clip.name;
         }
-        Debug.Log(AnimacionActual);
+        //Debug.Log(AnimacionActual);
         if (AnimacionActual.Contains("idle"))
         {
             int ataqueIndex = Random.Range(0, 2); // 0 o 1
@@ -62,10 +62,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
         else if (AnimacionActual.Contains("ataque"))
         {
-            Debug.Log(1);
+            //Debug.Log(1);
             if (VerificaSiPuedeAtacar())
             {
-                Debug.Log(2);
+                //Debug.Log(2);
                 CreaEfectoDeAtaque(Destino);
             }
         }
@@ -81,7 +81,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         //Debug.Log(t  + " | "+ avisoHecho);
         if (!avisoHecho && t >= 0.95f)
         {
-            Debug.Log("Terminó una vuelta de la animación de ataque");
+            //Debug.Log("Terminó una vuelta de la animación de ataque");
             avisoHecho = true;
             return true;
         }
@@ -106,8 +106,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         if (AtaqueActual == null)
         {
 
-            Debug.Log(1);
-            Debug.Log("Atacando");
+            //Debug.Log(1);
+            //Debug.Log("Atacando");
             // Crea un efecto de danio
             //Debug.Log("Atacando");
             // Crea un efecto de daño

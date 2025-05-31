@@ -8,6 +8,7 @@ public class Hitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.name.Contains("Jugador")) return;
         A1_Entidad enemigo = other.GetComponent<A1_Entidad>();
         if (enemigo != null)
         {
