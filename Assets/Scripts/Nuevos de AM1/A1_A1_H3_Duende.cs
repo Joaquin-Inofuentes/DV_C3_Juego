@@ -40,6 +40,7 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
 
     public override void Atacar(Vector3 Destino, string Nombre = "")
     {
+        Debug.Log("iniciando ataque", gameObject);
         if (estaMuerto) return;
         //ModoAtaqueMelee = false;
         if (AtaqueActual == null)
@@ -88,6 +89,12 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
         if (estaMuerto) return;
         agent.isStopped = false;
         agent.SetDestination(destino);
+
+        // Rotar el GameObject para que mire hacia el destino (solo en el eje Y)
+        Vector3 direccion = destino - transform.position;
+        direccion.y = 0;
+        if (direccion != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(direccion);
     }
 
     public override void Morir()
@@ -99,10 +106,11 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         agent.enabled = false;
         // -0.591
-        transform.Translate(0, -0.591f, 0);
+        //transform.Translate(0, -0.591f, 0);
         anim.SetBool("life", false);
         Debug.Log("Falta animacion de morir");
-        StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
+        Destroy(gameObject, 3f); // Joaco_Lo agregue para q desaparezca el duende
+        //StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
         if (estaMuerto) return;
         estaMuerto = true;
     }
@@ -162,6 +170,11 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
             {
                 agent.isStopped = true; // Detiene el agente
             }
+        }
+        if (Vida <= 0)
+        {
+            Morir();
+            anim.SetBool("life", false);
         }
     }
 

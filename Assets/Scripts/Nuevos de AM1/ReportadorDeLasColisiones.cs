@@ -56,6 +56,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
                     )
                 {
                     if(!Enemigo.agent) return;
+                    if(Enemigo.agent.enabled == false) return;
                     Enemigo.agent.isStopped = false;
                     Enemigo.Objetivo = obj.gameObject;
                     Enemigo.IrAlDestino(obj.transform.position);

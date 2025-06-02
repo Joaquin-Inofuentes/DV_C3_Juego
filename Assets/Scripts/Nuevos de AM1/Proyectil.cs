@@ -90,7 +90,7 @@ public class Proyectil : MonoBehaviour
             {
                 GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
                 Destroy(efecto, 1);
-                if (EfectoEspecial.GetComponent<ATK_Congelar>())
+                if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Hielo"))
                 {
                     ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
                     Componente.padre = collision.transform;

@@ -1,3 +1,4 @@
+锘縰sing JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,16 @@ public class AccionesJugador : A1_Entidad
     public GameObject Rayo;
     public GameObject ataqueRapido;
     public GameObject Flechazo;
-    
+    public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
     public Transform Origen;
     private bool estaMuerto= false;
-    private bool modoMelee =false;
+    private bool modoMelee = false;
+    public Transform puntoGolpePatada;
+    public Transform puntoGolpeEspada;
     // Agrega este campo y propiedad en tu clase AccionesJugador
     public float maxCoolDown = 0f;
+    private bool hitboxGenerada = false;
     public float CoolDown
     {
         get => _coolDown;
@@ -30,24 +34,24 @@ public class AccionesJugador : A1_Entidad
             ActualizarBarraCoolDown();
         }
     }
-    private float _coolDown = 0f;
+    public float _coolDown = 0f;
 
     // Asume que tienes una referencia al RawImage de la barra de cooldown
     public UnityEngine.UI.RawImage barraCoolDown;
 
-    // Llama a este m閠odo en Update y cuando cambie el CoolDown
+    // Llama a este m茅todo en Update y cuando cambie el CoolDown
     private void ActualizarBarraCoolDown()
     {
         if (barraCoolDown == null || maxCoolDown == 0f) return;
         float porcentaje = 1f - Mathf.Clamp01(_coolDown / maxCoolDown);
         var rt = barraCoolDown.rectTransform;
         float anchoBase = barraCoolDown.texture != null ? barraCoolDown.texture.width : rt.rect.width;
-        // Reemplaza la l韓ea de c醠culo de anchoBase y el ajuste de la barra por lo siguiente:
+        // Reemplaza la l铆nea de c谩lculo de anchoBase y el ajuste de la barra por lo siguiente:
         float anchoMaximo = 200f;
         rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, anchoMaximo * porcentaje);
     }
 
-    // En tu m閠odo Update, agrega:
+    // En tu m茅todo Update, agrega:
     void CargarBarraDeCoolDown()
     {
         if (CoolDown > 0)
@@ -61,22 +65,7 @@ public class AccionesJugador : A1_Entidad
         {
             Detenerse();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            modoMelee = !modoMelee;
-            if (modoMelee)
-            {
-                Debug.Log("Modo cambiado a MELEE");
-                anim.SetLayerWeight(0, 0f);
-                anim.SetLayerWeight(1, 1f);
-            }
-            else
-            {
-                Debug.Log("Modo cambiado a rango");
-                anim.SetLayerWeight(0, 1f);
-                anim.SetLayerWeight(1, 0f);
-            }
-        }
+      
         ActualizarBarraCoolDown();
     }
 
@@ -85,59 +74,69 @@ public class AccionesJugador : A1_Entidad
         if (estaMuerto) return;
         // Joaco_ Indica q animacion se esta ejecutando
         if (CoolDown != 0) return;
-
         GameObject ProyectilUsado = null;
-       //if nuevo agregado por damian
+       
         if(Nombre == "BolaDeFuego")
         {
             anim.SetTrigger(modoMelee ? "melee1" : "magic1");
             if (!modoMelee)
             {
-                ProyectilUsado = BolaDeFuego; 
+                ProyectilUsado = BolaDeFuego;
             }
-            
+          
         }
-        //if nuevo agregado por damian
-        if( Nombre == "BolaDeHielo") 
+       if (Nombre == "BolaDeHielo")
         {
+            
             anim.SetTrigger(modoMelee ? "melee2" : "magic2");
             if (!modoMelee)
             {
                 ProyectilUsado = BolaDeHielo;
             }
+          
             anim.SetFloat("velocidad", 0);
             agent.isStopped = true;
         }
-        if(Nombre == "Rayo") 
+       if (Nombre == "Rayo")
         {
-            ProyectilUsado = Rayo;
             anim.SetTrigger(modoMelee ? "melee3" : "magic3"); //nuevo
+            if (!modoMelee)
+            {
+                ProyectilUsado = Rayo;
+            }
+          
             anim.SetFloat("velocidad", 0);
             agent.isStopped = true;
         }
         transform.LookAt(Destino);
-        Vector3 direccion = 
-            (Destino - Origen.transform.position)
-            .normalized;
-
+        Vector3 direccion =(Destino - Origen.transform.position).normalized;
+        Debug.Log(Nombre + " " + Destino, gameObject);
         GameObject Ataque = Instantiate(
             ProyectilUsado, 
             Origen.transform.position, 
             Quaternion.LookRotation(direccion));
 
-        if (Ataque.GetComponent<Proyectil>() != null)
+            if (Ataque.GetComponent<Proyectil>() != null)
+            {
+                Ataque.GetComponent<Proyectil>().Creador = gameObject;
+                Ataque.GetComponent<Proyectil>().AutoDestruir = true;
+            }
+
+            Rigidbody rb = Ataque.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(direccion * fuerzaDisparo);
+            }
+       
+     /*   else
         {
-            Ataque.GetComponent<Proyectil>().Creador = gameObject;
-            Ataque.GetComponent<Proyectil>().AutoDestruir = true;
+            Vector3 posicionHitbox = Origen.position + transform.forward * 1.5f; // 馃敶 NUEVO
+            Quaternion rotacionHitbox = transform.rotation; // 馃敶 NUEVO
+
+            GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox); // 馃敶 NUEVO
+            Destroy(hitbox, 0.5f); // 馃敶 NUEVO
         }
-
-        Rigidbody rb = Ataque.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.AddForce(direccion * fuerzaDisparo);
-        }
-
-
+        */
         Invoke("RegistrarCoolDown", 0.1f);
     }
 
@@ -158,13 +157,48 @@ public class AccionesJugador : A1_Entidad
             case string n when n.Contains("03"):
                 speed = 4f;
                 break;
+            case string n when n.Contains("ataque_pesadoPersonaje"):
+                speed = 2f;
+                break;
+            case string n when n.Contains("ataque_rapidoPersonaje"):
+                speed = 3f;
+                break;
+            case string n when n.Contains("ataque_fuertePersonaje"):
+                speed = 0.9f;
+                break;
             default:
                 speed = 1.0f;
                 break;
         }
         //Debug.Log(animacion.GetCurrentAnimatorClipInfo(0)[0].clip.length + " | " + speed);
-        CoolDown = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
+        float Tiempo = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
+        CoolDown = Tiempo > 2 ? 2 : Tiempo;
     }
+
+    public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
+    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada,35);
+    public void GenerarHitboxPie() => GenerarHitbox(puntoGolpePatada, 10);
+    public void GenerarHitbox(Transform puntoDeGolpe, int danio)
+    {
+        if (hitboxGenerada) return;
+
+        if (hitboxCuboPrefab != null && puntoDeGolpe != null)
+        {
+            GameObject hitbox = Instantiate(hitboxCuboPrefab, puntoDeGolpe.position, puntoDeGolpe.rotation);
+            Hitbox componenteHitbox = hitbox.GetComponent<Hitbox>();
+           if (componenteHitbox != null)
+              componenteHitbox.ConfigurarDanio(danio);
+            hitboxGenerada = true;
+            Destroy(hitbox, 0.5f);
+            Invoke(nameof(ResetHitboxFlag), 0.1f); // Se puede ajustar el tiempo
+        }
+
+    }
+    private void ResetHitboxFlag()
+    {
+        hitboxGenerada = false;
+    }
+
 
     public override void Detenerse()
     {
@@ -208,7 +242,7 @@ public class AccionesJugador : A1_Entidad
     public override void RecibirDanio(int cantidad)
     {
         Vida -= cantidad;
-        Debug.Log(gameObject.name + " Recibio da駉 de " + cantidad + " le queda " + Vida, gameObject);
+        Debug.Log(gameObject.name + " Recibio da帽o de " + cantidad + " le queda " + Vida, gameObject);
         Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
         if (Vida <= 0) 
         {
@@ -235,13 +269,13 @@ public class AccionesJugador : A1_Entidad
     // Update is called once per frame
     void Update()
     {
-
+        
         CargarBarraDeCoolDown();
 
-        if (CoolDown > 0)
-            CoolDown -= Time.deltaTime;
-        if (CoolDown < 0)
-            CoolDown = 0;
+     //  if (CoolDown > 0)
+         //   CoolDown -= Time.deltaTime;
+       // if (CoolDown < 0)
+           // CoolDown = 0;
 
         float velocidadActual = agent.velocity.magnitude;
         anim.SetFloat("velocidad", velocidadActual);
@@ -260,16 +294,53 @@ public class AccionesJugador : A1_Entidad
                 Debug.Log("Modo cambiado a MELEE");
                 anim.SetLayerWeight(0, 0f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 1f); // capa 1 = Melee
+                
             }
             else
             {
                 Debug.Log("Modo cambiado a rango");
                 anim.SetLayerWeight(0, 1f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 0f); // capa 1 = Melee
+
             }
             //fin el if nuevo
         }
+        RotarFlechaHaciaElCursor();
     }
+
+
+    public GameObject Flecha;
+    public void RotarFlechaHaciaElCursor()
+    {
+        if (Flecha == null) return;
+
+        // 1. Obtener la posici贸n del mouse en el mundo
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane plano = new Plane(Vector3.up, Flecha.transform.position);
+        float distancia;
+        Vector3 puntoMundo = Flecha.transform.position;
+        if (plano.Raycast(ray, out distancia))
+        {
+            puntoMundo = ray.GetPoint(distancia);
+        }
+
+        // 2. Calcular la direcci贸n desde la flecha al punto del mouse (solo en X y Z)
+        Vector3 direccion = puntoMundo - Flecha.transform.position;
+        direccion.y = 0; // Solo rotar en el eje Y
+
+        if (direccion.sqrMagnitude > 0.001f)
+        {
+            // 3. Calcular la rotaci贸n solo en el eje Y
+            Quaternion rotacion = Quaternion.LookRotation(direccion, Vector3.up);
+            // 4. Ajustar la rotaci贸n en X a 90 grados y sumar 90 en Z
+            Vector3 euler = rotacion.eulerAngles;
+            euler.x = 90;
+            euler.z -= 90;
+            Flecha.transform.rotation = Quaternion.Euler(euler);
+        }
+    }
+
+
 
     public override void Colisiono(GameObject col, string TipoDeColision)
     {
