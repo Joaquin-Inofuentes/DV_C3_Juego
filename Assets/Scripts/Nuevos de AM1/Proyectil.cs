@@ -129,13 +129,16 @@ public class Proyectil : MonoBehaviour
             Destroy(rb);
         }
 
-        if (gameObject.name == "BolaDeHielo" && EfectoEspecial)
+        if (gameObject.name.Contains("BolaDeHielo") && EfectoEspecial)
         {
             GameObject Efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
             ATK_Congelar Componente = Efecto.GetComponent<ATK_Congelar>();
             Componente.anim = enemigo.anim;
-            Componente.timer = 4;
+            Componente.timer = 5;
+            Componente.timerActual = 5;
             Componente.padre = enemigo.transform;
+            Debug.Log("Congelando a " + enemigo.name, gameObject);
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
         }
 
         if (AutoDestruir)
