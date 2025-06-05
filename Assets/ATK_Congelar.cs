@@ -14,7 +14,8 @@ public class ATK_Congelar : MonoBehaviour
     void Start()
     {
         if (anim != null) anim.speed = 0;
-        if(this == null) return;
+        if (this == null) return;
+        if (padre == null) return; // Asegurarse de que padre no sea nulo
         posOriginal = padre.position;
         rotOriginal = padre.rotation;
         timerActual = timer;

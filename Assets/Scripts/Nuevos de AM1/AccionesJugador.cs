@@ -37,7 +37,7 @@ public class AccionesJugador : A1_Entidad
     public float _coolDown = 0f;
 
     // Asume que tienes una referencia al RawImage de la barra de cooldown
-    public UnityEngine.UI.RawImage barraCoolDown;
+    public UnityEngine.UI.Image barraCoolDown;
 
     // Llama a este método en Update y cuando cambie el CoolDown
     private void ActualizarBarraCoolDown()
@@ -45,7 +45,7 @@ public class AccionesJugador : A1_Entidad
         if (barraCoolDown == null || maxCoolDown == 0f) return;
         float porcentaje = 1f - Mathf.Clamp01(_coolDown / maxCoolDown);
         var rt = barraCoolDown.rectTransform;
-        float anchoBase = barraCoolDown.texture != null ? barraCoolDown.texture.width : rt.rect.width;
+        float anchoBase = barraCoolDown.mainTexture != null ? barraCoolDown.mainTexture.width : rt.rect.width;
         // Reemplaza la línea de cálculo de anchoBase y el ajuste de la barra por lo siguiente:
         float anchoMaximo = 200f;
         rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, anchoMaximo * porcentaje);
