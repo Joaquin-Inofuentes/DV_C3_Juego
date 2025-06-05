@@ -12,6 +12,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     private float anchoOriginal;
     private bool estaMuerto = false;
+    public bool Congelado;
+    public bool PrimerAtaqueAAnular;
+
+
 
     void ActualizarBarraDevida()
     {

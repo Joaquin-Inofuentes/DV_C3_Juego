@@ -1,60 +1,78 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using CustomInspector;
+
 public class TimerManager : MonoBehaviour
 {
-    // Timer general actual
-    public float generalTimer;
+    [Button(nameof(SetTimerToMax), true)]
+    public int IndiceAReiniciar = 0;
 
-    // Tiempo máximo del timer general
+    [Header("⏱ Timer General")]
+    public float generalTimer;
     public float generalTimerMax = 10f;
 
-    // Lista de 7 timers individuales
+    [Header("⏱ Timers Individuales")]
     public float[] timers = new float[7];
-
-    // Valores máximos para cada timer individual
     public float[] maxTimers = new float[7];
-
-    // Booleans que indican si cada timer llegó a 0
     public bool[] isTimerZero = new bool[7];
-
-    // Porcentaje (0 a 1) de cada timer respecto a su valor máximo
     public float[] timersPercent = new float[7];
+
+    [Header("🖼️ UI Cooldown Overlays (Image con Fill)")]
+    public Image[] cooldownOverlays = new Image[7];
+
+    public AccionesJugador _AccionesDeJugador;
 
     void Update()
     {
-        // ⏱ Actualiza el timer general si es mayor a 0
+        // 1. ⏱ Timer general
         if (generalTimer > 0)
         {
-            generalTimer -= Time.deltaTime; // Resta tiempo
-            if (generalTimer < 0.2f) generalTimer = 0; // Si es muy bajo, lo pone en 0
+            generalTimer -= Time.deltaTime;
+            if (generalTimer < 0.2f) generalTimer = 0;
         }
 
-        // 🔁 Recorre todos los timers individuales
+        // 2. 🔁 Timers individuales
         for (int i = 0; i < timers.Length; i++)
         {
-            // Si el timer está corriendo
+            // 2.1 Resta tiempo si corre
             if (timers[i] > 0)
             {
-                timers[i] -= Time.deltaTime; // Resta tiempo
-                if (timers[i] < 0.2f) timers[i] = 0; // Si es muy bajo, lo pone en 0
+                timers[i] -= Time.deltaTime;
+                if (timers[i] < 0.2f) timers[i] = 0;
             }
 
-            // ✅ Marca si el timer está en 0
+            // 2.2 Estado de finalización
             isTimerZero[i] = timers[i] == 0;
 
-            // 📊 Calcula el porcentaje (entre 0 y 1)
+            // 2.3 Porcentaje de tiempo restante
             timersPercent[i] = maxTimers[i] > 0 ? Mathf.Clamp01(timers[i] / maxTimers[i]) : 0;
+
+            // 2.4 Actualiza UI del cooldown con imagen radial
+            if (cooldownOverlays[i] != null)
+            {
+                // Omitir según modo melee
+                if (_AccionesDeJugador.modoMelee && i <= 2) continue;
+                if (!_AccionesDeJugador.modoMelee && i >= 3) continue;
+
+                cooldownOverlays[i].fillAmount = timersPercent[i];
+            }
         }
     }
 
-    // 🔁 Reinicia un timer individual al valor máximo
     public void SetTimerToMax(int index)
     {
-        if (index < 0 || index >= timers.Length) return; // Validación del índice
-        timers[index] = maxTimers[index]; // Reinicia el timer con su valor máximo
+        if (index < 0 || index >= timers.Length) return;
+        timers[index] = maxTimers[index];
     }
 
     public void ResetGeneralTimer()
     {
         generalTimer = generalTimerMax;
+    }
+
+    public bool IsTimerCharging(int index)
+    {
+        if (index < 0 || index >= timers.Length) return false;
+        return timers[index] > 0.2f;
     }
 }
