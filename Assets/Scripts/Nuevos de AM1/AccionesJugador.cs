@@ -297,7 +297,7 @@ public class AccionesJugador : A1_Entidad
             GameObject hitbox = Instantiate(
                 hitboxCuboPrefab,
                 puntoDeGolpe.position,
-                puntoDeGolpe.rotation
+                gameObject.transform.rotation
             );
             if (hitbox.TryGetComponent<Hitbox>(out var componenteHitbox))
                 componenteHitbox.ConfigurarDanio(danio);

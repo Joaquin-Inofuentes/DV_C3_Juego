@@ -13,7 +13,7 @@ public class Feedbacks : MonoBehaviour
     public RawImage BarraDeVida;
     public float Vida_TamanoMaximo;
     public TextMeshProUGUI Text_CantidadDeMonedas;
-
+    public AudioSource S_MomentoEpico; 
     public static Feedbacks Componente; // Singleton para acceder fácilmente desde otros scripts
     public GameObject PantallaDeCombo;
     void Start()
@@ -21,7 +21,8 @@ public class Feedbacks : MonoBehaviour
         animator = GetComponent<Animator>(); // Obtiene el Animator del GameObject
         Vida_TamanoMaximo = BarraDeVida.rectTransform.rect.width;
     }
-
+    private int _CantidadDeMonedas = 0; // Variable para almacenar la cantidad de monedas
+    public AudioSource SonidoDeObtenerMonedas;
     void Update()
     {
         if(Componente == null)
@@ -33,6 +34,11 @@ public class Feedbacks : MonoBehaviour
         if (GameManager.Componente)
         {
             Text_CantidadDeMonedas.text = "$ " + GameManager.Componente.ContadorDeMonedas.ToString();
+        }
+        if(GameManager.Componente.ContadorDeMonedas != _CantidadDeMonedas)
+        {
+            _CantidadDeMonedas = GameManager.Componente.ContadorDeMonedas; // Actualiza la cantidad de monedas
+            SonidoDeObtenerMonedas.Play(); // Reproduce el sonido al obtener monedas
         }
     }
 

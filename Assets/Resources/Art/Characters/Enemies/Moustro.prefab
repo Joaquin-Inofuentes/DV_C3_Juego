@@ -1920,6 +1920,7 @@ MonoBehaviour:
   Congelado: 0
   PrimerAtaqueAAnular: 0
   EfectoDeCongelado: {fileID: 0}
+  ultimoProyectilRecibido: 
   AnimacionActual: 
   DestinoAsignado: {x: 0, y: 0, z: 0}
   RecibiraDobleDanoLaProximaVez: 0

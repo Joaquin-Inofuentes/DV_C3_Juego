@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using CustomInspector;
 public class A3_H2_ObjetoDestruible : A3_Interactuable
 {
+    [Button(nameof(Interactuar))]
     public GameObject Monedas;
     public override void Interactuar()
     {
+        SonidoDeInteraccion.Play();
         Monedas.SetActive(true);
         gameObject.SetActive(false);
     }
