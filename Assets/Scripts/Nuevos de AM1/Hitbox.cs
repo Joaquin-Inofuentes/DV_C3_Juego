@@ -12,6 +12,7 @@ public class Hitbox : MonoBehaviour
         A1_Entidad enemigo = other.GetComponent<A1_Entidad>();
         if (enemigo != null)
         {
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
             enemigo.RecibirDanio(danio);
             Destroy(gameObject); // Solo golpea una vez
         }

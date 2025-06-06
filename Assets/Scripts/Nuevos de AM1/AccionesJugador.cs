@@ -88,7 +88,7 @@ public class AccionesJugador : A1_Entidad
         // 3) Actualizar animación de movimiento y detenerse si llegó
         float velocidadActual = agent.velocity.magnitude;
         anim.SetFloat("velocidad", velocidadActual);
-        if (Vector3.Distance(transform.position, Destino) < 1f)
+        if (Vector3.Distance(transform.position, Destino) < 2f)
         {
             Detenerse();
         }
@@ -316,6 +316,8 @@ public class AccionesJugador : A1_Entidad
     public override void Detenerse()
     {
         agent.isStopped = true;
+        S_Caminar.loop = false;
+        S_Caminar.Stop();
     }
 
     public override void IrAlDestino(Vector3 destino)
@@ -327,6 +329,15 @@ public class AccionesJugador : A1_Entidad
         Destino = destino;
         Particulas.transform.position = destino;
         Particulas.Play();
+
+        // Reproducir sonido si no está sonando
+        if (!S_Caminar.isPlaying)
+        {
+            //S_Caminar.clip = AudioManager.ObtenerAudioPorNombre("Correr_en_pasto");
+            S_Caminar.loop = true;
+            S_Caminar.Play();
+        }
+
     }
 
     public override void Morir()
@@ -342,6 +353,7 @@ public class AccionesJugador : A1_Entidad
         // Implementar si hace falta
     }
 
+    public AudioSource RecibirDanoAudio;
     public override void RecibirDanio(int cantidad)
     {
         Vida -= cantidad;
@@ -353,6 +365,7 @@ public class AccionesJugador : A1_Entidad
             Morir();
             Invoke(nameof(CargaEscenaDerrota), 3f);
         }
+        RecibirDanoAudio.Play();
     }
 
     void CargaEscenaDerrota()

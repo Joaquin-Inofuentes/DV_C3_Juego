@@ -19,6 +19,7 @@ public abstract class A1_Entidad : MonoBehaviour
     public float DistanciaParaPerseguir;
     public float TimerDeAtaque;
     public GameObject Objetivo;
+    public AudioSource S_Caminar;
 
     // Métodos abstractos (requieren implementación en clases hijas)
     public abstract void IrAlDestino(Vector3 destino);

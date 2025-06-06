@@ -26,7 +26,7 @@ public class Inputs : MonoBehaviour
         Ataque();
         Pausa();
         //Debug.Log(Time.timeScale);
-        Menu.SetActive(Time.timeScale != 1); // Alternar entre pausa y reanudación
+        Menu.SetActive(Time.timeScale == 0); // Alternar entre pausa y reanudación
     }
     // Método para mover al jugador basado en el movimiento del mouse
     public void Movimiento()

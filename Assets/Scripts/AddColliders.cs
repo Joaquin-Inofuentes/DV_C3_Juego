@@ -7,7 +7,7 @@ public class addColliders : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Obtener todos los objetos hijos en el GameObject
+        // ObtenerAudioPorNombre todos los objetos hijos en el GameObject
         foreach (Transform child in transform)
         {
             // Si no tiene un Collider, agregar uno

@@ -13,6 +13,9 @@ public class Feedbacks : MonoBehaviour
     public RawImage BarraDeVida;
     public float Vida_TamanoMaximo;
     public TextMeshProUGUI Text_CantidadDeMonedas;
+
+    public static Feedbacks Componente; // Singleton para acceder fácilmente desde otros scripts
+    public GameObject PantallaDeCombo;
     void Start()
     {
         animator = GetComponent<Animator>(); // Obtiene el Animator del GameObject
@@ -21,6 +24,10 @@ public class Feedbacks : MonoBehaviour
 
     void Update()
     {
+        if(Componente == null)
+        {
+            Componente = this; // Asigna la instancia si aún no está asignada
+        }
         // Aquí podrías manejar lógica de actualización, como el movimiento
         ActualizarBarra();
         if (GameManager.Componente)

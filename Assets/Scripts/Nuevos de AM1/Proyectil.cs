@@ -64,7 +64,7 @@ public class Proyectil : MonoBehaviour
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
         if (collision == Creador) return;
-        if(collision.tag == "Ambiente")
+        if (collision.tag == "Ambiente")
         {
             //Debug.Log(collision.ToString() + TipoDeColision);
             GameObject efecto = Instantiate(EfectoEspecial, PuntoDeColision, Quaternion.identity);
@@ -86,6 +86,11 @@ public class Proyectil : MonoBehaviour
         A1_Entidad enemigo = collision.gameObject.GetComponent<A1_Entidad>();
         if (enemigo != null)
         {
+            if (enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>())
+            {
+                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
+            }
+
             if (EfectoEspecial != null)
             {
                 GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
@@ -99,10 +104,11 @@ public class Proyectil : MonoBehaviour
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;
                     Componente.anim = enemigo.anim;
-                //return;
+                    //return;
                 }
             }
             enemigo.RecibirDanio(danio);
+            Debug.Log(collision.name, collision.gameObject);
             float DistanciaParaAtacar =
                 enemigo.ModoAtaqueMelee ?
                 enemigo.DistanciaParaAtaqueMelee : enemigo.DistanciaParaAtaqueLargo;
@@ -139,6 +145,7 @@ public class Proyectil : MonoBehaviour
             Componente.padre = enemigo.transform;
             Debug.Log("Congelando a " + enemigo.name, gameObject);
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
         }
 
         if (AutoDestruir)

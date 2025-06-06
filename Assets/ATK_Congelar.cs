@@ -10,12 +10,15 @@ public class ATK_Congelar : MonoBehaviour
     public Vector3 posOriginal;
     public Quaternion rotOriginal;
     public float timerActual;
+    public AudioSource S_Congelar;
 
     void Start()
     {
         if (anim != null) anim.speed = 0;
         if (this == null) return;
         if (padre == null) return; // Asegurarse de que padre no sea nulo
+        if (S_Congelar != null) S_Congelar.Play(); // Reproducir sonido de congelar
+
         posOriginal = padre.position;
         rotOriginal = padre.rotation;
         timerActual = timer;
@@ -33,7 +36,7 @@ public class ATK_Congelar : MonoBehaviour
         agent.isStopped = true;
     }
 
-    void ReanudarAgente()
+    public void ReanudarAgente()
     {
         if (anim != null) anim.speed = 1;
         if (agent == null) return;
@@ -47,7 +50,11 @@ public class ATK_Congelar : MonoBehaviour
     void Update()
     {
         if (padre == null) return;
-
+        if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent.isStopped)
+        {
+            ReanudarAgente(); // Reanudar el agente si est�� detenido
+            return; // Asegurarse de que el padre tenga el componente necesario
+        }
         // Mantener posici�n y rotaci�n
         padre.position = posOriginal;
         padre.rotation = rotOriginal;

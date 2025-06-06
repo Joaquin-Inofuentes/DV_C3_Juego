@@ -10,7 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 952961124639765284, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: m_Name
-      value: EfectoHieloRoto
+      value: VFX_EfectoHieloRoto Hielo rompiendose
+      objectReference: {fileID: 0}
+    - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: stopAction
@@ -70,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: InitialModule.startSize.minScalar
-      value: 0.52
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
@@ -91,6 +95,18 @@ PrefabInstance:
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: InitialModule.gravityModifier.scalar
       value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359797696631620774, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2.7943
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359797696631620774, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.7943
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359797696631620774, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2.7943
       objectReference: {fileID: 0}
     - target: {fileID: 3359797696631620774, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: m_LocalPosition.x

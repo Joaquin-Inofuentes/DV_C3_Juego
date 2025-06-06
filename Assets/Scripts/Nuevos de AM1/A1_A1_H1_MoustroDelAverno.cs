@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
@@ -14,8 +15,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     private bool estaMuerto = false;
     public bool Congelado;
     public bool PrimerAtaqueAAnular;
-
-
+    public ATK_Congelar EfectoDeCongelado; // Efecto visual de congelación
+    public string ultimoProyectilRecibido = "";
 
     void ActualizarBarraDevida()
     {
@@ -145,14 +146,24 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public override void Detenerse()
     {
         agent.isStopped = true;
-
+        S_Caminar.loop = false;
+        S_Caminar.Stop();
     }
-
+    public Vector3 DestinoAsignado = Vector3.zero;
     public override void IrAlDestino(Vector3 destino)
     {
         if (estaMuerto) return;
         agent.isStopped = false;
         agent.SetDestination(destino);
+        DestinoAsignado = destino;
+
+        // Reproducir sonido si no está sonando
+        if (!S_Caminar.isPlaying)
+        {
+            //S_Caminar.clip = AudioManager.ObtenerAudioPorNombre("Correr_en_pasto");
+            S_Caminar.loop = false;
+            S_Caminar.Play();
+        }
     }
 
     public override void Morir()
@@ -195,12 +206,13 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     }
 
     public bool RecibiraDobleDanoLaProximaVez = false;
+    public AudioSource S_RecibirDano; // Sonido al recibir daño
 
     public override void RecibirDanio(int cantidad)
     {
-        Debug.Log(1);
+        //Debug.Log(1);
         Vida -= cantidad;
-
+        S_RecibirDano.Play(); // Reproducir sonido al recibir daño
         if (RecibiraDobleDanoLaProximaVez)
         {
             Vida -= cantidad * 2; // Doble daño
@@ -214,15 +226,56 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
         if (Congelado)
         {
-            if (PrimerAtaqueAAnular) 
-            { 
+            if (PrimerAtaqueAAnular)
+            {
                 PrimerAtaqueAAnular = false;
                 return;
             }
-            Vida -= cantidad * 2;
-            Congelado = false;
+            if (ultimoProyectilRecibido.Contains("hitboxCubo"))
+            {
+                Vida -= cantidad * 2;
+                Congelado = false;
+                EfectoDeRopturaDeCongelamiento();
+            }
         }
     }
+
+    public GameObject VFXDeRopturaDeHielo; // Efecto visual de congelación
+    public AudioSource S_RupturaDeHielo; // Sonido de ruptura de congelamiento
+    public void EfectoDeRopturaDeCongelamiento()
+    {
+        EfectoDeCongelado.ReanudarAgente(); // Reanudar el agente
+        Destroy(EfectoDeCongelado.gameObject); // Destruir el efecto de congelación
+        // Crear VFX Visual de ruptura de congelamiento
+        GameObject efecto = Instantiate(VFXDeRopturaDeHielo, transform.position, Quaternion.identity);
+        Destroy(efecto, 2f); // Destruir el efecto después de 2 segundos
+        // Reproducir sonido de ruptura de congelamiento
+        S_RupturaDeHielo.Play();
+        S_RupturaDeHielo.loop = false; // Asegurarse de que no sea loop
+
+        IrAlDestino(DestinoAsignado); // Reanudar movimiento
+        agent.isStopped = false;
+        RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
+
+        RalentizarTiempo(); // Ralentizar el tiempo al romper el hielo
+
+    }
+
+
+    void RalentizarTiempo()
+    {
+        Time.timeScale = 0.3f;
+        Feedbacks.Componente.PantallaDeCombo.SetActive(true);
+        Invoke(nameof(RestaurarTiempo), 0.5f);
+    }
+
+    void RestaurarTiempo()
+    {
+        Time.timeScale = 1f;
+        Feedbacks.Componente.PantallaDeCombo.SetActive(false);
+    }
+
+
 
     protected override void Start()
     {
@@ -239,6 +292,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         //Debug.Log("Velocidad agente: " + velocidad);
         anim.SetFloat("velocidad", velocidad);
         ActualizarBarraDevida();
+        if (Vector3.Distance(transform.position, DestinoAsignado) < 2f)
+        {
+            Detenerse();
+        }
 
     }
 }
