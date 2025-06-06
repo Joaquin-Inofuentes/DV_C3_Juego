@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI; // Necesario para Image
 
 public class AccionesJugador : A1_Entidad
 {
-
-
+    [Header("🏹 Proyectiles y Hitboxes")]
     public GameObject BolaDeFuego;
     public GameObject BolaDeHielo;
     public GameObject Rayo;
@@ -16,13 +16,29 @@ public class AccionesJugador : A1_Entidad
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
     public Transform Origen;
-    private bool estaMuerto = false;
+
+    [Header("🗡️ Datos de Combate Cuerpo a Cuerpo")]
     public bool modoMelee = false;
     public Transform puntoGolpePatada;
     public Transform puntoGolpeEspada;
-    // Agrega este campo y propiedad en tu clase AccionesJugador
-    public float maxCoolDown = 0f;
+
+    [Header("❤️ Estado del Jugador")]
+    private bool estaMuerto = false;
     private bool hitboxGenerada = false;
+    public Vector3 Destino;
+
+    [Header("🎨 Feedbacks y Partículas")]
+    public ParticleSystem Particulas;
+    public Feedbacks Feedbacks;
+    public Color Color_RecibeDano;
+    public Color Color_ObtieneMonedas;
+    public Color Color_FueAvistado;
+    public Color Color_Muere;
+    public Color Color_SeCura;
+
+    [Header("⏱️ Cooldown Interno (barra horizontal)")]
+    public float maxCoolDown = 0f;
+    private float _coolDown = 0f;
     public float CoolDown
     {
         get => _coolDown;
@@ -34,348 +50,341 @@ public class AccionesJugador : A1_Entidad
             ActualizarBarraCoolDown();
         }
     }
-    public float _coolDown = 0f;
+    public Image barraCoolDown; // Opcional: si ya no necesitás la barra horizontal, dejala en null
 
-    // Asume que tienes una referencia al RawImage de la barra de cooldown
-    public UnityEngine.UI.Image barraCoolDown;
-
-    // Llama a este método en Update y cuando cambie el CoolDown
-    private void ActualizarBarraCoolDown()
-    {
-        if (barraCoolDown == null || maxCoolDown == 0f) return;
-        float porcentaje = 1f - Mathf.Clamp01(_coolDown / maxCoolDown);
-        var rt = barraCoolDown.rectTransform;
-        float anchoBase = barraCoolDown.mainTexture != null ? barraCoolDown.mainTexture.width : rt.rect.width;
-        // Reemplaza la línea de cálculo de anchoBase y el ajuste de la barra por lo siguiente:
-        float anchoMaximo = 200f;
-        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, anchoMaximo * porcentaje);
-    }
-
-    // En tu método Update, agrega:
-    void CargarBarraDeCoolDown()
-    {
-        if (CoolDown > 0)
-            CoolDown -= Time.deltaTime;
-        if (CoolDown < 0)
-            CoolDown = 0;
-
-        float velocidadActual = agent.velocity.magnitude;
-        anim.SetFloat("velocidad", velocidadActual);
-        if (Vector3.Distance(gameObject.transform.position, Destino) < 1)
-        {
-            Detenerse();
-        }
-
-        ActualizarBarraCoolDown();
-    }
-
-    public override void Atacar(Vector3 Destino, string Nombre)
-    {
-        if (estaMuerto) return;
-        // Joaco_ Indica q animacion se esta ejecutando
-        //if (CoolDown != 0) return;
-        if (_TimerManager.IsTimerCharging(6)) return; // Significa q el general se esta recargando
-        _TimerManager.SetTimerToMax(6);
-        //Debug.Log(1);
-        GameObject ProyectilUsado = null;
-
-        if (Nombre == "BolaDeFuego")
-        {
-            //Debug.Log(2);
-            if (!modoMelee)
-            {
-                //Debug.Log(3);
-                if (_TimerManager.IsTimerCharging(0)) return; // Significa q se esta recargando
-                anim.SetTrigger("magic1");
-                _TimerManager.SetTimerToMax(0);
-                ProyectilUsado = BolaDeFuego;
-            }
-            else
-            {
-                //Debug.Log(4);
-                if (_TimerManager.IsTimerCharging(3)) return; // Significa q se esta recargando
-                Debug.Log("Ver algo aca");
-                anim.SetTrigger("melee1");
-                _TimerManager.SetTimerToMax(3);
-                Debug.Log("Algo anad abie");
-            }
-
-        }
-        if (Nombre == "BolaDeHielo")
-        {
-
-            if (!modoMelee)
-            {
-                if (_TimerManager.IsTimerCharging(1)) return; // Significa q se esta recargando
-                anim.SetTrigger("magic2");
-                ProyectilUsado = BolaDeHielo;
-                _TimerManager.SetTimerToMax(1);
-            }
-            else
-            {
-                if (_TimerManager.IsTimerCharging(4)) return; // Significa q se esta recargando
-                anim.SetTrigger("melee2");
-                _TimerManager.SetTimerToMax(4);
-            }
-            anim.SetFloat("velocidad", 0);
-            agent.isStopped = true;
-        }
-        if (Nombre == "Rayo")
-        {
-            if (!modoMelee)
-            {
-                if (_TimerManager.IsTimerCharging(2)) return; // Significa q se esta recargando
-                anim.SetTrigger("magic3"); //nuevo
-                ProyectilUsado = Rayo;
-                _TimerManager.SetTimerToMax(2);
-            }
-            else
-            {
-                if (_TimerManager.IsTimerCharging(5)) return; // Significa q se esta recargando
-                anim.SetTrigger("melee3"); //nuevo
-                _TimerManager.SetTimerToMax(5);
-            }
-            anim.SetFloat("velocidad", 0);
-            agent.isStopped = true;
-        }
-
-        transform.LookAt(Destino);
-        if(ProyectilUsado == null) return;
-        Vector3 direccion = (Destino - Origen.transform.position).normalized;
-        //Debug.Log(Nombre + " " + Destino, gameObject);
-        GameObject Ataque = Instantiate(
-            ProyectilUsado,
-            Origen.transform.position,
-            Quaternion.LookRotation(direccion));
-
-        if (Ataque.GetComponent<Proyectil>() != null)
-        {
-            Ataque.GetComponent<Proyectil>().Creador = gameObject;
-            Ataque.GetComponent<Proyectil>().AutoDestruir = true;
-        }
-
-        Rigidbody rb = Ataque.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.AddForce(direccion * fuerzaDisparo);
-        }
-
-        /*   else
-           {
-               Vector3 posicionHitbox = Origen.position + transform.forward * 1.5f; // 🔴 NUEVO
-               Quaternion rotacionHitbox = transform.rotation; // 🔴 NUEVO
-
-               GameObject hitbox = Instantiate(hitboxCuboPrefab, posicionHitbox, rotacionHitbox); // 🔴 NUEVO
-               Destroy(hitbox, 0.5f); // 🔴 NUEVO
-           }
-           */
-        Invoke("RegistrarCoolDown", 0.1f);
-    }
-
-    // Joaco_CoolDownTiempos
-    public void RegistrarCoolDown()
-    {
-        float speed = 1f;
-        string nombreAnimacion = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-        //Debug.Log(nombreAnimacion);
-        switch (nombreAnimacion)
-        {
-            case string n when n.Contains("01"):
-                speed = 8f;
-                break;
-            case string n when n.Contains("02"):
-                speed = 4f;
-                break;
-            case string n when n.Contains("03"):
-                speed = 4f;
-                break;
-            case string n when n.Contains("ataque_pesadoPersonaje"):
-                speed = 2f;
-                break;
-            case string n when n.Contains("ataque_rapidoPersonaje"):
-                speed = 3f;
-                break;
-            case string n when n.Contains("ataque_fuertePersonaje"):
-                speed = 0.9f;
-                break;
-            default:
-                speed = 1.0f;
-                break;
-        }
-        //Debug.Log(animacion.GetCurrentAnimatorClipInfo(0)[0].clip.length + " | " + speed);
-        float Tiempo = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
-        CoolDown = Tiempo > 2 ? 2 : Tiempo;
-    }
-
-    public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
-    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada, 35);
-    public void GenerarHitboxPie() => GenerarHitbox(puntoGolpePatada, 10);
-    public void GenerarHitbox(Transform puntoDeGolpe, int danio)
-    {
-        if (hitboxGenerada) return;
-
-        if (hitboxCuboPrefab != null && puntoDeGolpe != null)
-        {
-            GameObject hitbox = Instantiate(hitboxCuboPrefab, puntoDeGolpe.position, puntoDeGolpe.rotation);
-            Hitbox componenteHitbox = hitbox.GetComponent<Hitbox>();
-            if (componenteHitbox != null)
-                componenteHitbox.ConfigurarDanio(danio);
-            hitboxGenerada = true;
-            Destroy(hitbox, 0.5f);
-            Invoke(nameof(ResetHitboxFlag), 0.1f); // Se puede ajustar el tiempo
-        }
-
-    }
-    private void ResetHitboxFlag()
-    {
-        hitboxGenerada = false;
-    }
-
-
-    public override void Detenerse()
-    {
-        agent.isStopped = true;
-    }
-    public ParticleSystem Particulas;
-    public override void IrAlDestino(Vector3 destino)
-    {
-        if (estaMuerto) return;
-        agent.isStopped = false;
-        //Debug.Log(1);
-        transform.LookAt(destino);
-        agent.SetDestination(destino);
-        Destino = destino;
-        Particulas.gameObject.transform.position = destino;
-        Particulas.Play();
-        //Debug.Log(2);
-
-    }
-
-
-    public override void Morir()
-    {
-        if (estaMuerto) return;
-        Feedbacks.FeedbackRadialVisual(Color_Muere, 4);
-        estaMuerto = true;
-        anim.SetTrigger("life"); //nuevo
-    }
-
-    public override void OnCollision(Collision collider)
-    {
-        throw new System.NotImplementedException();
-    }
-    public Feedbacks Feedbacks;
-    public Color Color_RecibeDano;
-    public Color Color_ObtieneMonedas;
-    public Color Color_FueAvistado;
-    public Color Color_Muere;
-    public Color Color_SeCura;
+    [Header("🎯 Referencia a TimerManager (cooldowns de habilidades)")]
     public TimerManager _TimerManager;
 
-    public override void RecibirDanio(int cantidad)
-    {
-        Vida -= cantidad;
-        Debug.Log(gameObject.name + " Recibio daño de " + cantidad + " le queda " + Vida, gameObject);
-        Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
-        if (Vida <= 0)
-        {
-            Morir();
-            Invoke("CargaEscenaDerrota", 3f);
-        }
-    }
-    void CargaEscenaDerrota()
-    {
-        SceneManager.LoadScene("Derrota");
-    }
+    [Header("🖼️ Íconos de Habilidad con Fill (Tipo: Filled, Radial 360)")]
+    /// <summary>
+    /// Índices:
+    /// 0 ▶ Bola de Fuego
+    /// 1 ▶ Bola de Hielo
+    /// 2 ▶ Rayo
+    /// 3 ▶ Melee1
+    /// 4 ▶ Melee2
+    /// 5 ▶ Melee3
+    /// 6 ▶ Cooldown “general” (opcional)
+    /// </summary>
+    public Image[] iconCooldowns = new Image[7];
 
-    // + Agente: Navmeshagent
-    // AtaqueElegido(string): void
-    // GameManager
-    // Inputs
+    [Header("🛠️ Indicadores Melee/Rango")]
+    public GameObject IndicadoresMelee;
 
-    // Start is called before the first frame update
     void Start()
     {
-
+        if (_TimerManager == null)
+            Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
     }
-    public Vector3 Destino;
-    // Update is called once per frame
-    public GameObject IndicadoresMelee;
+
     void Update()
     {
-
+        // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();
 
-        //  if (CoolDown > 0)
-        //   CoolDown -= Time.deltaTime;
-        // if (CoolDown < 0)
-        // CoolDown = 0;
+        // 2) Actualizar cada ícono según el TimerManager
+        ActualizarIconosCooldown();
 
+        // 3) Actualizar animación de movimiento y detenerse si llegó
         float velocidadActual = agent.velocity.magnitude;
         anim.SetFloat("velocidad", velocidadActual);
-        if (Vector3.Distance(gameObject.transform.position, Destino) < 1)
+        if (Vector3.Distance(transform.position, Destino) < 1f)
         {
             Detenerse();
-
         }
-        //if nuevo
+
+        // 4) Alternar modo melee/rango con la tecla 4 (ejemplo)
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            modoMelee = !modoMelee; // alterna entre melee y rango
+            modoMelee = !modoMelee;
             if (modoMelee)
             {
                 IndicadoresMelee.SetActive(true);
                 Debug.Log("Modo cambiado a MELEE");
                 anim.SetLayerWeight(0, 0f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 1f); // capa 1 = Melee
-
             }
             else
             {
                 IndicadoresMelee.SetActive(false);
-                Debug.Log("Modo cambiado a rango");
+                Debug.Log("Modo cambiado a RANGO");
                 anim.SetLayerWeight(0, 1f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 0f); // capa 1 = Melee
-
             }
-            //fin el if nuevo
         }
+
+        // 5) Rotar flecha hacia cursor si existe
         RotarFlechaHaciaElCursor();
     }
 
+    /// <summary>
+    /// Reduce _coolDown cada frame y actualiza la barra horizontal (si está asignada).
+    /// </summary>
+    void CargarBarraDeCoolDown()
+    {
+        if (_coolDown > 0f)
+            _coolDown -= Time.deltaTime;
 
+        if (_coolDown < 0f)
+            _coolDown = 0f;
+
+        ActualizarBarraCoolDown();
+    }
+
+    /// <summary>
+    /// Actualiza la barra horizontal de cooldown (opcional).
+    /// Si no se usa, dejar barraCoolDown en null en el Inspector.
+    /// </summary>
+    private void ActualizarBarraCoolDown()
+    {
+        if (barraCoolDown == null || maxCoolDown == 0f) return;
+
+        float porcentaje = 1f - Mathf.Clamp01(_coolDown / maxCoolDown);
+        float anchoMaximo = 200f;
+        barraCoolDown.rectTransform.SetSizeWithCurrentAnchors(
+            RectTransform.Axis.Horizontal,
+            anchoMaximo * porcentaje
+        );
+    }
+
+    /// <summary>
+    /// Actualiza el fillAmount de cada ícono según los valores de TimerManager.
+    /// fillAmount = 1 → ícono completamente cubierto (cooldown recién iniciado).
+    /// fillAmount = 0 → ícono completamente libre (cooldown terminado).
+    /// </summary>
+    private void ActualizarIconosCooldown()
+    {
+        if (_TimerManager == null) return;
+
+        for (int i = 0; i < iconCooldowns.Length; i++)
+        {
+            if (iconCooldowns[i] == null) continue;
+
+            float maxT = _TimerManager.maxTimers[i];
+            float currentT = _TimerManager.timers[i];
+
+            if (maxT > 0f)
+            {
+                iconCooldowns[i].fillAmount = currentT / maxT;
+            }
+            else
+            {
+                iconCooldowns[i].fillAmount = 0f;
+            }
+        }
+    }
+
+    public override void Atacar(Vector3 Destino, string Nombre)
+    {
+        if (estaMuerto) return;
+        if (_TimerManager == null) return;
+
+        // 1) Chequear cooldown “general” (índice 6)
+        if (_TimerManager.IsTimerCharging(6)) return;
+        _TimerManager.SetTimerToMax(6);
+
+        GameObject ProyectilUsado = null;
+
+        // --- HECHIZOS / ATAQUES ---
+        if (Nombre == "BolaDeFuego")
+        {
+            if (!modoMelee)
+            {
+                if (_TimerManager.IsTimerCharging(0)) return;
+                anim.SetTrigger("magic1");
+                ProyectilUsado = BolaDeFuego;
+                _TimerManager.SetTimerToMax(0);
+            }
+            else
+            {
+                if (_TimerManager.IsTimerCharging(3)) return;
+                anim.SetTrigger("melee1");
+                _TimerManager.SetTimerToMax(3);
+            }
+        }
+        else if (Nombre == "BolaDeHielo")
+        {
+            if (!modoMelee)
+            {
+                if (_TimerManager.IsTimerCharging(1)) return;
+                anim.SetTrigger("magic2");
+                ProyectilUsado = BolaDeHielo;
+                _TimerManager.SetTimerToMax(1);
+            }
+            else
+            {
+                if (_TimerManager.IsTimerCharging(4)) return;
+                anim.SetTrigger("melee2");
+                _TimerManager.SetTimerToMax(4);
+            }
+            anim.SetFloat("velocidad", 0f);
+            agent.isStopped = true;
+        }
+        else if (Nombre == "Rayo")
+        {
+            if (!modoMelee)
+            {
+                if (_TimerManager.IsTimerCharging(2)) return;
+                anim.SetTrigger("magic3");
+                ProyectilUsado = Rayo;
+                _TimerManager.SetTimerToMax(2);
+            }
+            else
+            {
+                if (_TimerManager.IsTimerCharging(5)) return;
+                anim.SetTrigger("melee3");
+                _TimerManager.SetTimerToMax(5);
+            }
+            anim.SetFloat("velocidad", 0f);
+            agent.isStopped = true;
+        }
+
+        // 2) Instanciar proyectil si corresponde
+        transform.LookAt(Destino);
+        if (ProyectilUsado == null) return;
+
+        Vector3 direccion = (Destino - Origen.position).normalized;
+        GameObject ataque = Instantiate(
+            ProyectilUsado,
+            Origen.position,
+            Quaternion.LookRotation(direccion)
+        );
+
+        if (ataque.TryGetComponent<Proyectil>(out var proyectil))
+        {
+            proyectil.Creador = gameObject;
+            proyectil.AutoDestruir = true;
+        }
+
+        if (ataque.TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.AddForce(direccion * fuerzaDisparo);
+        }
+
+        // 3) Registrar cooldown interno basado en animación
+        Invoke(nameof(RegistrarCoolDown), 0.1f);
+    }
+
+    /// <summary>
+    /// Calcula la duración del CoolDown interno según la animación actual.
+    /// </summary>
+    public void RegistrarCoolDown()
+    {
+        float speed = 1f;
+        string nombreAnimacion = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+
+        if (nombreAnimacion.Contains("01")) speed = 8f;
+        else if (nombreAnimacion.Contains("02")) speed = 4f;
+        else if (nombreAnimacion.Contains("03")) speed = 4f;
+        else if (nombreAnimacion.Contains("ataque_pesadoPersonaje")) speed = 2f;
+        else if (nombreAnimacion.Contains("ataque_rapidoPersonaje")) speed = 3f;
+        else if (nombreAnimacion.Contains("ataque_fuertePersonaje")) speed = 0.9f;
+
+        float tiempoAnim = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
+        CoolDown = Mathf.Min(tiempoAnim, 2f);
+    }
+
+    public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
+    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada, 35);
+    public void GenerarHitboxPie() => GenerarHitbox(puntoGolpePatada, 10);
+
+    public void GenerarHitbox(Transform puntoDeGolpe, int danio)
+    {
+        if (hitboxGenerada) return;
+
+        if (hitboxCuboPrefab != null && puntoDeGolpe != null)
+        {
+            GameObject hitbox = Instantiate(
+                hitboxCuboPrefab,
+                puntoDeGolpe.position,
+                puntoDeGolpe.rotation
+            );
+            if (hitbox.TryGetComponent<Hitbox>(out var componenteHitbox))
+                componenteHitbox.ConfigurarDanio(danio);
+
+            hitboxGenerada = true;
+            Destroy(hitbox, 0.5f);
+            Invoke(nameof(ResetHitboxFlag), 0.1f);
+        }
+    }
+
+    private void ResetHitboxFlag()
+    {
+        hitboxGenerada = false;
+    }
+
+    public override void Detenerse()
+    {
+        agent.isStopped = true;
+    }
+
+    public override void IrAlDestino(Vector3 destino)
+    {
+        if (estaMuerto) return;
+        agent.isStopped = false;
+        transform.LookAt(destino);
+        agent.SetDestination(destino);
+        Destino = destino;
+        Particulas.transform.position = destino;
+        Particulas.Play();
+    }
+
+    public override void Morir()
+    {
+        if (estaMuerto) return;
+        Feedbacks.FeedbackRadialVisual(Color_Muere, 4);
+        estaMuerto = true;
+        anim.SetTrigger("life");
+    }
+
+    public override void OnCollision(Collision collider)
+    {
+        // Implementar si hace falta
+    }
+
+    public override void RecibirDanio(int cantidad)
+    {
+        Vida -= cantidad;
+        Debug.Log($"{gameObject.name} recibió {cantidad} de daño. Vida restante: {Vida}", gameObject);
+        Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
+
+        if (Vida <= 0)
+        {
+            Morir();
+            Invoke(nameof(CargaEscenaDerrota), 3f);
+        }
+    }
+
+    void CargaEscenaDerrota()
+    {
+        SceneManager.LoadScene("Derrota");
+    }
+
+    /// <summary>
+    /// Rotar la flecha hacia el cursor (solo en el plano XZ).
+    /// </summary>
     public GameObject Flecha;
     public void RotarFlechaHaciaElCursor()
     {
         if (Flecha == null) return;
 
-        // 1. Obtener la posición del mouse en el mundo
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plano = new Plane(Vector3.up, Flecha.transform.position);
-        float distancia;
-        Vector3 puntoMundo = Flecha.transform.position;
-        if (plano.Raycast(ray, out distancia))
+        if (plano.Raycast(ray, out float distancia))
         {
-            puntoMundo = ray.GetPoint(distancia);
-        }
-
-        // 2. Calcular la dirección desde la flecha al punto del mouse (solo en X y Z)
-        Vector3 direccion = puntoMundo - Flecha.transform.position;
-        direccion.y = 0; // Solo rotar en el eje Y
-
-        if (direccion.sqrMagnitude > 0.001f)
-        {
-            // 3. Calcular la rotación solo en el eje Y
-            Quaternion rotacion = Quaternion.LookRotation(direccion, Vector3.up);
-            // 4. Ajustar la rotación en X a 90 grados y sumar 90 en Z
-            Vector3 euler = rotacion.eulerAngles;
-            euler.x = 90;
-            euler.z -= 90;
-            Flecha.transform.rotation = Quaternion.Euler(euler);
+            Vector3 puntoMundo = ray.GetPoint(distancia);
+            Vector3 direccion = puntoMundo - Flecha.transform.position;
+            direccion.y = 0f;
+            if (direccion.sqrMagnitude > 0.001f)
+            {
+                Quaternion rot = Quaternion.LookRotation(direccion, Vector3.up);
+                Vector3 euler = rot.eulerAngles;
+                euler.x = 90f;
+                euler.z -= 90f;
+                Flecha.transform.rotation = Quaternion.Euler(euler);
+            }
         }
     }
-
-
 
     public override void Colisiono(GameObject col, string TipoDeColision)
     {
@@ -399,3 +408,4 @@ public class AccionesJugador : A1_Entidad
         Debug.DrawLine(col.transform.position, gameObject.transform.position);
     }
 }
+
