@@ -63,6 +63,7 @@ public class Proyectil : MonoBehaviour
     public Vector3 PuntoDeColision;
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
+        Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
         if (collision == Creador) return;
         if (collision.tag == "Ambiente")
         {
