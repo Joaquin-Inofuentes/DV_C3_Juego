@@ -64,7 +64,7 @@ public class Proyectil : MonoBehaviour
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
         if (collision == Creador) return;
-        if (collision.tag == "Ambiente")
+        if (collision.tag == "Ambiente" || collision.name == "Terrain")
         {
             //Debug.Log(collision.ToString() + TipoDeColision);
             GameObject efecto = Instantiate(EfectoEspecial, PuntoDeColision, Quaternion.identity);

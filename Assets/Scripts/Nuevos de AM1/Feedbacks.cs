@@ -31,6 +31,8 @@ public class Feedbacks : MonoBehaviour
         }
         // Aquí podrías manejar lógica de actualización, como el movimiento
         ActualizarBarra();
+
+        if (GameManager.Componente) return;
         if (GameManager.Componente)
         {
             Text_CantidadDeMonedas.text = "$ " + GameManager.Componente.ContadorDeMonedas.ToString();
