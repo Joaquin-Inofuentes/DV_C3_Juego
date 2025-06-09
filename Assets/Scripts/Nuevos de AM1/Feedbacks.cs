@@ -9,12 +9,12 @@ public class Feedbacks : MonoBehaviour
     // Propiedades
     public AccionesJugador S_AccionesJugador;
     private Animator animator;
-    public string TipoDeAtaque; // Ejemplo: "Físico" o "Mágico"
+    public string TipoDeAtaque; // Ejemplo: "Fï¿½sico" o "Mï¿½gico"
     public RawImage BarraDeVida;
     public float Vida_TamanoMaximo;
     public TextMeshProUGUI Text_CantidadDeMonedas;
     public AudioSource S_MomentoEpico;
-    public static Feedbacks Componente; // Singleton para acceder fácilmente desde otros scripts
+    public static Feedbacks Componente; // Singleton para acceder fï¿½cilmente desde otros scripts
     public GameObject PantallaDeCombo;
     void Start()
     {
@@ -27,11 +27,12 @@ public class Feedbacks : MonoBehaviour
     {
         if (Componente == null)
         {
-            Componente = this; // Asigna la instancia si aún no está asignada
+            Componente = this; // Asigna la instancia si aï¿½n no estï¿½ asignada
         }
-        // Aquí podrías manejar lógica de actualización, como el movimiento
+        // Aquï¿½ podrï¿½as manejar lï¿½gica de actualizaciï¿½n, como el movimiento
         ActualizarBarra();
 
+        if (GameManager.Componente) return;
         if (GameManager.Componente)
         {
             Text_CantidadDeMonedas.text = "$ " + GameManager.Componente.ContadorDeMonedas.ToString();
@@ -54,28 +55,28 @@ public class Feedbacks : MonoBehaviour
 
     public void AnimacionAtaque()
     {
-        // Llama a la animación de ataque
+        // Llama a la animaciï¿½n de ataque
         animator.SetTrigger("Ataque"); // Suponiendo que tienes un trigger llamado "Ataque" en el Animator
     }
 
     public void AnimacionMovimiento()
     {
-        // Llama a la animación de movimiento
-        animator.SetFloat("Velocidad", 1.0f); // Suponiendo que tienes un parámetro de velocidad
+        // Llama a la animaciï¿½n de movimiento
+        animator.SetFloat("Velocidad", 1.0f); // Suponiendo que tienes un parï¿½metro de velocidad
     }
 
     public void AnimacionMuerte()
     {
-        // Llama a la animación de muerte
+        // Llama a la animaciï¿½n de muerte
         animator.SetTrigger("Muerte"); // Suponiendo que tienes un trigger llamado "Muerte" en el Animator
     }
 
     public void CreacionDeProyectiles()
     {
-        // Lógica para crear proyectiles
-        // Por ejemplo, instanciar un proyectil en una posición dada:
+        // Lï¿½gica para crear proyectiles
+        // Por ejemplo, instanciar un proyectil en una posiciï¿½n dada:
         GameObject proyectil = Instantiate(Resources.Load("ProyectilPrefab") as GameObject, transform.position, Quaternion.identity);
-        // Añadir lógica de dirección, velocidad, etc., al proyectil
+        // Aï¿½adir lï¿½gica de direcciï¿½n, velocidad, etc., al proyectil
     }
 
 

@@ -327,8 +327,15 @@ public class AccionesJugador : A1_Entidad
         transform.LookAt(destino);
         agent.SetDestination(destino);
         Destino = destino;
-        Particulas.transform.position = destino;
-        Particulas.Play();
+        if (Particulas)
+        {
+            Particulas.transform.position = destino;
+            Particulas.Play();
+        }
+        if (!Particulas) 
+        {
+            Debug.Log("Falta particulas de caminar");
+        }
 
         // Reproducir sonido si no está sonando
         if (!S_Caminar.isPlaying)

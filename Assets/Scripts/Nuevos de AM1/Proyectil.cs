@@ -65,7 +65,7 @@ public class Proyectil : MonoBehaviour
     {
         Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
         if (collision == Creador) return;
-        if (collision.tag == "Ambiente")
+        if (collision.tag == "Ambiente" || collision.name == "Terrain")
         {
             //Debug.Log(collision.ToString() + TipoDeColision);
             GameObject efecto = Instantiate(EfectoEspecial, PuntoDeColision, Quaternion.identity);
