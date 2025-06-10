@@ -66,8 +66,7 @@ public class AccionesJugador : A1_Entidad
     /// 5 ▶ Melee3
     /// 6 ▶ Cooldown “general” (opcional)
     /// </summary>
-    public Image[] iconCooldowns = new Image[7];
-
+    /// 
     [Header("🛠️ Indicadores Melee/Rango")]
     public GameObject IndicadoresMelee;
 
@@ -82,8 +81,6 @@ public class AccionesJugador : A1_Entidad
         // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();
 
-        // 2) Actualizar cada ícono según el TimerManager
-        ActualizarIconosCooldown();
 
         // 3) Actualizar animación de movimiento y detenerse si llegó
         float velocidadActual = agent.velocity.magnitude;
@@ -152,27 +149,6 @@ public class AccionesJugador : A1_Entidad
     /// fillAmount = 1 → ícono completamente cubierto (cooldown recién iniciado).
     /// fillAmount = 0 → ícono completamente libre (cooldown terminado).
     /// </summary>
-    private void ActualizarIconosCooldown()
-    {
-        if (_TimerManager == null) return;
-
-        for (int i = 0; i < iconCooldowns.Length; i++)
-        {
-            if (iconCooldowns[i] == null) continue;
-
-            float maxT = _TimerManager.maxTimers[i];
-            float currentT = _TimerManager.timers[i];
-
-            if (maxT > 0f)
-            {
-                iconCooldowns[i].fillAmount = currentT / maxT;
-            }
-            else
-            {
-                iconCooldowns[i].fillAmount = 0f;
-            }
-        }
-    }
 
     public override void Atacar(Vector3 Destino, string Nombre)
     {

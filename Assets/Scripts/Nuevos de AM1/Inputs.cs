@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,57 +16,81 @@ public class Inputs : MonoBehaviour
     public Vector3 movimientoMouse;
 
     public AccionesJugador C_AccionesJugador;
+    public TimerManager C_TimerManager;  // <-- Referencia al TimerManager
 
     public GameObject Menu;
 
-    // Update se llama una vez por frame
+    private bool enModoMagico = true;
+
     void Update()
     {
         Movimiento();
         Ataque();
         Pausa();
-        //Debug.Log(Time.timeScale);
-        Menu.SetActive(Time.timeScale == 0); // Alternar entre pausa y reanudación
+        Menu.SetActive(Time.timeScale == 0); // Alternar entre pausa y reanudaciÃ³n
     }
-    // Método para mover al jugador basado en el movimiento del mouse
+
     public void Movimiento()
     {
-
-        // 1. Detecta clic izquierdo
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
             C_AccionesJugador.IrAlDestino(GameManager.PosicionDelMouseEnElEspacio);
         }
     }
 
-    // Método para realizar ataques según las teclas presionadas
     public void Ataque()
     {
-        // Permitir solo un ataque por frame, ignorando entradas simultáneas
+        // Ataque 1: Bola de Fuego, Ã­ndice 0
         if (Input.GetKeyDown(TeclaAtaque1) &&
             !Input.GetKey(TeclaAtaque2) &&
             !Input.GetKey(TeclaAtaque3) &&
             !Input.GetKey(TeclaCambioModo))
         {
-            C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeFuego");
-            Debug.Log("Ataque 1 ejecutado");
+            if (C_TimerManager.IsTimerCharging(0))
+            {
+                C_TimerManager.MostrarFeedbackNoDisponible(0);
+            }
+            else
+            {
+                C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeFuego");
+                C_TimerManager.SetTimerToMax(0);
+                Debug.Log("Ataque 1 ejecutado");
+            }
         }
+        // Ataque 2: Bola de Hielo, Ã­ndice 1
         else if (Input.GetKeyDown(TeclaAtaque2) &&
                  !Input.GetKey(TeclaAtaque1) &&
                  !Input.GetKey(TeclaAtaque3) &&
                  !Input.GetKey(TeclaCambioModo))
         {
-            C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeHielo");
-            //Debug.Log("Ataque 2 ejecutado");
+            if (C_TimerManager.IsTimerCharging(1))
+            {
+                C_TimerManager.MostrarFeedbackNoDisponible(1);
+            }
+            else
+            {
+                C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeHielo");
+                C_TimerManager.SetTimerToMax(1);
+            }
         }
+        // Ataque 3: Rayo, Ã­ndice 2
         else if (Input.GetKeyDown(TeclaAtaque3) &&
                  !Input.GetKey(TeclaAtaque1) &&
                  !Input.GetKey(TeclaAtaque2) &&
                  !Input.GetKey(TeclaCambioModo))
         {
-            C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "Rayo");
-            Debug.Log("Ataque 3 ejecutado");
+            if (C_TimerManager.IsTimerCharging(2))
+            {
+                C_TimerManager.MostrarFeedbackNoDisponible(2);
+            }
+            else
+            {
+                C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "Rayo");
+                C_TimerManager.SetTimerToMax(2);
+                Debug.Log("Ataque 3 ejecutado");
+            }
         }
+        // Cambio de modo
         else if (Input.GetKeyDown(TeclaCambioModo) &&
                  !Input.GetKey(TeclaAtaque1) &&
                  !Input.GetKey(TeclaAtaque2) &&
@@ -76,35 +100,25 @@ public class Inputs : MonoBehaviour
         }
     }
 
-    // Método para pausar el juego al presionar el botón de pausa
     public void Pausa()
     {
         if (Input.GetKeyDown(botonPausa))
         {
-            // Lógica para pausar el juego
-            Time.timeScale = Time.timeScale == 1 ? 0 : 1; // Alternar entre pausa y reanudación
-            //Debug.Log("Juego pausado/despausado");
+            Time.timeScale = Time.timeScale == 1 ? 0 : 1;
         }
     }
 
-
-
-
-
-
-    // Start is called before the first frame update
     void Start()
     {
-
+        if (C_TimerManager == null)
+            Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector.");
     }
-    // Método para reanudar el juego (quitar pausa)
+
     public void ReanudarJuego()
     {
         Time.timeScale = 1;
-        //Debug.Log("Juego reanudado");
     }
 
-    // Método para salir del juego
     public void SalirDelJuego()
     {
 #if UNITY_EDITOR

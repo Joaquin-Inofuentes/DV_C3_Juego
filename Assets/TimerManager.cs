@@ -2,114 +2,183 @@
 using UnityEngine.UI;
 using UnityEngine.Events;
 using CustomInspector;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 /// <summary>
-/// TimerManager gestiona un temporizador general y varios temporizadores individuales.
-/// También actualiza la interfaz visual de los cooldowns (enfriamientos) en la UI.
-/// Permite reiniciar temporizadores y consultar su estado.
-/// Además, permite ejecutar eventos cuando un temporizador individual llega a 0.
+/// TimerManager gestiona 6 cooldowns (3 mágicos + 3 melee) y feedback visual.
+/// Incluye flash rojo, shake, y animación visual cuando una habilidad está lista.
 /// </summary>
 public class TimerManager : MonoBehaviour
 {
-    /// <summary>
-    /// Índice del temporizador individual que se va a reiniciar manualmente.
-    /// Se puede usar desde el inspector con un botón.
-    /// </summary>
     [Button(nameof(SetTimerToMax), true)]
     public int IndiceAReiniciar = 0;
 
-    [Header("⏱ Timer General")]
-    public float generalTimer;
-    public float generalTimerMax = 10f;
+    [Header("⏱ Timers Individuales (6 habilidades)")]
+    public float[] timers = new float[6];
+    public float[] maxTimers = new float[6];
+    public bool[] isTimerZero = new bool[6];
+    public float[] timersPercent = new float[6];
 
-    [Header("⏱ Timers Individuales")]
-    public float[] timers = new float[7];
-    public float[] maxTimers = new float[7];
-    public bool[] isTimerZero = new bool[7];
-    public float[] timersPercent = new float[7];
+    [Header("🖼️ Overlays UI (6 Image con Fill)")]
+    public Image[] cooldownOverlays = new Image[6];
 
-    [Header("🖼️ UI Cooldown Overlays (Image con Fill)")]
-    public Image[] cooldownOverlays = new Image[7];
+    [Header("🎯 Iconos completos (padres de los cooldowns)")]
+    public RectTransform[] iconosCompletos = new RectTransform[6];
+
+    [Header("✨ Efecto visual cuando la habilidad está lista")]
+    public Animator[] readyAnimators = new Animator[6]; // NUEVO
 
     [Header("👤 Referencia a AccionesJugador")]
     public AccionesJugador _AccionesDeJugador;
 
     [Header("⚡ Eventos cuando el timer llega a 0")]
-    public UnityEvent[] onTimerFinished = new UnityEvent[7];
+    public UnityEvent[] onTimerFinished = new UnityEvent[6];
 
-    void Update()
+    private Coroutine[] flashCoroutines = new Coroutine[6];
+    private Color[] originalColors;
+    private Vector2[] originalIconPositions;
+    private Vector2[] originalOverlayPositions;
+
+    void Start()
     {
-        EjecutarTimers();
+        originalColors = new Color[6];
+        originalIconPositions = new Vector2[6];
+        originalOverlayPositions = new Vector2[6];
+
+        for (int i = 0; i < 6; i++)
+        {
+            var overlay = cooldownOverlays[i];
+            if (overlay != null)
+            {
+                originalColors[i] = overlay.color;
+                originalOverlayPositions[i] = overlay.rectTransform.anchoredPosition;
+            }
+
+            if (iconosCompletos[i] != null)
+                originalIconPositions[i] = iconosCompletos[i].anchoredPosition;
+
+            if (readyAnimators[i] != null)
+                readyAnimators[i].gameObject.SetActive(false); // Ocultar animadores al inicio
+        }
     }
+
+    void Update() => EjecutarTimers();
 
     public void EjecutarTimers()
     {
-        // 1. ⏱ Temporizador general
-        if (generalTimer > 0)
+        for (int i = 0; i < 6; i++)
         {
-            generalTimer -= Time.deltaTime;
-            if (generalTimer < 0.2f) generalTimer = 0;
-        }
-
-        // 2. 🔁 Temporizadores individuales
-        for (int i = 0; i < timers.Length; i++)
-        {
-            // 2.1 Resta tiempo si está corriendo
-            if (timers[i] > 0)
+            if (timers[i] > 0f)
             {
                 timers[i] -= Time.deltaTime;
-                if (timers[i] < 0.2f) timers[i] = 0;
+                if (timers[i] < 0f) timers[i] = 0f;
             }
 
-            // 2.2 Detectar cambio a cero y disparar evento si aplica
-            bool yaEstabaEnCero = isTimerZero[i];
-            isTimerZero[i] = timers[i] == 0;
+            bool wasZero = isTimerZero[i];
+            isTimerZero[i] = timers[i] == 0f;
 
-            if (!yaEstabaEnCero && isTimerZero[i])
+            if (!wasZero && isTimerZero[i] && onTimerFinished[i] != null)
+                onTimerFinished[i].Invoke();
+
+            timersPercent[i] = maxTimers[i] > 0f ? Mathf.Clamp01(timers[i] / maxTimers[i]) : 0f;
+
+            var overlay = cooldownOverlays[i];
+            if (overlay != null)
+                overlay.fillAmount = timersPercent[i];
+
+            // Mostrar animación cuando está lista
+            if (readyAnimators[i] != null)
             {
-                if (onTimerFinished[i] != null)
+                if (isTimerZero[i])
                 {
-                    onTimerFinished[i].Invoke();
+                    if (!readyAnimators[i].gameObject.activeSelf)
+                    {
+                        readyAnimators[i].gameObject.SetActive(true);
+                        readyAnimators[i].Play("ReadyAnim", -1, 0f);
+                    }
                 }
-            }
-
-            // 2.3 Porcentaje restante del temporizador
-            timersPercent[i] = maxTimers[i] > 0 ? Mathf.Clamp01(timers[i] / maxTimers[i]) : 0;
-
-            // 2.4 Actualizar UI si corresponde
-            if (cooldownOverlays[i] != null)
-            {
-                if (_AccionesDeJugador.modoMelee && i <= 2) continue;
-                if (!_AccionesDeJugador.modoMelee && i >= 3) continue;
-
-                cooldownOverlays[i].fillAmount = timersPercent[i];
+                else
+                {
+                    if (readyAnimators[i].gameObject.activeSelf)
+                        readyAnimators[i].gameObject.SetActive(false);
+                }
             }
         }
     }
 
-    /// <summary>
-    /// Reinicia un temporizador individual al valor máximo.
-    /// </summary>
     public void SetTimerToMax(int index)
     {
-        if (index < 0 || index >= timers.Length) return;
+        if (index < 0 || index >= 6) return;
         timers[index] = maxTimers[index];
+
+        if (readyAnimators[index] != null)
+            readyAnimators[index].gameObject.SetActive(false); // Ocultar el brillo al activar cooldown
     }
 
-    /// <summary>
-    /// Reinicia el temporizador general a su valor máximo.
-    /// </summary>
-    public void ResetGeneralTimer()
-    {
-        generalTimer = generalTimerMax;
-    }
-
-    /// <summary>
-    /// Indica si un temporizador individual está "cargando".
-    /// </summary>
     public bool IsTimerCharging(int index)
     {
-        if (index < 0 || index >= timers.Length) return false;
-        return timers[index] > 0.2f;
+        if (index < 0 || index >= 6) return false;
+        return timers[index] > 0f;
+    }
+
+    /// <summary>
+    /// Flash rojo + shake suave sobre el ícono (0–5).
+    /// </summary>
+    public void MostrarFeedbackNoDisponible(int index)
+    {
+        if (index < 0 || index >= 6) return;
+        var overlay = cooldownOverlays[index];
+        if (overlay == null) return;
+
+        if (flashCoroutines[index] != null)
+        {
+            StopCoroutine(flashCoroutines[index]);
+            overlay.color = originalColors[index];
+            overlay.rectTransform.anchoredPosition = originalOverlayPositions[index];
+            if (iconosCompletos[index] != null)
+                iconosCompletos[index].anchoredPosition = originalIconPositions[index];
+        }
+
+        flashCoroutines[index] = StartCoroutine(FlashAndShake(index));
+    }
+
+    private IEnumerator FlashAndShake(int index)
+    {
+        var overlay = cooldownOverlays[index];
+        var overlayRT = overlay.rectTransform;
+        var iconRT = iconosCompletos[index];
+
+        var origColor = originalColors[index];
+        var origOverlayPos = originalOverlayPositions[index];
+        var origIconPos = originalIconPositions[index];
+
+        float duration = 0.15f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            Vector2 shake = Random.insideUnitCircle * 5f;
+
+            overlay.color = Color.red;
+            if (overlayRT != null) overlayRT.anchoredPosition = origOverlayPos + shake;
+            if (iconRT != null) iconRT.anchoredPosition = origIconPos + shake;
+
+            yield return null;
+        }
+
+        if (overlay != null) overlay.color = origColor;
+        if (overlayRT != null) overlayRT.anchoredPosition = origOverlayPos;
+        if (iconRT != null) iconRT.anchoredPosition = origIconPos;
+
+        flashCoroutines[index] = null;
     }
 }
+
+
+
+
+
