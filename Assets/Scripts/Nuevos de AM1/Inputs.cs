@@ -6,7 +6,6 @@ public class Inputs : MonoBehaviour
 {
     public GameManager C_GameManager;
 
-    // Propiedades privadas
     public KeyCode TeclaAtaque1 = KeyCode.Alpha1;
     public KeyCode TeclaAtaque2 = KeyCode.Alpha2;
     public KeyCode TeclaAtaque3 = KeyCode.Alpha3;
@@ -16,18 +15,24 @@ public class Inputs : MonoBehaviour
     public Vector3 movimientoMouse;
 
     public AccionesJugador C_AccionesJugador;
-    public TimerManager C_TimerManager;  // <-- Referencia al TimerManager
+    public TimerManager C_TimerManager;
 
     public GameObject Menu;
 
     private bool enModoMagico = true;
+
+    void Start()
+    {
+        if (C_TimerManager == null)
+            Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector.");
+    }
 
     void Update()
     {
         Movimiento();
         Ataque();
         Pausa();
-        Menu.SetActive(Time.timeScale == 0); // Alternar entre pausa y reanudación
+        Menu.SetActive(Time.timeScale == 0); // Mostrar menú si está en pausa
     }
 
     public void Movimiento()
@@ -40,65 +45,57 @@ public class Inputs : MonoBehaviour
 
     public void Ataque()
     {
-        // Ataque 1: Bola de Fuego, índice 0
+        // ATAQUE 1
         if (Input.GetKeyDown(TeclaAtaque1) &&
             !Input.GetKey(TeclaAtaque2) &&
             !Input.GetKey(TeclaAtaque3) &&
             !Input.GetKey(TeclaCambioModo))
         {
-            if (C_TimerManager.IsTimerCharging(0))
-            {
-                C_TimerManager.MostrarFeedbackNoDisponible(0);
-            }
-            else
-            {
-                C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeFuego");
-                C_TimerManager.SetTimerToMax(0);
-                Debug.Log("Ataque 1 ejecutado");
-            }
+            EjecutarAtaque(enModoMagico ? 0 : 3, enModoMagico ? "BolaDeFuego" : "Melee1");
         }
-        // Ataque 2: Bola de Hielo, índice 1
+
+        // ATAQUE 2
         else if (Input.GetKeyDown(TeclaAtaque2) &&
                  !Input.GetKey(TeclaAtaque1) &&
                  !Input.GetKey(TeclaAtaque3) &&
                  !Input.GetKey(TeclaCambioModo))
         {
-            if (C_TimerManager.IsTimerCharging(1))
-            {
-                C_TimerManager.MostrarFeedbackNoDisponible(1);
-            }
-            else
-            {
-                C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "BolaDeHielo");
-                C_TimerManager.SetTimerToMax(1);
-            }
+            EjecutarAtaque(enModoMagico ? 1 : 4, enModoMagico ? "BolaDeHielo" : "Melee2");
         }
-        // Ataque 3: Rayo, índice 2
+
+        // ATAQUE 3
         else if (Input.GetKeyDown(TeclaAtaque3) &&
                  !Input.GetKey(TeclaAtaque1) &&
                  !Input.GetKey(TeclaAtaque2) &&
                  !Input.GetKey(TeclaCambioModo))
         {
-            if (C_TimerManager.IsTimerCharging(2))
-            {
-                C_TimerManager.MostrarFeedbackNoDisponible(2);
-            }
-            else
-            {
-                C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, "Rayo");
-                C_TimerManager.SetTimerToMax(2);
-                Debug.Log("Ataque 3 ejecutado");
-            }
+            EjecutarAtaque(enModoMagico ? 2 : 5, enModoMagico ? "RayoElectrico" : "Melee3");
         }
-        // Cambio de modo
+
+        // CAMBIO DE MODO
         else if (Input.GetKeyDown(TeclaCambioModo) &&
                  !Input.GetKey(TeclaAtaque1) &&
                  !Input.GetKey(TeclaAtaque2) &&
                  !Input.GetKey(TeclaAtaque3))
         {
-            Debug.Log("Modo cambiado");
+            enModoMagico = !enModoMagico;
+            Debug.Log("Modo cambiado a " + (enModoMagico ? "mágico" : "melee"));
         }
     }
+    private void EjecutarAtaque(int index, string nombreAtaque)
+    {
+        if (C_TimerManager.IsTimerCharging(index))
+        {
+            C_TimerManager.MostrarFeedbackNoDisponible(index);
+        }
+        else
+        {
+            Debug.Log("Ejecutando ataque: " + nombreAtaque + " (índice: " + index + ")");
+            C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, nombreAtaque);
+            C_TimerManager.SetTimerToMax(index);
+        }
+    }
+
 
     public void Pausa()
     {
@@ -106,12 +103,6 @@ public class Inputs : MonoBehaviour
         {
             Time.timeScale = Time.timeScale == 1 ? 0 : 1;
         }
-    }
-
-    void Start()
-    {
-        if (C_TimerManager == null)
-            Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector.");
     }
 
     public void ReanudarJuego()
