@@ -168,7 +168,7 @@ public class AccionesJugador : A1_Entidad
         GameObject ProyectilUsado = null;
 
         // --- HECHIZOS / ATAQUES ---
-        if (Nombre == "BolaDeFuego")
+        if (Nombre == "BolaDeFuego" || Nombre == "Melee1")
         {
             if (!modoMelee)
             {
@@ -184,7 +184,7 @@ public class AccionesJugador : A1_Entidad
                 _TimerManager.SetTimerToMax(3);
             }
         }
-        else if (Nombre == "BolaDeHielo")
+        else if (Nombre == "BolaDeHielo" || Nombre == "Melee2")
         {
             if (!modoMelee)
             {
@@ -202,7 +202,7 @@ public class AccionesJugador : A1_Entidad
             anim.SetFloat("velocidad", 0f);
             agent.isStopped = true;
         }
-        else if (Nombre == "Rayo")
+        else if (Nombre == "RayoElectrico" || Nombre == "Melee3")
         {
             if (!modoMelee)
             {
