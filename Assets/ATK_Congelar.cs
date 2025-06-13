@@ -50,6 +50,8 @@ public class ATK_Congelar : MonoBehaviour
     void Update()
     {
         if (padre == null) return;
+        if( padre.GetComponent<A1_A1_H1_MoustroDelAverno>() == null) return; // Asegurarse de que el padre tenga el componente necesario
+        if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent == null) return; // Asegurarse de que el padre tenga el componente necesario
         if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent.isStopped)
         {
             ReanudarAgente(); // Reanudar el agente si est�� detenido

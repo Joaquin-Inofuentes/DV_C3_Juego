@@ -3,9 +3,6 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using CustomInspector;
 using System.Collections;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 /// <summary>
 /// TimerManager gestiona 6 cooldowns (3 mágicos + 3 melee) y feedback visual.
@@ -15,6 +12,9 @@ public class TimerManager : MonoBehaviour
 {
     [Button(nameof(SetTimerToMax), true)]
     public int IndiceAReiniciar = 0;
+
+    [Header("⚔️ Modo actual")]
+    public bool enModoMagico = true;
 
     [Header("⏱ Timers Individuales (6 habilidades)")]
     public float[] timers = new float[6];
@@ -29,7 +29,13 @@ public class TimerManager : MonoBehaviour
     public RectTransform[] iconosCompletos = new RectTransform[6];
 
     [Header("✨ Efecto visual cuando la habilidad está lista")]
-    public Animator[] readyAnimators = new Animator[6]; // NUEVO
+    public float effectDuration = 0.5f;
+    public float pulseSpeed = 4f;
+    public float pulseAmount = 0.1f;
+
+    [Header("⚡ Flash cuando se habilita la habilidad")]
+    public Color flashColor = Color.white;
+    public float flashDuration = 0.15f;
 
     [Header("👤 Referencia a AccionesJugador")]
     public AccionesJugador _AccionesDeJugador;
@@ -41,12 +47,15 @@ public class TimerManager : MonoBehaviour
     private Color[] originalColors;
     private Vector2[] originalIconPositions;
     private Vector2[] originalOverlayPositions;
+    private float[] readyEffectTimers = new float[6];
+    private bool[] yaHizoEfecto = new bool[6];
 
     void Start()
     {
         originalColors = new Color[6];
         originalIconPositions = new Vector2[6];
         originalOverlayPositions = new Vector2[6];
+        yaHizoEfecto = new bool[6];
 
         for (int i = 0; i < 6; i++)
         {
@@ -59,9 +68,6 @@ public class TimerManager : MonoBehaviour
 
             if (iconosCompletos[i] != null)
                 originalIconPositions[i] = iconosCompletos[i].anchoredPosition;
-
-            if (readyAnimators[i] != null)
-                readyAnimators[i].gameObject.SetActive(false); // Ocultar animadores al inicio
         }
     }
 
@@ -71,51 +77,106 @@ public class TimerManager : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
+            bool esMagia = i <= 2;
+            if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
+                continue;
+
             if (timers[i] > 0f)
             {
                 timers[i] -= Time.deltaTime;
                 if (timers[i] < 0f) timers[i] = 0f;
             }
 
-            bool wasZero = isTimerZero[i];
-            isTimerZero[i] = timers[i] == 0f;
+            timersPercent[i] = maxTimers[i] > 0f ? timers[i] / maxTimers[i] : 0f;
+            isTimerZero[i] = timers[i] <= 0f;
 
-            if (!wasZero && isTimerZero[i] && onTimerFinished[i] != null)
-                onTimerFinished[i].Invoke();
+            if (cooldownOverlays[i] != null)
+                cooldownOverlays[i].fillAmount = timersPercent[i];
 
-            timersPercent[i] = maxTimers[i] > 0f ? Mathf.Clamp01(timers[i] / maxTimers[i]) : 0f;
-
-            var overlay = cooldownOverlays[i];
-            if (overlay != null)
-                overlay.fillAmount = timersPercent[i];
-
-            // Mostrar animación cuando está lista
-            if (readyAnimators[i] != null)
+            if (isTimerZero[i] && Mathf.Approximately(timers[i], 0f))
             {
-                if (isTimerZero[i])
+                if (!yaHizoEfecto[i])
                 {
-                    if (!readyAnimators[i].gameObject.activeSelf)
-                    {
-                        readyAnimators[i].gameObject.SetActive(true);
-                        readyAnimators[i].Play("ReadyAnim", -1, 0f);
-                    }
+                    readyEffectTimers[i] = effectDuration;
+                    StartCoroutine(DoFlashEffect(i));
+                    onTimerFinished[i]?.Invoke();
+                    yaHizoEfecto[i] = true;
                 }
-                else
+            }
+            else if (!isTimerZero[i])
+            {
+                yaHizoEfecto[i] = false; // Se reinicia cuando vuelva a cargar
+            }
+
+            if (readyEffectTimers[i] > 0f)
+            {
+                readyEffectTimers[i] -= Time.deltaTime;
+                if (iconosCompletos[i] != null)
                 {
-                    if (readyAnimators[i].gameObject.activeSelf)
-                        readyAnimators[i].gameObject.SetActive(false);
+                    float scaleFactor = 1f + Mathf.Sin(Time.time * pulseSpeed) * pulseAmount;
+                    iconosCompletos[i].localScale = new Vector3(scaleFactor, scaleFactor, 1f);
                 }
+
+                if (readyEffectTimers[i] <= 0f && iconosCompletos[i] != null)
+                {
+                    iconosCompletos[i].localScale = Vector3.one;
+                }
+            }
+            else
+            {
+                if (iconosCompletos[i] != null)
+                    iconosCompletos[i].localScale = Vector3.one;
             }
         }
     }
 
+    private IEnumerator DoFlashEffect(int index)
+    {
+        var iconRT = iconosCompletos[index];
+        if (iconRT == null) yield break;
+
+        var image = iconRT.GetComponent<Image>();
+        if (image == null) yield break;
+
+        Color original = image.color;
+
+        Color intenseFlash = new Color(flashColor.r * 4f, flashColor.g * 4f, flashColor.b * 4f, 1f);
+
+        float halfDuration = flashDuration / 2f;
+        float t = 0f;
+
+        // Fade in
+        while (t < halfDuration)
+        {
+            t += Time.deltaTime;
+            float lerp = t / halfDuration;
+            image.color = Color.Lerp(original, intenseFlash, lerp);
+            yield return null;
+        }
+
+        t = 0f;
+
+        // Fade out
+        while (t < halfDuration)
+        {
+            t += Time.deltaTime;
+            float lerp = t / halfDuration;
+            image.color = Color.Lerp(intenseFlash, original, lerp);
+            yield return null;
+        }
+
+        image.color = original;
+    }
+
+
     public void SetTimerToMax(int index)
     {
+        bool esMagia = index <= 2;
+        if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
+            return;
+
         if (index < 0 || index >= 6) return;
         timers[index] = maxTimers[index];
-
-        if (readyAnimators[index] != null)
-            readyAnimators[index].gameObject.SetActive(false); // Ocultar el brillo al activar cooldown
     }
 
     public bool IsTimerCharging(int index)
@@ -124,11 +185,12 @@ public class TimerManager : MonoBehaviour
         return timers[index] > 0f;
     }
 
-    /// <summary>
-    /// Flash rojo + shake suave sobre el ícono (0–5).
-    /// </summary>
     public void MostrarFeedbackNoDisponible(int index)
     {
+        bool esMagia = index <= 2;
+        if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
+            return;
+
         if (index < 0 || index >= 6) return;
         var overlay = cooldownOverlays[index];
         if (overlay == null) return;
@@ -177,6 +239,7 @@ public class TimerManager : MonoBehaviour
         flashCoroutines[index] = null;
     }
 }
+
 
 
 

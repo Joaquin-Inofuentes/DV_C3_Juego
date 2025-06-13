@@ -360,6 +360,7 @@ MonoBehaviour:
   TeclaAtaque3: 51
   TeclaCambioModo: 109
   botonPausa: 27
+  movimientoMouse: {x: 0, y: 0, z: 0}
   C_AccionesJugador: {fileID: 0}
   C_TimerManager: {fileID: 0}
   Menu: {fileID: 5138394536280555726}
@@ -397,8 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IndiceAReiniciar: 0
-  generalTimer: 0
-  generalTimerMax: 10
+  enModoMagico: 1
   timers:
   - 0
   - 0
@@ -432,6 +432,20 @@ MonoBehaviour:
   - {fileID: 1727493938712218048}
   - {fileID: 625506223887506372}
   - {fileID: 3141562063808627529}
+  iconosCompletos:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  readyAnimators:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   _AccionesDeJugador: {fileID: 0}
   onTimerFinished:
   - m_PersistentCalls:
@@ -1653,8 +1667,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5333281974586330594}
-  - {fileID: 1391994338728646022}
   - {fileID: 6172378065458251573}
+  - {fileID: 1391994338728646022}
   - {fileID: 2432989871888063010}
   - {fileID: 1970547645604844088}
   - {fileID: 4042873927372958112}

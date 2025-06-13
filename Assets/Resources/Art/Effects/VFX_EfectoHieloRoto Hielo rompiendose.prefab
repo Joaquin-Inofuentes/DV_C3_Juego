@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 207420120193278641, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5f319ac5d67516849be7bc0b0e8495ef, type: 2}
     - target: {fileID: 952961124639765284, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: m_Name
       value: VFX_EfectoHieloRoto Hielo rompiendose
