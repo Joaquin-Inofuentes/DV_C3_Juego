@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Drakkar.GameUtils;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,10 @@ public class AccionesJugador : A1_Entidad
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
     public Transform Origen;
-    public GameObject espada;
-  
+    public GameObject trailObject;
+    private TrailRenderer trail;
+    public float trailTime = 0.5f;
+    public float clearDelay = 0.1f;
 
 
     [Header("🗡️ Datos de Combate Cuerpo a Cuerpo")]
@@ -76,6 +79,7 @@ public class AccionesJugador : A1_Entidad
 
     void Start()
     {
+
         if (_TimerManager == null)
             Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
         if (espada != null)
@@ -483,6 +487,39 @@ public class AccionesJugador : A1_Entidad
                 Flecha.transform.rotation = Quaternion.Euler(euler);
             }
         }
+    }
+    void Awake()
+    {
+        if (trail == null)
+            trail = GetComponentInChildren<TrailRenderer>();
+
+        // Configuramos el tiempo de vida del rastro
+        trail.time = trailTime;
+
+        // Arrancamos limpios y sin emitir
+        trail.Clear();
+        trail.emitting = false;
+    }
+    public void ActivarTrail()
+    {
+        // Limpia cualquier resto antiguo
+        trail.Clear();
+        // Empieza a emitir vértices de rastro
+        trail.emitting = true;
+    }
+
+    public void DesactivarTrail()
+    {
+        // Solo paramos la emisión de nuevos vértices.
+        // NO desactivamos 'enabled' ni volvemos a llamar a Clear().
+        trail.emitting = false;
+        // Los polígonos generados seguirán vivos y se irán desvaneciendo
+        // automáticamente durante 'trail.time' segundos.
+    }
+    private IEnumerator ClearAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        trail.Clear();
     }
 
     public override void Colisiono(GameObject col, string TipoDeColision)
