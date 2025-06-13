@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Tutorial : MonoBehaviour
+public class Mensajes : MonoBehaviour
 {
-    public List<string> Mensajes = new List<string>
+    public List<string> ListaDeMensajes = new List<string>
     {
         "Bienvenido al tutorial. Aquí aprenderás los conceptos básicos del juego.",  // 0
         "Usa los clicks del mouse para moverte",  //1 
@@ -42,7 +42,7 @@ public class Tutorial : MonoBehaviour
     }
     public int faseActual = -1;
 
-    public static Tutorial Instance;
+    public static Mensajes Instance;
 
     public void Awake()
     {
@@ -59,7 +59,7 @@ public class Tutorial : MonoBehaviour
         yield return new WaitForSeconds(3f);
         if (faseActual == 1)
         {
-            Debug.Log("Se cambio al nuevo mensaje del tutorial: " + Mensajes[faseActual]);
+            Debug.Log("Se cambio al nuevo mensaje del tutorial: " + ListaDeMensajes[faseActual]);
             SiguienteFase();
         }
     }
@@ -74,11 +74,12 @@ public class Tutorial : MonoBehaviour
 
     public void SiguienteFase()
     {
-        if (faseActual == Mensajes.Count) return; // Si ya está en la última fase, no hacer nada
-        if (faseActual < Mensajes.Count)
+        if (faseActual == ListaDeMensajes.Count) return; // Si ya está en la última fase, no hacer nada
+        if (faseActual < ListaDeMensajes.Count)
         {
             TextMeshProUGUI Texto = textoTutorial;
-            Texto.text = Mensajes[faseActual];
+            EscalarPadre(Texto.transform.parent);
+            Texto.text = ListaDeMensajes[faseActual];
             faseActual++;
         }
     }
@@ -96,5 +97,20 @@ public class Tutorial : MonoBehaviour
             yield return null;
         }
         parent.localScale = endScale;
+    }
+
+    public AudioSource audioSource;
+    public AudioClip sonidoDeAlerta; // Asigna el clip de sonido en el inspector
+    public void ReproducirSonidoDeAlerta()
+    {
+        // Reproduce el sonido de alerta si el audioSource y el clip están asignados
+        if (audioSource != null && sonidoDeAlerta != null)
+        {
+            audioSource.PlayOneShot(sonidoDeAlerta);
+        }
+        else
+        {
+            Debug.LogWarning("AudioSource o AudioClip no asignados en Mensajes.");
+        }
     }
 }

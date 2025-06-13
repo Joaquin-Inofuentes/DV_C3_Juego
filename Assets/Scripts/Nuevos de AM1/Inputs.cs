@@ -26,18 +26,18 @@ public class Inputs : MonoBehaviour
         if (C_TimerManager == null)
             Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector.");
     }
-    private Tutorial _tutorial;
+    private Mensajes _tutorial;
     void Update()
     {
-        if (Tutorial.Instance != null)
+        if (Mensajes.Instance != null)
         {
             if (_tutorial == null)
-                _tutorial = Tutorial.Instance;
+                _tutorial = Mensajes.Instance;
             if (_tutorial.faseActual > 0)
             {
                 if (_tutorial.faseActual == 2 && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
                 {
-                    Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                    Mensajes.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
                 }
                 Movimiento();
             }
@@ -57,14 +57,14 @@ public class Inputs : MonoBehaviour
                 // Reemplaza la línea seleccionada para permitir avanzar con 1, 2 o 3
                 if (_tutorial.faseActual == 3 && (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3)))
                 {
-                    Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                    Mensajes.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
                     return;
                 }
 
                 // Reemplaza la línea seleccionada para permitir avanzar con 1, 2 o 3
                 if (_tutorial.faseActual == 4 && Input.GetKeyDown(KeyCode.Alpha4))
                 {
-                    Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                    Mensajes.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
                     return;
                 }
                 if (_tutorial.faseActual != 4)
@@ -72,7 +72,7 @@ public class Inputs : MonoBehaviour
                     // Reemplaza la línea seleccionada para permitir avanzar con 1, 2 o 3
                     if (_tutorial.faseActual == 5 && (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3)))
                     {
-                        Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                        Mensajes.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
                         _tutorial.textoTutorial.gameObject.transform.parent.gameObject.SetActive(false);
                         return;
                     }
@@ -80,10 +80,6 @@ public class Inputs : MonoBehaviour
             }
             Pausa();
             Menu.SetActive(Time.timeScale == 0); // Mostrar menú si está en pausa
-        }
-        else
-        {
-            Debug.LogError("[Inputs] Necesitas crear un script de Tutorial en el gameobject Jugador");
         }
     }
 
