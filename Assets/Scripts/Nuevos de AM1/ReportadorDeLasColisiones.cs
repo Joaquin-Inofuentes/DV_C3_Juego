@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ReportadorDeLasColisiones : MonoBehaviour
@@ -15,8 +16,26 @@ public class ReportadorDeLasColisiones : MonoBehaviour
     private void OnTriggerExit(Collider other) => ProcesarColision(other.gameObject, "TriggerExit");
 
     public bool Persiguiendo = true;
+    public bool RecibioElMensaje = false;
     private void ProcesarColision(GameObject obj, string tipo)
     {
+        if(gameObject.name == "InvisibleFase1" && RecibioElMensaje == false)
+        {
+            // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
+            if (tipo == "TriggerEnter" && obj.name == "Jugador 1")
+            {
+                Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}",obj);
+                RecibioElMensaje = true;
+                Mensajes.Instance.textoTutorial.text = "¡Obedezcan las leyes del maná... o ardan con ellas!";
+                Emisor.SetActive(true);
+                Invoke(nameof(DesactivarPadreDeMensajes), 2f);
+                gameObject.GetComponent<BoxCollider>().enabled = false;
+                Mensajes.Instance.ReproducirSonidoDeAlerta();
+            }
+            return;
+        }
+
+        if (gameObject.name == "InvisibleFase1") return;
 
         if (obj.layer != 7) return;
 
@@ -91,5 +110,10 @@ public class ReportadorDeLasColisiones : MonoBehaviour
                 //Debug.Log($"Objeto sin A1_Entidad: {obj.name} ({tipo})");
             }
         }
+    }
+
+    private void DesactivarPadreDeMensajes()
+    {
+        Emisor.SetActive(false);
     }
 }

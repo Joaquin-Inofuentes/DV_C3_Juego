@@ -267,7 +267,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         Time.timeScale = 0.3f;
         Feedbacks.Componente.PantallaDeCombo.SetActive(true);
         Invoke(nameof(RestaurarTiempo), 0.3f);
-        Feedbacks.Componente.S_MomentoEpico.Play();
+        if (Feedbacks.Componente.S_MomentoEpico != null)
+            Feedbacks.Componente.S_MomentoEpico.Play();
     }
 
     void RestaurarTiempo()

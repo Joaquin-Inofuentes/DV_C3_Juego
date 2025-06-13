@@ -9,9 +9,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 207420120193278641, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 207420120193278641, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_RenderMode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 207420120193278641, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: m_ApplyActiveColorSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 207420120193278641, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5f319ac5d67516849be7bc0b0e8495ef, type: 2}
+      objectReference: {fileID: 2100000, guid: 67b3d2d8bd99dcf46893714552ed2058, type: 2}
     - target: {fileID: 952961124639765284, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: m_Name
       value: VFX_EfectoHieloRoto Hielo rompiendose
@@ -53,6 +65,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: ColorModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: emitterVelocityMode
       value: 1
       objectReference: {fileID: 0}
@@ -83,6 +99,10 @@ PrefabInstance:
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.12156863
       objectReference: {fileID: 0}
     - target: {fileID: 2197626818615626613, guid: 1095a5c9f65bfbe4383f63d5d1886c65, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
