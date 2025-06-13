@@ -35,6 +35,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
             // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
             if (tipo == "TriggerEnter" && obj.name == "Jugador 1")
             {
+                gameObject.transform.localScale = new Vector3(0,0,0);
                 Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}", obj);
                 RecibioElMensaje = true;
                 Mensajes.Instance.textoTutorial.text = "¡Obedezcan las leyes del maná... o ardan con ellas!";

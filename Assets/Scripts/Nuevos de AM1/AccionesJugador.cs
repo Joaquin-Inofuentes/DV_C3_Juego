@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // Necesario para Image
+using UnityEngine.UI;
 
 public class AccionesJugador : A1_Entidad
 {
@@ -20,7 +20,7 @@ public class AccionesJugador : A1_Entidad
     public GameObject espada; // Referencia a la espada del jugador
     public Transform Origen;
     public GameObject trailObject;
-    private TrailRenderer trail;
+    public TrailRenderer trail;
     public float trailTime = 0.5f;
     public float clearDelay = 0.1f;
 
@@ -83,10 +83,12 @@ public class AccionesJugador : A1_Entidad
 
         if (_TimerManager == null)
             Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
+        Debug.Log(2222);
         if (espada != null)
         {
+            Debug.Log(1111);
             espada.SetActive(false);
-           
+            Debug.Log(3333);
         }
     }
 
@@ -495,9 +497,7 @@ public class AccionesJugador : A1_Entidad
     }
     void Awake()
     {
-        if (trail == null)
-            trail = GetComponentInChildren<TrailRenderer>();
-
+        if(trail == null) return;
         // Configuramos el tiempo de vida del rastro
         trail.time = trailTime;
 
