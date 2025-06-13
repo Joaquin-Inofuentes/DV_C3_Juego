@@ -23,7 +23,8 @@ namespace Drakkar
 			if (DrakkarUpdater.instance.WaitForColdstart && !DrakkarUpdater.instance.started && !ColdStart.Ready)
 				return;
 		#endif
-			DrakkarUpdater.instance.processUpdatePost();
+			if(DrakkarUpdater.instance != null) 
+                DrakkarUpdater.instance.processUpdatePost();
 		}
 
 		private void LateUpdate()

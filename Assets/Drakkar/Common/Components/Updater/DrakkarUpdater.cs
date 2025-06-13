@@ -428,7 +428,8 @@ namespace Drakkar
 		[Il2CppSetOption(Option.ArrayBoundsChecks,false)]
 		private void executeList(IndexedStaticList<IUpdatable> list)
 		{
-			length=list.Length;
+			if(list == null) return;
+            length =list.Length;
 			if (length>0)
 			{
 				list.RemoveBooked();
@@ -506,7 +507,8 @@ namespace Drakkar
 		[Il2CppSetOption(Option.ArrayBoundsChecks,false)]
 		private void executeFixedList(IndexedStaticList<IFixedUpdatable> list)
 		{
-			length=list.Length;
+			if(list == null) return;
+            length =list.Length;
 			if (length>0)
 			{
 				list.RemoveBooked();

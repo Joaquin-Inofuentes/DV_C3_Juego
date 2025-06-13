@@ -17,6 +17,7 @@ public class AccionesJugador : A1_Entidad
     public GameObject Flechazo;
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
+    public GameObject espada; // Referencia a la espada del jugador
     public Transform Origen;
     public GameObject trailObject;
     private TrailRenderer trail;
