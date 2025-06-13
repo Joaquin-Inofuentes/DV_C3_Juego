@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI; // Necesario para Image
 
@@ -16,6 +17,9 @@ public class AccionesJugador : A1_Entidad
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
     public Transform Origen;
+    public GameObject espada;
+  
+
 
     [Header("🗡️ Datos de Combate Cuerpo a Cuerpo")]
     public bool modoMelee = false;
@@ -74,6 +78,11 @@ public class AccionesJugador : A1_Entidad
     {
         if (_TimerManager == null)
             Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
+        if (espada != null)
+        {
+            espada.SetActive(false);
+           
+        }
     }
 
     void Update()
@@ -100,8 +109,12 @@ public class AccionesJugador : A1_Entidad
                 _TimerManager.enModoMagico = false;
                 IndicadoresMelee.SetActive(true);
                 Debug.Log("Modo cambiado a MELEE");
-                anim.SetLayerWeight(0, 0f); // capa rango
-                anim.SetLayerWeight(1, 1f); // capa melee
+                anim.SetLayerWeight(0, 0f); // capa 0 = Rango
+                anim.SetLayerWeight(1, 1f); // capa 1 = Melee
+                if(espada  != null)
+                {
+                    espada.SetActive(true);
+                }
             }
             else
             {
@@ -110,8 +123,12 @@ public class AccionesJugador : A1_Entidad
                 _TimerManager.enModoMagico = true;
                 IndicadoresMelee.SetActive(false);
                 Debug.Log("Modo cambiado a RANGO");
-                anim.SetLayerWeight(0, 1f); // capa rango
-                anim.SetLayerWeight(1, 0f); // capa melee
+                anim.SetLayerWeight(0, 1f); // capa 0 = Rango
+                anim.SetLayerWeight(1, 0f); // capa 1 = Melee
+                if (espada != null)
+                {
+                    espada.SetActive(false);
+                }
             }
         }
 
@@ -176,6 +193,7 @@ public class AccionesJugador : A1_Entidad
                 anim.SetTrigger("magic1");
                 ProyectilUsado = BolaDeFuego;
                 _TimerManager.SetTimerToMax(0);
+
             }
             else
             {
@@ -268,7 +286,11 @@ public class AccionesJugador : A1_Entidad
 
     public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
     public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada, 35);
-    public void GenerarHitboxPie() => GenerarHitbox(puntoGolpePatada, 10);
+    public void GenerarHitboxPie()
+    {
+        GenerarHitbox(puntoGolpePatada, 10);
+        EmpujarEnemigosConPatada();
+    }
 
     public void GenerarHitbox(Transform puntoDeGolpe, int danio)
     {
@@ -289,6 +311,81 @@ public class AccionesJugador : A1_Entidad
             Invoke(nameof(ResetHitboxFlag), 0.1f);
         }
     }
+    void EmpujarEnemigosConPatada()
+    {
+        Collider[] enemigos = Physics.OverlapSphere(puntoGolpePatada.position, 2f);
+
+        foreach (var col in enemigos)
+        {
+            var enemigo = col.GetComponent<A1_A1_H1_MoustroDelAverno>();
+            if (enemigo != null)
+            {
+                Rigidbody rb = col.attachedRigidbody;
+                if (rb != null && !rb.isKinematic)
+                {
+                    Vector3 direccion = (col.transform.position - transform.position).normalized;
+
+
+                    NavMeshAgent agent = col.GetComponent<NavMeshAgent>();
+                    if (agent != null)
+                    {
+                        NavMeshHit hit;
+                        if (NavMesh.SamplePosition(agent.transform.position, out hit, 2f, NavMesh.AllAreas))
+                        {
+                            agent.Warp(hit.position);
+                            agent.enabled = false;
+
+                            // Aumentar fuerza para probar
+                            float fuerzaEmpuje = 5f;
+                            rb.AddForce(direccion * fuerzaEmpuje, ForceMode.Impulse);
+
+                            Debug.Log($"Empujando enemigo {col.name} con fuerza {direccion * fuerzaEmpuje}");
+
+                            StartCoroutine(ReactivarAgente(agent, 1f));
+                        }
+                    }
+                    else
+                    {
+                        // Sin NavMeshAgent, aplicar fuerza normal
+                        float fuerzaEmpuje = 5f;
+                        rb.AddForce(direccion * fuerzaEmpuje, ForceMode.Impulse);
+                        Debug.Log($"Empujando enemigo sin NavMeshAgent {col.name} con fuerza {direccion * fuerzaEmpuje}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Rigidbody no válido o kinematic para {col.name}");
+                }
+            }
+        }
+    }
+
+
+    private IEnumerator ReactivarAgente(NavMeshAgent agent, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (agent != null)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(agent.transform.position, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+                agent.enabled = true;
+                agent.isStopped = false; // aseguramos que esté activo y listo para moverse
+            }
+            else
+            {
+                Debug.LogWarning("No se encontró posición válida para reactivar agente.");
+                // Como fallback, podrías desactivar agente o manejarlo distinto aquí.
+            }
+        }
+    }
+
+
+
+
+
 
     private void ResetHitboxFlag()
     {
