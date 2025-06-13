@@ -17,14 +17,25 @@ public class ReportadorDeLasColisiones : MonoBehaviour
 
     public bool Persiguiendo = true;
     public bool RecibioElMensaje = false;
+
+
     private void ProcesarColision(GameObject obj, string tipo)
     {
-        if(gameObject.name == "InvisibleFase1" && RecibioElMensaje == false)
+        if (gameObject.name == "SE TOCA Y SE GANA" && RecibioElMensaje == false)
         {
             // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
             if (tipo == "TriggerEnter" && obj.name == "Jugador 1")
             {
-                Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}",obj);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Victoria");
+            }
+        }
+
+        if (gameObject.name == "InvisibleFase1" && RecibioElMensaje == false)
+        {
+            // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
+            if (tipo == "TriggerEnter" && obj.name == "Jugador 1")
+            {
+                Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}", obj);
                 RecibioElMensaje = true;
                 Mensajes.Instance.textoTutorial.text = "¡Obedezcan las leyes del maná... o ardan con ellas!";
                 Emisor.SetActive(true);

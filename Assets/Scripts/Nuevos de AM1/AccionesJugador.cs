@@ -431,12 +431,16 @@ public class AccionesJugador : A1_Entidad
 
     }
 
+    public AudioSource SonidoDeMorir;
+    public GameObject FondoOscuroSangriendo;
     public override void Morir()
     {
         if (estaMuerto) return;
         Feedbacks.FeedbackRadialVisual(Color_Muere, 4);
         estaMuerto = true;
         anim.SetTrigger("life");
+        SonidoDeMorir.Play();
+        FondoOscuroSangriendo.SetActive(true);
     }
 
     public override void OnCollision(Collision collider)
