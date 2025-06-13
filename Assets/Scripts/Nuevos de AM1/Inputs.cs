@@ -26,13 +26,65 @@ public class Inputs : MonoBehaviour
         if (C_TimerManager == null)
             Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector.");
     }
-
+    private Tutorial _tutorial;
     void Update()
     {
-        Movimiento();
-        Ataque();
-        Pausa();
-        Menu.SetActive(Time.timeScale == 0); // Mostrar menú si está en pausa
+        if (Tutorial.Instance != null)
+        {
+            if (_tutorial == null)
+                _tutorial = Tutorial.Instance;
+            if (_tutorial.faseActual > 0)
+            {
+                if (_tutorial.faseActual == 2 && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
+                {
+                    Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                }
+                Movimiento();
+            }
+            if (_tutorial.faseActual > 2)
+            {
+                Ataque();
+
+                /*        
+        "Bienvenido al tutorial. Aquí aprenderás los conceptos básicos del juego.",  // 0
+        "Usa los clicks del mouse para moverte",  //1 
+        "Ataca al enemigo con 1234",  // 2
+        "Aprieta 4 y cambia a modo fisico",  // 3
+        "¡Felicidades! Has completado el tutorial. Ahora estás listo para jugar." // 4
+                 */
+
+
+                // Reemplaza la línea seleccionada para permitir avanzar con 1, 2 o 3
+                if (_tutorial.faseActual == 3 && (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3)))
+                {
+                    Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                    return;
+                }
+
+                // Reemplaza la línea seleccionada para permitir avanzar con 1, 2 o 3
+                if (_tutorial.faseActual == 4 && Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                    return;
+                }
+                if (_tutorial.faseActual != 4)
+                {
+                    // Reemplaza la línea seleccionada para permitir avanzar con 1, 2 o 3
+                    if (_tutorial.faseActual == 5 && (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3)))
+                    {
+                        Tutorial.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
+                        _tutorial.textoTutorial.gameObject.transform.parent.gameObject.SetActive(false);
+                        return;
+                    }
+                }
+            }
+            Pausa();
+            Menu.SetActive(Time.timeScale == 0); // Mostrar menú si está en pausa
+        }
+        else
+        {
+            Debug.LogError("[Inputs] Necesitas crear un script de Tutorial en el gameobject Jugador");
+        }
     }
 
     public void Movimiento()

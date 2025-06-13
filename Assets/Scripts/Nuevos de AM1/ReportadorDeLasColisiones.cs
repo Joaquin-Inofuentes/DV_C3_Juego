@@ -17,6 +17,13 @@ public class ReportadorDeLasColisiones : MonoBehaviour
     public bool Persiguiendo = true;
     private void ProcesarColision(GameObject obj, string tipo)
     {
+        if(gameObject.name == "InvisibleFase1")
+        {
+            Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}",obj);
+            return;
+        }
+
+
 
         if (obj.layer != 7) return;
 
