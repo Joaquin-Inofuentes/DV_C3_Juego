@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4fd559c69a65d914e9b4d489f4d94a89, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 37.37
+      value: 32.49
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4fd559c69a65d914e9b4d489f4d94a89, type: 3}
       propertyPath: m_LocalRotation.w
@@ -64,9 +64,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c86327b7cbae5484e82f7b31c7f92569, type: 2}
+    - target: {fileID: -2502511417008264078, guid: 4fd559c69a65d914e9b4d489f4d94a89, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4fd559c69a65d914e9b4d489f4d94a89, type: 3}
       propertyPath: m_Name
-      value: Old_Wooden_Planks_Set (14) Variant
+      value: Vallado
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4fd559c69a65d914e9b4d489f4d94a89, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4fd559c69a65d914e9b4d489f4d94a89, type: 3}
+      propertyPath: m_TagString
+      value: Ambiente
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -124,7 +136,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.16, y: 1.145, z: 1.02}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.28, y: 0, z: 1.18}
   m_TimeToStationary: 0.5
