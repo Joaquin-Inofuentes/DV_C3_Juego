@@ -59,7 +59,7 @@ public class Mensajes : MonoBehaviour
         yield return new WaitForSeconds(3f);
         if (faseActual == 1)
         {
-            Debug.Log("Se cambio al nuevo mensaje del tutorial: " + ListaDeMensajes[faseActual]);
+            //Debug.Log("Se cambio al nuevo mensaje del tutorial: " + ListaDeMensajes[faseActual]);
             SiguienteFase();
         }
     }

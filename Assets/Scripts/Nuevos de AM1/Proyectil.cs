@@ -42,6 +42,7 @@ public class Proyectil : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log(other.name + " " + other.tag, gameObject);
         PuntoDeColision = other.ClosestPoint(transform.position);
         ColisionoCon(other.gameObject, "TriggerEnter");
     }
@@ -63,7 +64,7 @@ public class Proyectil : MonoBehaviour
     public Vector3 PuntoDeColision;
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
-        Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
+        //Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
         if (collision == Creador) return;
         if (collision.tag == "Ambiente" || collision.name == "Terrain")
         {

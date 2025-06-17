@@ -36,7 +36,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
             if (tipo == "TriggerEnter" && obj.name == "Jugador 1")
             {
                 gameObject.transform.localScale = new Vector3(0,0,0);
-                Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}", obj);
+                //Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}", obj);
                 RecibioElMensaje = true;
                 Mensajes.Instance.textoTutorial.text = "¡Obedezcan las leyes del maná... o ardan con ellas!";
                 Emisor.SetActive(true);
@@ -60,6 +60,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
             Debug.LogWarning("[WARNING] Emisor no asignado en CollisionInvoker.");
             return;
         }
+        /*
         var Enemigo = Emisor.GetComponent<A1_Entidad>();
         if (Enemigo != null)
         {
@@ -122,6 +123,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
                 //Debug.Log($"Objeto sin A1_Entidad: {obj.name} ({tipo})");
             }
         }
+        */
     }
 
     private void DesactivarPadreDeMensajes()

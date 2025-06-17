@@ -2926,6 +2926,7 @@ GameObject:
   - component: {fileID: 1445766265511249749}
   - component: {fileID: 8852645053615055045}
   - component: {fileID: 4342667390874665725}
+  - component: {fileID: 9002616348641846020}
   m_Layer: 7
   m_Name: Jugador 1
   m_TagString: Untagged
@@ -3106,9 +3107,10 @@ MonoBehaviour:
   Flechazo: {fileID: 2897738269638305032, guid: 77166f4552886be47bbd124f6edb94de, type: 3}
   hitboxCuboPrefab: {fileID: 105775913239620317, guid: ae62f5e04bb196e4fa1242b623262ce9, type: 3}
   fuerzaDisparo: 2000
-  espada: {fileID: 0}
+  espada: {fileID: 4884282418640362273}
   Origen: {fileID: 2065739746279692674}
   trailObject: {fileID: 6595303928773415465}
+  trail: {fileID: 6450557057870232628}
   trailTime: 2
   clearDelay: 1
   modoMelee: 0
@@ -3166,7 +3168,7 @@ MonoBehaviour:
   ListaDeMensajes:
   - "Bienvenido al tutorial. Aqu\xED aprender\xE1s los conceptos b\xE1sicos del juego."
   - Usa los clicks del mouse para moverte
-  - Ataca al enemigo con 1234
+  - Ataca al enemigo con 123
   - Aprieta 4 y cambia a modo fisico
   - "\xA1Felicidades! Has completado el tutorial. Ahora est\xE1s listo para jugar."
   _textoTutorial: {fileID: 0}
@@ -3280,7 +3282,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8f107ccc56cc9534b8baf7c9a7960737, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3365,6 +3367,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9002616348641846020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837533125788142255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7340d5f8339082849b97f9e4f323dafa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ultimaPosicion: {x: 0, y: 0, z: 0}
+  estadoActual: 0
 --- !u!1 &6988654245736247078
 GameObject:
   m_ObjectHideFlags: 0

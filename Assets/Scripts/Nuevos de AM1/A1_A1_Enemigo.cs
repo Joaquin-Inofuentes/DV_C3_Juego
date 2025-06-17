@@ -43,9 +43,13 @@ public abstract class A1_A1_Enemigo : A1_Entidad
     {
         ListaDeEnemigosActivos.Add(gameObject);
     }
-
+    public Enemigo EstadoActual;
     protected virtual void Update()
     {
+        if (EstadoActual == null)
+        {
+            EstadoActual = gameObject.GetComponent<Enemigo>();
+        }
         // Comportamiento general a definir en clases hijas
     }
 
@@ -60,7 +64,7 @@ public abstract class A1_A1_Enemigo : A1_Entidad
     }
 
     // Métodos públicos
-   
+
     public abstract void OnEnabled();
     public abstract void OnDisabled();
 }

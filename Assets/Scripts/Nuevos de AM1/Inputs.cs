@@ -127,7 +127,7 @@ public class Inputs : MonoBehaviour
                  !Input.GetKey(TeclaAtaque3))
         {
             enModoMagico = !enModoMagico;
-            Debug.Log("Modo cambiado a " + (enModoMagico ? "mágico" : "melee"));
+            //Debug.Log("Modo cambiado a " + (enModoMagico ? "mágico" : "melee"));
         }
     }
     private void EjecutarAtaque(int index, string nombreAtaque)
@@ -138,7 +138,7 @@ public class Inputs : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ejecutando ataque: " + nombreAtaque + " (índice: " + index + ")");
+            //Debug.Log("Ejecutando ataque: " + nombreAtaque + " (índice: " + index + ")");
             C_AccionesJugador.Atacar(GameManager.PosicionDelMouseEnElEspacio, nombreAtaque);
             C_TimerManager.SetTimerToMax(index);
         }

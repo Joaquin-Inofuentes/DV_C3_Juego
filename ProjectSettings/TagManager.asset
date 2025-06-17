@@ -8,6 +8,7 @@ TagManager:
   - Enemigos
   - Ambiente
   - Destruibles
+  - Jugador
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - Ambiente
   - Water
   - UI
-  - 
+  - Enemigos
   - 
   - 
   - 

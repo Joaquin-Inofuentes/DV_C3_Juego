@@ -5,9 +5,10 @@ public class AudioManager : MonoBehaviour
 {
     static public AudioManager instance;
 
- 
-    // En Resources/Audio/
-    // Carpeta: Assets/Resources/Audio/
+    public List<string> nombresDeClips = new List<string>();
+    public static Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
+
+    private bool sonidosEscaneados = false; // Nuevo flag
 
     public void Start()
     {
@@ -16,10 +17,7 @@ public class AudioManager : MonoBehaviour
 
     void Update()
     {
-        if(clips.Count == 0)
-            EscanearSonidosDisponibles();
-        
-        if(clips.Count != nombresDeClips.Count)
+        if (!sonidosEscaneados)
         {
             EscanearSonidosDisponibles();
         }
@@ -27,14 +25,15 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
             instance = this;
     }
-    public List<string> nombresDeClips = new List<string>();
 
     // 1️⃣ Escanea y carga todos los clips de Resources/Audio/
-    public static Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
-
     public void EscanearSonidosDisponibles()
     {
+        if (sonidosEscaneados) return; // Si ya se ejecutó, no hace nada
+
         clips.Clear();
+        nombresDeClips.Clear(); // Limpiar la lista antes de llenarla
+
         AudioClip[] cargados = Resources.LoadAll<AudioClip>("Audio");
 
         foreach (AudioClip clip in cargados)
@@ -42,9 +41,11 @@ public class AudioManager : MonoBehaviour
             if (!clips.ContainsKey(clip.name))
             {
                 clips.Add(clip.name, clip);
-                nombresDeClips.Add(clip.name); // ✅ guardás el nombre
+                nombresDeClips.Add(clip.name);
             }
         }
+
+        sonidosEscaneados = true; // Marcar como ejecutado
     }
 
     public static AudioClip ObtenerAudioPorNombre(string nombre)
@@ -55,5 +56,4 @@ public class AudioManager : MonoBehaviour
         Debug.LogWarning("Clip no encontrado: " + nombre);
         return null;
     }
-
 }

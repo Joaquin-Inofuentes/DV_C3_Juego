@@ -42,10 +42,14 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     }
 
     public string AnimacionActual = "";
+    public Vector3 DestinoDelAtaque = Vector3.zero;
     public override void Atacar(Vector3 Destino, string Nombre = "")
     {
+        //Debug.Log(0);
         if (estaMuerto) return;
-
+        //Debug.Log(1);
+        DestinoDelAtaque = Destino; // Guardar el destino del ataque
+        transform.LookAt(Destino); // Mirar hacia el destino
         AnimatorClipInfo[] clips = anim.GetCurrentAnimatorClipInfo(0);
         if (clips.Length > 0)
         {
@@ -55,7 +59,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         if (AnimacionActual.Contains("idle"))
         {
             int ataqueIndex = Random.Range(0, 2); // 0 o 1
-
+            Debug.Log($"[DEBUG] Ataque seleccionado: {ataqueIndex} para {gameObject.name}");
             if (ataqueIndex == 0)
             {
                 anim.SetTrigger("ataque1");
@@ -65,6 +69,18 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
                 anim.SetTrigger("ataque2");
             }
         }
+        else
+        {
+            AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+
+            float t = state.normalizedTime;
+            // Si, la animacion termino
+            if (t == 0.95f)
+            {
+                anim.SetTrigger("ataque1");
+            }
+        }
+        /* Joaco_Lo cambie. En el "GEO_Moustro" Ahora llamara al AlFinalizarLlamarA al finalizar la animacion de ataque
         else if (AnimacionActual.Contains("ataque"))
         {
             //Debug.Log(1);
@@ -74,6 +90,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
                 CreaEfectoDeAtaque(Destino);
             }
         }
+        */
     }
 
     bool avisoHecho = false;
@@ -83,8 +100,9 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
 
         float t = state.normalizedTime;
+        Debug.Log(t + " | " + avisoHecho, gameObject);
         //Debug.Log(t  + " | "+ avisoHecho);
-        if (!avisoHecho && t >= 0.95f)
+        if (!avisoHecho && t >= 0.90f)
         {
             //Debug.Log("Terminó una vuelta de la animación de ataque");
             avisoHecho = true;
@@ -105,8 +123,11 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     }
 
-    public void CreaEfectoDeAtaque(Vector3 Destino)
+    // Se lo llama desde el AlFinalizarLlamarA de finalización de la animación de ataque
+    // Del gameobjeto "GEO_Moustro"
+    public void CreaEfectoDeAtaque()
     {
+
         //ModoAtaqueMelee = false;
         if (AtaqueActual == null)
         {
@@ -116,7 +137,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             // Crea un efecto de danio
             //Debug.Log("Atacando");
             // Crea un efecto de daño
-            GameObject Ataque = Instantiate(BolaDeAtaque, Destino, Quaternion.identity);
+            GameObject Ataque = Instantiate(BolaDeAtaque, DestinoDelAtaque, Quaternion.identity);
             if (Ataque.GetComponent<Proyectil>() != null)
             {
                 Ataque.GetComponent<Proyectil>().Creador = gameObject;
@@ -145,6 +166,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public override void Detenerse()
     {
+        if (agent == null) return;
         agent.isStopped = true;
         S_Caminar.loop = false;
         S_Caminar.Stop();
@@ -169,15 +191,15 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public override void Morir()
     {
         agent.enabled = false;
+        PadreDebarraDevida.SetActive(false);
+        // transform.Translate(0, -0.7f, 0); Correcion del bug de eliminar al boss
+        anim.SetBool("life", false);
+        StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
+        Debug.Log("Falta animacion de morir");
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        PadreDebarraDevida.SetActive(false);
-        // transform.Translate(0, -0.7f, 0); Correcion del bug de eliminar al boss
-        anim.SetBool("life", false);
-        Debug.Log("Falta animacion de morir");
-        StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
         if (estaMuerto) return;
         estaMuerto = true;
     }
@@ -287,6 +309,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     }
 
+
+    
     protected override void Update()
     {
         base.Update(); // Llama al Update del padre
@@ -300,4 +324,23 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
 
     }
+
+    void OnDrawGizmos()
+    {
+        Vector3 RangoDeAtaque = Vector3.one * DistanciaParaAtaqueMelee * 2; // RangoDeAtaque del cubo de ataque melee
+        RangoDeAtaque.y = 0.5f; // Asegúrate de que el cubo tenga un grosor visible
+        // Cubo para distancia melee (rojo)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, RangoDeAtaque);
+
+        // Cubo para distancia de persecución (azul)
+
+        Vector3 RangoDePerseguir = Vector3.one * DistanciaParaPerseguir * 2; // RangoDeAtaque del cubo de ataque melee
+        RangoDePerseguir.y = 0.5f; // Asegúrate de que el cubo tenga un grosor visible
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position, RangoDePerseguir);
+    }
+
+
+
 }

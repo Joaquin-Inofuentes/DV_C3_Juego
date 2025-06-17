@@ -83,12 +83,9 @@ public class AccionesJugador : A1_Entidad
 
         if (_TimerManager == null)
             Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
-        Debug.Log(2222);
         if (espada != null)
         {
-            Debug.Log(1111);
             espada.SetActive(false);
-            Debug.Log(3333);
         }
     }
 
@@ -118,7 +115,7 @@ public class AccionesJugador : A1_Entidad
                 Debug.Log("Modo cambiado a MELEE");
                 anim.SetLayerWeight(0, 0f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 1f); // capa 1 = Melee
-                if(espada  != null)
+                if (espada != null)
                 {
                     espada.SetActive(true);
                 }
@@ -420,7 +417,7 @@ public class AccionesJugador : A1_Entidad
         }
         if (!Particulas)
         {
-            Debug.Log("Falta particulas de caminar");
+            //Debug.Log("Falta particulas de caminar");
         }
 
         // Reproducir sonido si no está sonando
@@ -497,7 +494,7 @@ public class AccionesJugador : A1_Entidad
     }
     void Awake()
     {
-        if(trail == null) return;
+        if (trail == null) return;
         // Configuramos el tiempo de vida del rastro
         trail.time = trailTime;
 

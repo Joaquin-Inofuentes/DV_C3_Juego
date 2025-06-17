@@ -636,6 +636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 243113800250259783}
   - component: {fileID: 3810192674055290952}
+  - component: {fileID: 1997443831020245455}
   m_Layer: 6
   m_Name: GEO_Moustro
   m_TagString: Untagged
@@ -681,6 +682,63 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1997443831020245455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690676465395218089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c6ddff909f43648b5031d8ba8ac7b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EventosAnimaciones:
+  - NombreDelClipDeLaAnimacion: boss_ataque1
+    AlIniciar:
+      m_PersistentCalls:
+        m_Calls: []
+    MientrasSeReproduce:
+      m_PersistentCalls:
+        m_Calls: []
+    AlFinalizar:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1423284102389582314}
+          m_TargetAssemblyTypeName: A1_A1_H1_MoustroDelAverno, Assembly-CSharp
+          m_MethodName: CreaEfectoDeAtaque
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - NombreDelClipDeLaAnimacion: Mutant Swiping
+    AlIniciar:
+      m_PersistentCalls:
+        m_Calls: []
+    MientrasSeReproduce:
+      m_PersistentCalls:
+        m_Calls: []
+    AlFinalizar:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1423284102389582314}
+          m_TargetAssemblyTypeName: A1_A1_H1_MoustroDelAverno, Assembly-CSharp
+          m_MethodName: CreaEfectoDeAtaque
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1704734801133257807
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,6 +1795,7 @@ GameObject:
   - component: {fileID: 3832573296752501424}
   - component: {fileID: 7528566081775439387}
   - component: {fileID: 1423284102389582314}
+  - component: {fileID: 4886365123928998457}
   m_Layer: 6
   m_Name: Moustro
   m_TagString: Untagged
@@ -1828,7 +1887,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1883,7 +1942,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &1423284102389582314
 MonoBehaviour:
@@ -1913,6 +1972,7 @@ MonoBehaviour:
   S_Caminar: {fileID: 5209441214416743401}
   rangoDeteccion: 6
   rangoAtaque: 4
+  EstadoActual: {fileID: 0}
   BolaDeAtaque: {fileID: 3314820458270015711, guid: a08f35a6d1f17e9428cdc2949b7debd6, type: 3}
   AtaqueActual: {fileID: 0}
   PadreDebarraDevida: {fileID: 642242179076716732}
@@ -1922,11 +1982,29 @@ MonoBehaviour:
   EfectoDeCongelado: {fileID: 0}
   ultimoProyectilRecibido: 
   AnimacionActual: 
+  DestinoDelAtaque: {x: 0, y: 0, z: 0}
   DestinoAsignado: {x: 0, y: 0, z: 0}
   RecibiraDobleDanoLaProximaVez: 0
   S_RecibirDano: {fileID: 7009627826712038730}
   VFXDeRopturaDeHielo: {fileID: 1437506766677768766, guid: 02c678d08b0846c4e8a3775ad904fe03, type: 3}
   S_RupturaDeHielo: {fileID: 8506818581573726860}
+--- !u!114 &4886365123928998457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5780307580212673122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96dfe65d26026540a8cccf7ebebeb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ultimaPosicion: {x: 0, y: 0, z: 0}
+  estadoActual: 0
+  entidadesCercanas: []
+  Componente: {fileID: 1423284102389582314}
+  EnemigoFijado: {fileID: 0}
 --- !u!1 &5832875135069758802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1980,7 +2058,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7754934025305005053
 Transform:
   m_ObjectHideFlags: 0
@@ -2081,6 +2159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Emisor: {fileID: 5780307580212673122}
   Persiguiendo: 1
+  RecibioElMensaje: 0
 --- !u!1 &5941373354582859189
 GameObject:
   m_ObjectHideFlags: 0

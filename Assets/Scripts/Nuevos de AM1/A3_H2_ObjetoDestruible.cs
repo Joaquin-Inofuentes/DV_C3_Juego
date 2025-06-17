@@ -15,7 +15,7 @@ public class A3_H2_ObjetoDestruible : A3_Interactuable
 
     public override void OnCollisionEnter(Collision collider)
     {
-        Debug.Log(collider);
+        //Debug.Log(collider);
         if (collider.gameObject.layer == 9)
             Interactuar();
     }

@@ -43,10 +43,8 @@ public class A3_H3_Monedas : A3_Interactuable
 
     public override void OnCollisionEnter(Collision collider)
     {
-        Debug.Log(collider.gameObject.name, gameObject);
         if (collider.gameObject.GetComponent<AccionesJugador>() != null)
         {
-            Debug.Log(1);
             Interactuar();
             collider.gameObject.GetComponent<AccionesJugador>().Feedbacks.FeedbackRadialVisual(
                 collider.gameObject.GetComponent<AccionesJugador>().Color_ObtieneMonedas

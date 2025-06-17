@@ -23,7 +23,7 @@ public class UIFade : MonoBehaviour
             float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
 
             // Debug: Mostramos el valor actual de alpha
-            Debug.Log("Alpha: " + alpha);
+            //Debug.Log("Alpha: " + alpha);
 
             rawImage.color = new Color(1f, 1f, 1f, alpha);
             yield return null;

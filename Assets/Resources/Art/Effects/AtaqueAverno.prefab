@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7788949000503033595}
   - component: {fileID: 6104120505884546023}
   - component: {fileID: 7342949865089916581}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: AtaqueAverno
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +51,7 @@ MonoBehaviour:
   EfectoEspecial: {fileID: 0}
   AutoDestruir: 1
   danio: 10
+  PuntoDeColision: {x: 0, y: 0, z: 0}
 --- !u!65 &7342949865089916581
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ GameObject:
   - component: {fileID: 3582688573294155671}
   - component: {fileID: 7444800816446956562}
   - component: {fileID: 302327057569717221}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: flame01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +167,7 @@ GameObject:
   - component: {fileID: 8245603852340938736}
   - component: {fileID: 3764820292832872723}
   - component: {fileID: 412759814257860061}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
