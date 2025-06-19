@@ -321,7 +321,7 @@ public class AccionesJugador : A1_Entidad
 
         foreach (var col in enemigos)
         {
-            var enemigo = col.GetComponent<A1_A1_H1_MoustroDelAverno>();
+            var enemigo = col.GetComponent<A1_A1_H1_MoustroDelAverno>();//interface Idamageable
             if (enemigo != null)
             {
                 Rigidbody rb = col.attachedRigidbody;

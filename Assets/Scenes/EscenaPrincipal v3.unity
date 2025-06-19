@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2599,30 +2599,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1445766265511249749, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: _textoTutorial
-      value: 
-      objectReference: {fileID: 982118007}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: Feedbacks
-      value: 
-      objectReference: {fileID: 1923887420}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: _TimerManager
-      value: 
-      objectReference: {fileID: 1923887419}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: barraCoolDown
-      value: 
-      objectReference: {fileID: 72867974}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: IndicadoresMelee
-      value: 
-      objectReference: {fileID: 1060717309}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: FondoOscuroSangriendo
-      value: 
-      objectReference: {fileID: 1639250814}
     - target: {fileID: 1445766265511249749, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: _textoTutorial
       value: 
@@ -2650,6 +2626,10 @@ PrefabInstance:
     - target: {fileID: 6837533125788142255, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_Name
       value: Jugador 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269945368924263866, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8765182097820496129, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2691,6 +2671,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1445766265511249749, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: _textoTutorial
+      value: 
+      objectReference: {fileID: 982118007}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: Feedbacks
+      value: 
+      objectReference: {fileID: 1923887420}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: _TimerManager
+      value: 
+      objectReference: {fileID: 1923887419}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: barraCoolDown
+      value: 
+      objectReference: {fileID: 72867974}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: IndicadoresMelee
+      value: 
+      objectReference: {fileID: 1060717309}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: FondoOscuroSangriendo
+      value: 
+      objectReference: {fileID: 1639250814}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

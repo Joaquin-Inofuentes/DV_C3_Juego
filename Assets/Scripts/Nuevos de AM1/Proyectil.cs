@@ -85,7 +85,7 @@ public class Proyectil : MonoBehaviour
         }
         //Debug.Log("___" + collision.ToString() + " _ " + TipoDeColision);
         // 1. Verifica si es enemigo
-        A1_Entidad enemigo = collision.gameObject.GetComponent<A1_Entidad>();
+        A1_Entidad enemigo = collision.gameObject.GetComponent<A1_Entidad>(); //interface
         if (enemigo != null)
         {
             if (enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>())
