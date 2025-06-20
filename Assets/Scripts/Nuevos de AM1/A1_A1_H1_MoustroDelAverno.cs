@@ -327,6 +327,12 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             Morir();
         }
+
+        if(EfectoDeCongelado == null && Congelado)
+        {
+            Congelado = false; // Si el efecto de congelación ya no existe, desactivar el estado de congelación
+            RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
+        }
     }
 
     void OnDrawGizmos()
