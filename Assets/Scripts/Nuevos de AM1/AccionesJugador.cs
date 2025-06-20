@@ -37,12 +37,15 @@ public class AccionesJugador : A1_Entidad
 
     [Header("🎨 Feedbacks y Partículas")]
     public ParticleSystem Particulas;
+    public GameObject explosionPrefab;
+    public Transform puntoDeImpacto;
     public Feedbacks Feedbacks;
     public Color Color_RecibeDano;
     public Color Color_ObtieneMonedas;
     public Color Color_FueAvistado;
     public Color Color_Muere;
     public Color Color_SeCura;
+    
 
     [Header("⏱️ Cooldown Interno (barra horizontal)")]
     public float maxCoolDown = 0f;
@@ -217,6 +220,7 @@ public class AccionesJugador : A1_Entidad
             }
             else
             {
+                Debug.Log("Instanciando efecto de patada");
                 if (_TimerManager.IsTimerCharging(4)) return;
                 anim.SetTrigger("melee2");
                 _TimerManager.SetTimerToMax(4);
@@ -236,7 +240,7 @@ public class AccionesJugador : A1_Entidad
             else
             {
                 if (_TimerManager.IsTimerCharging(5)) return;
-                anim.SetTrigger("melee3");
+                anim.SetTrigger("melee3"); 
                 _TimerManager.SetTimerToMax(5);
             }
             anim.SetFloat("velocidad", 0f);
@@ -501,6 +505,10 @@ public class AccionesJugador : A1_Entidad
         // Arrancamos limpios y sin emitir
         trail.Clear();
         trail.emitting = false;
+    }
+    public void ActivarEfectoPatada()
+    {
+        Instantiate(explosionPrefab, puntoDeImpacto.position, Quaternion.identity);
     }
     public void ActivarTrail()
     {
