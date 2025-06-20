@@ -17,7 +17,7 @@ public class ReceptorEventosAnim : MonoBehaviour
 
     public void LlamarEvento(string nombre, string tipo)
     {
-        Debug.Log($"Llamando evento '{tipo}' para la animación '{nombre}' en {gameObject.name}");
+        //Debug.Log($"Llamando evento '{tipo}' para la animación '{nombre}' en {gameObject.name}");
         foreach (var evento in EventosAnimaciones)
         {
             if (evento.NombreDelClipDeLaAnimacion == nombre)

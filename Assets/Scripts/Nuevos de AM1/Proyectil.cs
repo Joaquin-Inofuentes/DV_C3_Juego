@@ -65,6 +65,7 @@ public class Proyectil : MonoBehaviour
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
         //Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
+        // Colisiono con Moustro Mas cercano tag Untagged Tipo: CollisionEnter
         if (collision == Creador) return;
         if (collision.tag == "Ambiente" || collision.name == "Terrain")
         {
@@ -95,10 +96,9 @@ public class Proyectil : MonoBehaviour
 
             if (EfectoEspecial != null)
             {
-                GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
-                Destroy(efecto, 1);
                 if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Hielo"))
                 {
+                    GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
                     EnemigoV2Real.Congelado = true;
                     EnemigoV2Real.PrimerAtaqueAAnular = true;
@@ -106,6 +106,23 @@ public class Proyectil : MonoBehaviour
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;
                     Componente.anim = enemigo.anim;
+                    Destroy(efecto, 1);
+                    //return;
+                }
+
+                else if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Electrico"))
+                {
+                    GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
+                    A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
+                    //enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().CongelarEnemigo();
+                    EnemigoV2Real.Congelado = true;
+                    EnemigoV2Real.PrimerAtaqueAAnular = true;
+                    enemigo.agent.isStopped = false;
+                    ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
+                    Componente.padre = collision.transform;
+                    Componente.agent = enemigo.agent;
+                    Componente.anim = enemigo.anim;
+                    Destroy(efecto, 1);
                     //return;
                 }
             }
