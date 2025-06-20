@@ -188,7 +188,7 @@ public class AccionesJugador : A1_Entidad
         // 1) Chequear cooldown “general” (índice 6)
         if (_TimerManager.IsTimerCharging(6)) return;
         _TimerManager.SetTimerToMax(6);
-
+        
         GameObject ProyectilUsado = null;
 
         // --- HECHIZOS / ATAQUES ---
