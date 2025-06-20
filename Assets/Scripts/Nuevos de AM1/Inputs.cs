@@ -19,7 +19,7 @@ public class Inputs : MonoBehaviour
 
     public GameObject Menu;
 
-    private bool enModoMagico = true;
+    public bool enModoMagico = true;
 
     void Start()
     {
@@ -29,6 +29,8 @@ public class Inputs : MonoBehaviour
     private Mensajes _tutorial;
     void Update()
     {
+        if(enModoMagico != TimerManager.Controler.enModoMagico) TimerManager.Controler.enModoMagico = enModoMagico;
+
         if (Mensajes.Instance != null)
         {
             if (_tutorial == null)

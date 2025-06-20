@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CombosDePelea : MonoBehaviour
 {
+    /*
     // Propiedad pública
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,7 @@ public class CombosDePelea : MonoBehaviour
     {
         // Lógica de ataque mágico
     }
-
+    */
 
     /*
      * 

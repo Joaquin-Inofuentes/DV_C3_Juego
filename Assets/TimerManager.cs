@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using CustomInspector;
 using System.Collections;
+using System.Xml.Serialization;
 
 /// <summary>
 /// TimerManager gestiona 6 cooldowns (3 mágicos + 3 melee) y feedback visual.
@@ -50,6 +51,8 @@ public class TimerManager : MonoBehaviour
     private float[] readyEffectTimers = new float[6];
     private bool[] yaHizoEfecto = new bool[6];
 
+    public static TimerManager Controler;
+
     void Start()
     {
         originalColors = new Color[6];
@@ -71,15 +74,20 @@ public class TimerManager : MonoBehaviour
         }
     }
 
-    void Update() => EjecutarTimers();
+    void Update()
+    {
+
+        EjecutarTimers();
+        if(Controler == null)
+        {
+            Controler = this;
+        }
+    }
 
     public void EjecutarTimers()
     {
         for (int i = 0; i < 6; i++)
         {
-            bool esMagia = i <= 2;
-            if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
-                continue;
 
             if (timers[i] > 0f)
             {
@@ -108,6 +116,9 @@ public class TimerManager : MonoBehaviour
                 yaHizoEfecto[i] = false; // Se reinicia cuando vuelva a cargar
             }
 
+            bool esMagia = i <= 2;
+            if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
+                continue;
             if (readyEffectTimers[i] > 0f)
             {
                 readyEffectTimers[i] -= Time.deltaTime;
@@ -181,6 +192,7 @@ public class TimerManager : MonoBehaviour
 
     public bool IsTimerCharging(int index)
     {
+        Debug.Log("Se pregunto el valor de carga para : " + index, gameObject);
         if (index < 0 || index >= 6) return false;
         return timers[index] > 0f;
     }
