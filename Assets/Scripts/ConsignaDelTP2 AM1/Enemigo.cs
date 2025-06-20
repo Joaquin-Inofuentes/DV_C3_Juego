@@ -10,8 +10,12 @@ public class Enemigo : EntidadBase, IPingListener<EntidadBase>, IPingSender<Enti
     public override void EjecutarCadaMedioSegundo()
     {
 
-        //Debug.Log($"{name} ejecutando lógica de IA.");
-
+        
+        if (EnemigoFijado != null && Vector3.Distance(EnemigoFijado.transform.position,transform.position) >= Componente.DistanciaParaAtaqueMelee) // Si el enemigo fue identificado. Va a por el
+        {
+            Componente.IrAlDestino(EnemigoFijado.transform.position);
+            return;
+        }
 
 
         if (EnemigoFijado != null && EnemigoFijado.activeInHierarchy)

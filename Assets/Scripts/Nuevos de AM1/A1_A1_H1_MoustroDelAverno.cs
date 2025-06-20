@@ -174,6 +174,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public Vector3 DestinoAsignado = Vector3.zero;
     public override void IrAlDestino(Vector3 destino)
     {
+        if (Congelado) return;
         if (estaMuerto) return;
         agent.isStopped = false;
         agent.SetDestination(destino);
@@ -322,7 +323,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             Detenerse();
         }
-
+        if (Vida < 10)
+        {
+            Morir();
+        }
     }
 
     void OnDrawGizmos()
@@ -342,5 +346,21 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     }
 
 
+
+
+
+
+
+
+
+    public void CongelarEnemigo()
+    {
+        Debug.Log("Congelar enemigo", gameObject);
+    }
+
+    public void DescongelarEnemigo()
+    {
+        Debug.Log("Descongelar enemigo",gameObject);
+    }
 
 }
