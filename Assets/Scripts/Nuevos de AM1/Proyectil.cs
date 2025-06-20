@@ -114,10 +114,8 @@ public class Proyectil : MonoBehaviour
                 {
                     GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
-                    //enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().CongelarEnemigo();
                     EnemigoV2Real.Congelado = true;
                     EnemigoV2Real.PrimerAtaqueAAnular = true;
-                    enemigo.agent.isStopped = false;
                     ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;
@@ -155,6 +153,19 @@ public class Proyectil : MonoBehaviour
         }
 
         if (gameObject.name.Contains("BolaDeHielo") && EfectoEspecial)
+        {
+            GameObject Efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
+            ATK_Congelar Componente = Efecto.GetComponent<ATK_Congelar>();
+            Componente.anim = enemigo.anim;
+            Componente.timer = 5;
+            Componente.timerActual = 5;
+            Componente.padre = enemigo.transform;
+            Debug.Log("Congelando a " + enemigo.name, gameObject);
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
+        }
+
+        if (gameObject.name.Contains("Electrico") && EfectoEspecial)
         {
             GameObject Efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
             ATK_Congelar Componente = Efecto.GetComponent<ATK_Congelar>();

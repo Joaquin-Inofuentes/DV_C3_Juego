@@ -18,7 +18,7 @@ public class ATK_Congelar : MonoBehaviour
         if (this == null) return;
         if (padre == null) return; // Asegurarse de que padre no sea nulo
         if (S_Congelar != null) S_Congelar.Play(); // Reproducir sonido de congelar
-
+        agent = padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent; // Obtener el agente del monstruo
         posOriginal = padre.position;
         rotOriginal = padre.rotation;
         timerActual = timer;
@@ -38,11 +38,14 @@ public class ATK_Congelar : MonoBehaviour
 
     public void ReanudarAgente()
     {
+        Debug.Log("Se desactivo " + gameObject.name, gameObject);
+        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
+        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().Congelado = false; // Reanudar el estado del monstruo
+        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = null; // Reanudar el estado del monstruo
         if (anim != null) anim.speed = 1;
         if (agent == null) return;
         agent.SetDestination(destinoGuardado);
         agent.isStopped = false;
-        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
     }
 
 
