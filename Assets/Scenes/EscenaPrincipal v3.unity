@@ -8289,6 +8289,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1445766265511249749, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: _textoTutorial
+      value: 
+      objectReference: {fileID: 982118007}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: Feedbacks
+      value: 
+      objectReference: {fileID: 1923887420}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: _TimerManager
+      value: 
+      objectReference: {fileID: 1923887419}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: barraCoolDown
+      value: 
+      objectReference: {fileID: 72867974}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: IndicadoresMelee
+      value: 
+      objectReference: {fileID: 1060717309}
+    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
+      propertyPath: FondoOscuroSangriendo
+      value: 
+      objectReference: {fileID: 1639250814}
     - target: {fileID: 1445766265511249749, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: _textoTutorial
       value: 
@@ -8308,7 +8332,7 @@ PrefabInstance:
     - target: {fileID: 5282964226098417758, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: puntoDeImpacto
       value: 
-      objectReference: {fileID: 2083659008}
+      objectReference: {fileID: 1781188899}
     - target: {fileID: 5282964226098417758, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: explosionPrefab
       value: 
@@ -8369,33 +8393,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1445766265511249749, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: _textoTutorial
-      value: 
-      objectReference: {fileID: 982118007}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: Feedbacks
-      value: 
-      objectReference: {fileID: 1923887420}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: _TimerManager
-      value: 
-      objectReference: {fileID: 1923887419}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: barraCoolDown
-      value: 
-      objectReference: {fileID: 72867974}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: IndicadoresMelee
-      value: 
-      objectReference: {fileID: 1060717309}
-    - target: {fileID: 5282964226098417758, guid: b98fc6ba949eb974aaffb2dc1deefeb1, type: 3}
-      propertyPath: FondoOscuroSangriendo
-      value: 
-      objectReference: {fileID: 1639250814}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8765182097820496129, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1781188899}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
 --- !u!1001 &310661638
@@ -36978,6 +36981,37 @@ Transform:
   m_Children:
   - {fileID: 1950243099}
   m_Father: {fileID: 782960239}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1781188898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1781188899}
+  m_Layer: 7
+  m_Name: OrigenPatada
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1781188899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781188898}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.14, y: 0, z: 3.55}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1899451686}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1783515109
 PrefabInstance:
