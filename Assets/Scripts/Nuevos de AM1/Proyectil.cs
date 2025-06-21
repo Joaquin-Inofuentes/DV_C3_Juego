@@ -176,6 +176,9 @@ public class Proyectil : MonoBehaviour
             Debug.Log("Congelando a " + enemigo.name, gameObject);
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().DestinoAsignado = Creador.transform.position;
+            Debug.Log(Creador.transform.position, Creador);
+            Componente.destinoGuardado = Creador.transform.position;
         }
 
         if (AutoDestruir)

@@ -18,6 +18,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public ATK_Congelar EfectoDeCongelado; // Efecto visual de congelación
     public string ultimoProyectilRecibido = "";
 
+    public bool ProximoAtaqueExplosionElectrica = false;
+
     void ActualizarBarraDevida()
     {
         // 1. Rotar solo en eje Y hacia la cámara
@@ -233,6 +235,9 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public override void RecibirDanio(int cantidad)
     {
+        //if()
+
+
         //Debug.Log(1);
         Vida -= cantidad;
         S_RecibirDano.Play(); // Reproducir sonido al recibir daño

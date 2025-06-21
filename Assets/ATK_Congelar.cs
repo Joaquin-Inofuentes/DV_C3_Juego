@@ -26,12 +26,14 @@ public class ATK_Congelar : MonoBehaviour
     }
 
     public NavMeshAgent agent;
-    public Vector3 destinoGuardado;
+    public Vector3 destinoGuardado ;
 
     void DetenerAgente()
     {
         if (agent == null) return;
-
+        Debug.Log(agent.destination + " " + padre.transform.position);
+        if (agent.destination == padre.transform.position) return;
+        Debug.Log("Se detuvo");
         destinoGuardado = agent.destination;
         agent.isStopped = true;
     }
@@ -39,6 +41,7 @@ public class ATK_Congelar : MonoBehaviour
     public void ReanudarAgente()
     {
         Debug.Log("Se desactivo " + gameObject.name, gameObject);
+        Debug.Log(destinoGuardado +" " + agent);
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().Congelado = false; // Reanudar el estado del monstruo
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = null; // Reanudar el estado del monstruo
@@ -46,6 +49,7 @@ public class ATK_Congelar : MonoBehaviour
         if (agent == null) return;
         agent.SetDestination(destinoGuardado);
         agent.isStopped = false;
+        Debug.Log("Persiguiendo a " + destinoGuardado, gameObject);
     }
 
 
@@ -53,13 +57,8 @@ public class ATK_Congelar : MonoBehaviour
     void Update()
     {
         if (padre == null) return;
-        if( padre.GetComponent<A1_A1_H1_MoustroDelAverno>() == null) return; // Asegurarse de que el padre tenga el componente necesario
+        if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>() == null) return; // Asegurarse de que el padre tenga el componente necesario
         if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent == null) return; // Asegurarse de que el padre tenga el componente necesario
-        if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent.isStopped)
-        {
-            ReanudarAgente(); // Reanudar el agente si est�� detenido
-            return; // Asegurarse de que el padre tenga el componente necesario
-        }
         // Mantener posici�n y rotaci�n
         padre.position = posOriginal;
         padre.rotation = rotOriginal;

@@ -458,6 +458,8 @@ public class AccionesJugador : A1_Entidad
         Debug.Log($"{gameObject.name} recibió {cantidad} de daño. Vida restante: {Vida}", gameObject);
         Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
 
+        EfectoDeRelentizarTiempo();
+        
         if (Vida <= 0)
         {
             Morir();
@@ -465,6 +467,19 @@ public class AccionesJugador : A1_Entidad
         }
         RecibirDanoAudio.Play();
     }
+
+    public void EfectoDeRelentizarTiempo()
+    {
+        Time.timeScale = 0.4f;
+        Invoke(nameof(RestablecerTiempo), 1f);
+    }
+
+    public void RestablecerTiempo()
+    {
+        Time.timeScale = 1f;
+    }
+
+
 
     void CargaEscenaDerrota()
     {
