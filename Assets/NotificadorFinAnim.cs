@@ -15,7 +15,7 @@ public class NotificadorAnimacion : StateMachineBehaviour
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         var nombre = ObtenerNombre(stateInfo.shortNameHash, animator);
-        Debug.Log($"Iniciando animación: {nombre}");
+        //Debug.Log($"Iniciando animación: {nombre}");
         animator.GetComponent<ReceptorEventosAnim>()?.LlamarEvento(nombre, "inicio");
     }
 

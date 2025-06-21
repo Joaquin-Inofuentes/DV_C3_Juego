@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 
@@ -18,9 +19,36 @@ public class ReportadorDeLasColisiones : MonoBehaviour
     public bool Persiguiendo = true;
     public bool RecibioElMensaje = false;
 
-
+    public List<GameObject> EnemigosCercanos = new List<GameObject>();
     private void ProcesarColision(GameObject obj, string tipo)
     {
+        //Debug.Log(obj.name);
+        if (gameObject.name == "Cargaelectrica" && obj.name.Contains("Moustro"))
+        {
+            if (tipo.Contains("Enter") || tipo.Contains("Stay"))
+            {
+                if (!EnemigosCercanos.Contains(obj))
+                {
+                    EnemigosCercanos.Add(obj);
+                }
+            }
+            else
+            {
+                EnemigosCercanos.Remove(obj);
+            }
+
+            return;
+        }
+
+
+
+
+
+
+
+
+
+
         if (gameObject.name == "SE TOCA Y SE GANA" && RecibioElMensaje == false)
         {
             // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
@@ -35,7 +63,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
             // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
             if (tipo == "TriggerEnter" && obj.name == "Jugador 1")
             {
-                gameObject.transform.localScale = new Vector3(0,0,0);
+                gameObject.transform.localScale = new Vector3(0, 0, 0);
                 //Debug.Log($"[DEBUG] Colisión con {obj.name} de tipo {tipo} en {gameObject.name}", obj);
                 RecibioElMensaje = true;
                 Mensajes.Instance.textoTutorial.text = "¡Obedezcan las leyes del maná... o ardan con ellas!";
@@ -50,6 +78,8 @@ public class ReportadorDeLasColisiones : MonoBehaviour
         if (gameObject.name == "InvisibleFase1") return;
 
         if (obj.layer != 7) return;
+
+        if (Emisor == null) return;
 
         if (obj.name == Emisor.name)
         {
@@ -129,5 +159,26 @@ public class ReportadorDeLasColisiones : MonoBehaviour
     private void DesactivarPadreDeMensajes()
     {
         Emisor.SetActive(false);
+    }
+
+
+    public GameObject PrefabDeAtaqueParaCercanos;
+    public void ElectrocutarCercanos()
+    {
+        Debug.Log("asdas");
+        // Instanciar el prefab en la posición de este GameObject
+        if (PrefabDeAtaqueParaCercanos != null)
+        {
+            Instantiate(PrefabDeAtaqueParaCercanos, transform.position, Quaternion.identity);
+        }
+
+        // Instanciar el prefab en la posición de cada enemigo cercano
+        foreach (var enemigo in EnemigosCercanos)
+        {
+            if (enemigo != null && PrefabDeAtaqueParaCercanos != null)
+            {
+                Instantiate(PrefabDeAtaqueParaCercanos, enemigo.transform.position, Quaternion.identity);
+            }
+        }
     }
 }

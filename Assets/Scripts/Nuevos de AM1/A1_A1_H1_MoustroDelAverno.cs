@@ -233,10 +233,26 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public bool RecibiraDobleDanoLaProximaVez = false;
     public AudioSource S_RecibirDano; // Sonido al recibir daño
 
+    public bool PendienteDeCargaElectrica = false;
+    public ReportadorDeLasColisiones CargaElectrica;
+
     public override void RecibirDanio(int cantidad)
     {
         //if()
+        if (ultimoProyectilRecibido.Contains("hitboxCubo") 
+            && PendienteDeCargaElectrica == true)
+        {
+            if (PrimerAtaqueAAnular)
+            {
+                PrimerAtaqueAAnular = false;
+                return;
+            }
 
+            ultimoProyectilRecibido = "";
+            Vida -= cantidad;
+            CargaElectrica.ElectrocutarCercanos();
+            PendienteDeCargaElectrica = false;
+        }
 
         //Debug.Log(1);
         Vida -= cantidad;
@@ -273,7 +289,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public void EfectoDeRopturaDeCongelamiento()
     {
         EfectoDeCongelado.ReanudarAgente(); // Reanudar el agente
-        Destroy(EfectoDeCongelado.gameObject); // Destruir el efecto de congelación
         // Crear VFX Visual de ruptura de congelamiento
         GameObject efecto = Instantiate(VFXDeRopturaDeHielo, transform.position, Quaternion.identity);
         Destroy(efecto, 2f); // Destruir el efecto después de 2 segundos
@@ -286,6 +301,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
 
         RalentizarTiempo(); // Ralentizar el tiempo al romper el hielo
+        if (EfectoDeCongelado) Destroy(EfectoDeCongelado.gameObject); // Destruir el efecto de congelación
 
     }
 
@@ -316,7 +332,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     }
 
 
-    
+
     protected override void Update()
     {
         base.Update(); // Llama al Update del padre
@@ -333,7 +349,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             Morir();
         }
 
-        if(EfectoDeCongelado == null && Congelado)
+        if (EfectoDeCongelado == null && Congelado)
         {
             Congelado = false; // Si el efecto de congelación ya no existe, desactivar el estado de congelación
             RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
@@ -371,7 +387,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public void DescongelarEnemigo()
     {
-        Debug.Log("Descongelar enemigo",gameObject);
+        Debug.Log("Descongelar enemigo", gameObject);
     }
 
 }

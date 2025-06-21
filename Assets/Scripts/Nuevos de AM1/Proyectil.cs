@@ -102,6 +102,7 @@ public class Proyectil : MonoBehaviour
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
                     EnemigoV2Real.Congelado = true;
                     EnemigoV2Real.PrimerAtaqueAAnular = true;
+                    //EnemigoV2Real.S_RupturaDeHielo
                     ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;
@@ -116,6 +117,7 @@ public class Proyectil : MonoBehaviour
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
                     EnemigoV2Real.Congelado = true;
                     EnemigoV2Real.PrimerAtaqueAAnular = true;
+                    EnemigoV2Real.PendienteDeCargaElectrica = true;
                     ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
                     Componente.padre = collision.transform;
                     Componente.agent = enemigo.agent;

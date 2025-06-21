@@ -192,7 +192,7 @@ public class TimerManager : MonoBehaviour
 
     public bool IsTimerCharging(int index)
     {
-        Debug.Log("Se pregunto el valor de carga para : " + index, gameObject);
+        //Debug.Log("Se pregunto el valor de carga para : " + index, gameObject);
         if (index < 0 || index >= 6) return false;
         return timers[index] > 0f;
     }

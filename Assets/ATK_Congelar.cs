@@ -31,17 +31,17 @@ public class ATK_Congelar : MonoBehaviour
     void DetenerAgente()
     {
         if (agent == null) return;
-        Debug.Log(agent.destination + " " + padre.transform.position);
+        //Debug.Log(agent.destination + " " + padre.transform.position);
         if (agent.destination == padre.transform.position) return;
-        Debug.Log("Se detuvo");
+        //Debug.Log("Se detuvo");
         destinoGuardado = agent.destination;
         agent.isStopped = true;
     }
 
     public void ReanudarAgente()
     {
-        Debug.Log("Se desactivo " + gameObject.name, gameObject);
-        Debug.Log(destinoGuardado +" " + agent);
+        //Debug.Log("Se desactivo " + gameObject.name, gameObject);
+        //Debug.Log(destinoGuardado +" " + agent);
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().Congelado = false; // Reanudar el estado del monstruo
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = null; // Reanudar el estado del monstruo
@@ -49,7 +49,9 @@ public class ATK_Congelar : MonoBehaviour
         if (agent == null) return;
         agent.SetDestination(destinoGuardado);
         agent.isStopped = false;
-        Debug.Log("Persiguiendo a " + destinoGuardado, gameObject);
+        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().PendienteDeCargaElectrica = false;
+        padre.GetComponent<A1_A1_H1_MoustroDelAverno>().PrimerAtaqueAAnular = false;
+        //Debug.Log("Persiguiendo a " + destinoGuardado, gameObject);
     }
 
 

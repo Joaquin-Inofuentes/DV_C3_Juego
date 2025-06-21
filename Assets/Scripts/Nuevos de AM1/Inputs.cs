@@ -29,7 +29,11 @@ public class Inputs : MonoBehaviour
     private Mensajes _tutorial;
     void Update()
     {
-        if(enModoMagico != TimerManager.Controler.enModoMagico) TimerManager.Controler.enModoMagico = enModoMagico;
+        if (TimerManager.Controler)
+        {
+            if (enModoMagico != TimerManager.Controler.enModoMagico) 
+                TimerManager.Controler.enModoMagico = enModoMagico;
+        }
 
         if (Mensajes.Instance != null)
         {
