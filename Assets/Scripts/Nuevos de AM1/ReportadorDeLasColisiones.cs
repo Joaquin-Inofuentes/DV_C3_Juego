@@ -17,10 +17,24 @@ public class ReportadorDeLasColisiones : MonoBehaviour
 
     public bool Persiguiendo = true;
     public bool RecibioElMensaje = false;
-
+    public List<GameObject> EnemigosCercanos = new List<GameObject>();
 
     private void ProcesarColision(GameObject obj, string tipo)
     {
+        if(gameObject.name == "ATK_Electrico" && obj.name.Contains("Moustro"))
+        {
+            if (tipo.Contains("Exit"))
+            {
+                EnemigosCercanos.Add(obj);
+            }
+            else
+            {
+                EnemigosCercanos.Remove(obj);
+            }
+        }
+
+
+
         if (gameObject.name == "SE TOCA Y SE GANA" && RecibioElMensaje == false)
         {
             // [DEBUG] Colisión con Jugador 1 de tipo TriggerEnter en InvisibleFase1
@@ -129,5 +143,27 @@ public class ReportadorDeLasColisiones : MonoBehaviour
     private void DesactivarPadreDeMensajes()
     {
         Emisor.SetActive(false);
+    }
+
+
+
+    public GameObject PrefabAtaque; // Prefab a instanciar sobre cada enemigo cercano
+
+    public void LanzarAtaqueACercanos()
+    {
+        if (PrefabAtaque == null)
+        {
+            Debug.LogWarning("[WARNING] PrefabAtaque no asignado en ReportadorDeLasColisiones.");
+            return;
+        }
+
+        Instantiate(PrefabAtaque, transform.position, Quaternion.identity);
+        foreach (var enemigo in EnemigosCercanos)
+        {
+            if (enemigo != null)
+            {
+                Instantiate(PrefabAtaque, enemigo.transform.position, Quaternion.identity);
+            }
+        }
     }
 }
