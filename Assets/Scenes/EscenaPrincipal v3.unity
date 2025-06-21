@@ -1232,6 +1232,8 @@ MonoBehaviour:
   Emisor: {fileID: 286261505}
   Persiguiendo: 0
   RecibioElMensaje: 0
+  EnemigosCercanos: []
+  PrefabDeAtaqueParaCercanos: {fileID: 0}
 --- !u!65 &165860168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1688,7 +1690,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -6.957966, w: 0}
+  m_margin: {x: 0, y: 0, z: 5.144867, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -3186,7 +3188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8765182097820496129, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.2
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 8765182097820496129, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3194,7 +3196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8765182097820496129, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -170.5
+      value: 1.83
       objectReference: {fileID: 0}
     - target: {fileID: 8765182097820496129, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3352,6 +3354,8 @@ MonoBehaviour:
   Emisor: {fileID: 687810149}
   Persiguiendo: 1
   RecibioElMensaje: 0
+  EnemigosCercanos: []
+  PrefabDeAtaqueParaCercanos: {fileID: 0}
 --- !u!65 &373113428
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13044,7 +13048,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1296848380}
   m_LocalRotation: {x: 0.008953544, y: 0.9376795, z: -0.17565127, w: 0.29970577}
-  m_LocalPosition: {x: 0, y: 0, z: -2.34}
+  m_LocalPosition: {x: 0, y: 0, z: -1.93}
   m_LocalScale: {x: 0.33562288, y: 0.33562288, z: 0.33562288}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13052,7 +13056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 19.559, y: 143.62, z: -5.389}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.89, y: -0.85}
+  m_AnchoredPosition: {x: 4.16, y: -0.42}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1296848382
@@ -13140,7 +13144,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -3.0876846, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -13716,6 +13720,8 @@ MonoBehaviour:
   Emisor: {fileID: 687810149}
   Persiguiendo: 1
   RecibioElMensaje: 0
+  EnemigosCercanos: []
+  PrefabDeAtaqueParaCercanos: {fileID: 0}
 --- !u!65 &1362352085
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15122,10 +15128,70 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2052101710308356047, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052101710308356047, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052101710308356047, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 291
+      objectReference: {fileID: 0}
+    - target: {fileID: 2052101710308356047, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2957282363702914124, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_fontSize
+      value: 34.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2957282363702914124, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_margin.w
+      value: 9.832161
+      objectReference: {fileID: 0}
+    - target: {fileID: 2957282363702914124, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_margin.y
+      value: 40.91809
+      objectReference: {fileID: 0}
+    - target: {fileID: 2957282363702914124, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 33f6608385fe47a488c817758f6fe81c, type: 2}
+    - target: {fileID: 2957282363702914124, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -5841046712557371208, guid: 33f6608385fe47a488c817758f6fe81c, type: 2}
+    - target: {fileID: 2957282363702914124, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4746294816313565873, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1319252232}
+    - target: {fileID: 6119019960452478398, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119019960452478398, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 50f8b01a2686c5b41a77177b4a98514f, type: 3}
+    - target: {fileID: 6119019960452478398, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119019960452478398, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119019960452478398, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6969200935386412630, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: _AccionesDeJugador
       value: 
