@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class PiezaHielo : MonoBehaviour
 {
-    public PuenteDeHielo puente; // arrastra aquí el componente PuenteDeHielo
+    public PuenteDeHielo puente;
+    public GameObject piezaQueActiva;
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        // Por ejemplo, solo reaccionar si colisiona una bola o el jugador:
+        Debug.Log("1");
         if (other.gameObject.name.Contains("Hielo"))
         {
-            Debug.Log($"{name} ha sido activada por {other.gameObject.name}");
-            puente.ActivarPieza(this.gameObject); // método que haremos en PuenteDeHielo
+            Debug.Log("2");
+            puente.ActivarPieza(piezaQueActiva);
         }
     }
+
 }

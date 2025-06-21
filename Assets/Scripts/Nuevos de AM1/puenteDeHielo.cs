@@ -22,8 +22,10 @@ public class PuenteDeHielo : MonoBehaviour
 
     public void ActivarPieza(GameObject pieza)
     {
+        Debug.Log("activado!");
         if (!pieza.activeSelf)
         {
+            Debug.Log("activado");
             pieza.SetActive(true);
             if (navMeshSurface != null) navMeshSurface.BuildNavMesh();
             StartCoroutine(DesactivarPieza(pieza));
@@ -33,7 +35,7 @@ public class PuenteDeHielo : MonoBehaviour
 
     private IEnumerator DesactivarPieza(GameObject pieza)
     {
-        Debug.Log("5");
+      
         yield return new WaitForSeconds(duracionHielo);
         pieza.SetActive(false);
 
