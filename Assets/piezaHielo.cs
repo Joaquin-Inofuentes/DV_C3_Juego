@@ -6,6 +6,7 @@ public class PiezaHielo : MonoBehaviour
 {
     public PuenteDeHielo puente;
     public GameObject piezaQueActiva;
+    public GameObject Puente;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -13,7 +14,8 @@ public class PiezaHielo : MonoBehaviour
         if (other.gameObject.name.Contains("Hielo"))
         {
             Debug.Log("2");
-            puente.ActivarPieza(piezaQueActiva);
+            puente.ActivarPlataformaCercana(piezaQueActiva.transform.position);
+            Puente.SetActive(true);
         }
     }
 
