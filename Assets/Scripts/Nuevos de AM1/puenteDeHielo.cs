@@ -33,9 +33,7 @@ public class PuenteDeHielo : MonoBehaviour
         if (plataformaCercana != null)
         {
             plataformaCercana.gameObject.SetActive(true);
-            if (navMeshSurface != null)
-                navMeshSurface.BuildNavMesh(); // Reconstruye el NavMesh
-
+            
             StartCoroutine(DesactivarPlataforma(plataformaCercana.gameObject));
         }
     }
