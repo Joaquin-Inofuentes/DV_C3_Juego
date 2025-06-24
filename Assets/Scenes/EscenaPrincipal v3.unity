@@ -1442,6 +1442,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3359565714932533383, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: SonidoDeInteraccion
       value: 
@@ -3631,6 +3635,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1781188899}
     - target: {fileID: 5282964226098417758, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
+      propertyPath: textoMonedasUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5282964226098417758, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: explosionPrefab
       value: 
       objectReference: {fileID: 7898315179254923771, guid: b6a7c8403140cf04782485cd79bc3716, type: 3}
@@ -3769,6 +3777,10 @@ PrefabInstance:
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3359565714932533383, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: SonidoDeInteraccion
@@ -4719,6 +4731,10 @@ PrefabInstance:
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3359565714932533383, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: SonidoDeInteraccion
@@ -11444,7 +11460,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PadreDeTextDeCreditos: {fileID: 0}
-  ContadorDeMonedas: 0
 --- !u!114 &799525357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15423,7 +15438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 246.25046
+      value: 275.24
       objectReference: {fileID: 0}
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15452,6 +15467,10 @@ PrefabInstance:
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3359565714932533383, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: SonidoDeInteraccion
@@ -15513,6 +15532,10 @@ PrefabInstance:
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3359565714932533383, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: SonidoDeInteraccion
@@ -17512,6 +17535,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1319252232}
+    - target: {fileID: 4941852257958351968, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6119019960452478398, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: m_Type
       value: 0
@@ -17621,6 +17648,10 @@ PrefabInstance:
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8769288837392605385, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_Name
@@ -19269,6 +19300,10 @@ PrefabInstance:
     - target: {fileID: 1306618902947719295, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096670262760460206, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3359565714932533383, guid: 241e606cedabb1345a467cd7c656c4f0, type: 3}
       propertyPath: SonidoDeInteraccion

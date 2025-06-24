@@ -6,8 +6,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
-public class AccionesJugador : A1_Entidad
+public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 {
     [Header("🏹 Proyectiles y Hitboxes")]
     public GameObject BolaDeFuego;
@@ -17,7 +18,7 @@ public class AccionesJugador : A1_Entidad
     public GameObject Flechazo;
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
-    public GameObject espada; // Referencia a la espada del jugador
+    public GameObject espada; 
     public Transform Origen;
     public GameObject trailObject;
     public TrailRenderer trail;
@@ -34,6 +35,7 @@ public class AccionesJugador : A1_Entidad
     private bool estaMuerto = false;
     private bool hitboxGenerada = false;
     public Vector3 Destino;
+    
 
     [Header("🎨 Feedbacks y Partículas")]
     public ParticleSystem Particulas;
@@ -45,7 +47,9 @@ public class AccionesJugador : A1_Entidad
     public Color Color_FueAvistado;
     public Color Color_Muere;
     public Color Color_SeCura;
-    
+
+    public int CantidadDeMonedas;
+    [SerializeField] private TextMeshProUGUI textoMonedasUI;
 
     [Header("⏱️ Cooldown Interno (barra horizontal)")]
     public float maxCoolDown = 0f;
@@ -434,6 +438,35 @@ public class AccionesJugador : A1_Entidad
 
     }
 
+   
+
+    public override void OnCollision(Collision collider)
+    {
+        // Implementar si hace falta
+    }
+    //interface de vida
+    public int vidaMaxima
+    {
+        get => VidaMax;
+    }
+    public int vidaActual {
+        get => Vida;
+        set => Vida = value;
+    }
+    public AudioSource RecibirDanoAudio;
+    public override void RecibirDanio(int cantidad)
+    {
+        Vida -= cantidad;
+        Debug.Log("recibio" + cantidad + "daño, su vida actual es " + vidaActual);
+        Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
+        EfectoDeRelentizarTiempo();
+        if (Vida <= 0)
+        {
+            Morir();
+            Invoke(nameof(CargaEscenaDerrota), 3f);
+        }
+        RecibirDanoAudio.Play();
+    }
     public AudioSource SonidoDeMorir;
     public GameObject FondoOscuroSangriendo;
     public override void Morir()
@@ -445,27 +478,9 @@ public class AccionesJugador : A1_Entidad
         SonidoDeMorir.Play();
         FondoOscuroSangriendo.SetActive(true);
     }
-
-    public override void OnCollision(Collision collider)
+     void CargaEscenaDerrota()
     {
-        // Implementar si hace falta
-    }
-
-    public AudioSource RecibirDanoAudio;
-    public override void RecibirDanio(int cantidad)
-    {
-        Vida -= cantidad;
-        Debug.Log($"{gameObject.name} recibió {cantidad} de daño. Vida restante: {Vida}", gameObject);
-        Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
-
-        EfectoDeRelentizarTiempo();
-        
-        if (Vida <= 0)
-        {
-            Morir();
-            Invoke(nameof(CargaEscenaDerrota), 3f);
-        }
-        RecibirDanoAudio.Play();
+        SceneManager.LoadScene("Derrota");
     }
 
     public void EfectoDeRelentizarTiempo()
@@ -473,18 +488,12 @@ public class AccionesJugador : A1_Entidad
         Time.timeScale = 0.4f;
         Invoke(nameof(RestablecerTiempo), 1f);
     }
-
     public void RestablecerTiempo()
     {
         Time.timeScale = 1f;
     }
 
-
-
-    void CargaEscenaDerrota()
-    {
-        SceneManager.LoadScene("Derrota");
-    }
+   
 
     /// <summary>
     /// Rotar la flecha hacia el cursor (solo en el plano XZ).
@@ -568,4 +577,26 @@ public class AccionesJugador : A1_Entidad
         }
         Debug.DrawLine(col.transform.position, gameObject.transform.position);
     }
+    public int ContadorDeMonedas
+    {
+        get { return CantidadDeMonedas; }
+    }
+    public void SumarMonedas (int cantidad)
+    {
+        CantidadDeMonedas += cantidad;
+        ActualizarTextoMonedas();
+    }
+    public void ActualizarTextoMonedas()
+    {
+        if (textoMonedasUI != null)
+        {
+            textoMonedasUI.text  = CantidadDeMonedas.ToString();
+            //if (GameManager.Componente.ContadorDeMonedas != _CantidadDeMonedas)
+            {
+                //    _CantidadDeMonedas = GameManager.Componente.ContadorDeMonedas; // Actualiza la cantidad de monedas
+                // Reproduce el sonido al obtener monedas
+            }
+        }
+    }
 }
+   

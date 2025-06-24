@@ -35,12 +35,7 @@ public class Feedbacks : MonoBehaviour
         if (GameManager.Componente) return;
         if (GameManager.Componente)
         {
-            Text_CantidadDeMonedas.text = "$ " + GameManager.Componente.ContadorDeMonedas.ToString();
-            if (GameManager.Componente.ContadorDeMonedas != _CantidadDeMonedas)
-            {
-                _CantidadDeMonedas = GameManager.Componente.ContadorDeMonedas; // Actualiza la cantidad de monedas
-                SonidoDeObtenerMonedas.Play(); // Reproduce el sonido al obtener monedas
-            }
+          
         }
     }
 

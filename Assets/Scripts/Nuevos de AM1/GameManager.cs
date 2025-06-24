@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,12 +28,14 @@ public class GameManager : MonoBehaviour
 
     // Propiedades públicas
     public GameObject PadreDeTextDeCreditos; // Objeto donde se muestran los créditos
-    public int ContadorDeMonedas; // Contador de monedas en el juego
+   
 
     void Start()
     {
         // Inicialización si es necesario
     }
+
+   
 
     void Update()
     {
@@ -101,8 +104,4 @@ public class GameManager : MonoBehaviour
     public static Vector3 PosicionDelMouseEnElEspacio;
 
 
-    public static void SumarMonedas(int Cantidad)
-    {
-        Componente.ContadorDeMonedas += Cantidad;
-    }
 }
