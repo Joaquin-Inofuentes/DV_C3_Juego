@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Analytics;
 
 public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 {
@@ -47,6 +48,10 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public Color Color_FueAvistado;
     public Color Color_Muere;
     public Color Color_SeCura;
+
+    [Header("Efectos sonido")]
+    
+    public AudioSource Coins;
 
     public int CantidadDeMonedas;
     [SerializeField] private TextMeshProUGUI textoMonedasUI;
@@ -590,12 +595,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         if (textoMonedasUI != null)
         {
-            textoMonedasUI.text  = CantidadDeMonedas.ToString();
-            //if (GameManager.Componente.ContadorDeMonedas != _CantidadDeMonedas)
-            {
-                //    _CantidadDeMonedas = GameManager.Componente.ContadorDeMonedas; // Actualiza la cantidad de monedas
-                // Reproduce el sonido al obtener monedas
-            }
+            textoMonedasUI.text = CantidadDeMonedas.ToString();      
         }
     }
 }
