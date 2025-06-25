@@ -37,13 +37,14 @@ public class AudioManager : MonoBehaviour
         AudioClip[] cargados = Resources.LoadAll<AudioClip>("Audio");
 
         foreach (AudioClip clip in cargados)
-        {
-            if (!clips.ContainsKey(clip.name))
-            {
-                clips.Add(clip.name, clip);
-                nombresDeClips.Add(clip.name);
-            }
-        }
+{
+    if (!clips.ContainsKey(clip.name))
+    {
+        clips.Add(clip.name, clip);
+        nombresDeClips.Add(clip.name);
+        clip.LoadAudioData(); // 🔊 ← esta línea carga el audio en RAM
+    }
+}
 
         sonidosEscaneados = true; // Marcar como ejecutado
     }
