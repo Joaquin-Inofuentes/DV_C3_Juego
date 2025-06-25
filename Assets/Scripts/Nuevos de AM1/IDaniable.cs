@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-    interface IDaniable
+//Tp2_Damian Figueredo
+//get y set
+interface IDaniable
 {
-    int vidaActual {  get; set; }
+    int vidaActual { get; set; }
     int vidaMaxima { get; }
 
     public void RecibirDanio(int cantidad);

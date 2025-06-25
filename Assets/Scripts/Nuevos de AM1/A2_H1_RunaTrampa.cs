@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
+
+//TP2_Scrip hecho por Javier Espiñeira
 
 public class A2_H1_RunaTrampa : A2_Trampa
 {
-
+    
     public override void Activate()
     {
         base.Activate();
         // Agregar Logica de desactivar Sonido, Apariencia, Creacion etc
+        
     }
 
     public override void Desactivar()
