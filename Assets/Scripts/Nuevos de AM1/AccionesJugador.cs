@@ -59,6 +59,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     [Header("⏱️ Cooldown Interno (barra horizontal)")]
     public float maxCoolDown = 0f;
     private float _coolDown = 0f;
+    // TP 2_Inofuentes Joaquin
+    //get y set
     public float CoolDown
     {
         get => _coolDown;
@@ -449,7 +451,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         // Implementar si hace falta
     }
-    //interface de vida
+    //TP2_DamianFigueredo interface de vida
+    //get y set de vida
     public int vidaMaxima
     {
         get => VidaMax;
@@ -582,6 +585,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
         Debug.DrawLine(col.transform.position, gameObject.transform.position);
     }
+    //TP 2_Damian Figueredo
     public int ContadorDeMonedas
     {
         get { return CantidadDeMonedas; }

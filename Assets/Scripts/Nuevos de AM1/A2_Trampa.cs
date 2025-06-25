@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TP2_Scrip hecho por Javier Espiñeira
 public abstract class A2_Trampa : MonoBehaviour
 {
-
+    
     /*
      #activada: bool 
      <abstract> OnCollisionEnter(Coll Collider): void 

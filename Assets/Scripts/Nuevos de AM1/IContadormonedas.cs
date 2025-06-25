@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//tp2_Damian Figueredo
+//get
 public interface IContadormonedas
 {
    int ContadorDeMonedas {  get; }
