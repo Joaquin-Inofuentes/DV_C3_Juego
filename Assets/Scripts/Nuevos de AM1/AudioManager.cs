@@ -6,6 +6,8 @@ public class AudioManager : MonoBehaviour
     static public AudioManager instance;
 
     public List<string> nombresDeClips = new List<string>();
+    // TP2 - JOAQUIN INOFUENTES
+    // Uso de diccionarios para almacenar los clips de audio
     public static Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
 
     private bool sonidosEscaneados = false; // Nuevo flag
