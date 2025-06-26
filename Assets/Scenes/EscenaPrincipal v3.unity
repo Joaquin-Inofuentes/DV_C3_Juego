@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17755,7 +17755,10 @@ PrefabInstance:
       objectReference: {fileID: 1916620654}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1464100807650845592, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      insertIndex: 7
+      addedObject: {fileID: 1693088872}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
 --- !u!1 &1639250814 stripped
@@ -18071,6 +18074,41 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
   m_PrefabInstance: {fileID: 528285693}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1693088871
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1693088872}
+  m_Layer: 5
+  m_Name: UI_Modos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1693088872
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693088871}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1923887421}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1694114975
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19038,6 +19076,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041e98103a15e1e45b10696a0d2f7a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1923887421 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1464100807650845592, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+  m_PrefabInstance: {fileID: 1639250813}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1950243098
 GameObject:
   m_ObjectHideFlags: 0

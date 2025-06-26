@@ -122,24 +122,32 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         {
             if (!modoMelee)
             {
-                // Cambiar a modo melee
                 modoMelee = true;
-                _TimerManager.enModoMagico = false;
+
+                if (!TimerManager.Controler.enTransicionVisual && Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    // Cambiar de modo
+                    TimerManager.Controler.TransicionarModoVisual();
+                    TimerManager.Controler.enModoMagico = !TimerManager.Controler.enModoMagico;
+                }
+
                 IndicadoresMelee.SetActive(true);
                 Debug.Log("Modo cambiado a MELEE");
-                anim.SetLayerWeight(0, 0f); // capa 0 = Rango
-                anim.SetLayerWeight(1, 1f); // capa 1 = Melee
+                anim.SetLayerWeight(0, 0f);
+                anim.SetLayerWeight(1, 1f);
                 if (espada != null)
-                {
                     espada.SetActive(true);
-                }
             }
+
             else
             {
-                // Cambiar a modo rango
+                // Cambiar a modo magia
                 modoMelee = false;
+                // 🔁 Ejecutar animación visual
+                _TimerManager.TransicionarModoVisual();
+
                 _TimerManager.enModoMagico = true;
-                IndicadoresMelee.SetActive(false);
+                               IndicadoresMelee.SetActive(false);
                 Debug.Log("Modo cambiado a RANGO");
                 anim.SetLayerWeight(0, 1f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 0f); // capa 1 = Melee
@@ -147,12 +155,14 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 {
                     espada.SetActive(false);
                 }
+
+                
             }
         }
 
 
-        // 5) Rotar flecha hacia cursor si existe
-        RotarFlechaHaciaElCursor();
+    // 5) Rotar flecha hacia cursor si existe
+    RotarFlechaHaciaElCursor();
     }
 
     /// <summary>
