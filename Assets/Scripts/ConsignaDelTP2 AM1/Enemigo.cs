@@ -2,6 +2,9 @@ using UnityEngine;
 using RTS.Comunicacion;
 using System.Linq; // Asegúrate de tener esto para usar Any y métodos de extensión
 
+// TP - 2 Joaquin Inofuentes
+// Event y interfaces genericas
+
 public class Enemigo : EntidadBase, IPingListener<EntidadBase>, IPingSender<EntidadBase>
 {
     public A1_A1_Enemigo Componente;

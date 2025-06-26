@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RTS; // Asegúrate de tener acceso al namespace donde está PingManager
-
+// TP2 - Joaquin Inofuentes
+// Diccionario y namespaces
 namespace RTS.GridSystem
 {
     public static class GridManager
