@@ -15,7 +15,8 @@ public class Feedbacks : MonoBehaviour
     public TextMeshProUGUI Text_CantidadDeMonedas;
     public AudioSource S_MomentoEpico;
     public static Feedbacks Componente; // Singleton para acceder f�cilmente desde otros scripts
-    public GameObject PantallaDeCombo;
+    public UIFadeCombo UIFadeComboScript;
+
     void Start()
     {
         animator = GetComponent<Animator>(); // Obtiene el Animator del GameObject
