@@ -254,7 +254,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public AudioClip AudioAlRecibirDanio; // Sonido al recibir daño
     public override void RecibirDanio(int cantidad)
     {
-        //if()
+        Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
         if (ultimoProyectilRecibido.Contains("hitboxCubo")
             && PendienteDeCargaElectrica == true)
         {
@@ -491,10 +491,12 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
     }
 
+    public AudioClip SonidoDeTeletransportacion;
     void CambiarDePosicion()
     {
         int index = Random.Range(0, puntosSpawn.Count);
         transform.position = puntosSpawn[index].position;
+        AudioManager.CrearEfectoSonoro(transform.position, SonidoDeTeletransportacion);
         //transform.LookAt(objetivo.position); // Mirar hacia el objetivo
     }
 
@@ -531,4 +533,9 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         // Tu lógica de daño
     }
 
+    public void AsignarEnemigo(GameObject gameObject)
+    {
+        Objetivo = gameObject;
+        objetivoActual = gameObject.transform;
+    }
 }

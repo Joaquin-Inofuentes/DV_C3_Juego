@@ -302,7 +302,6 @@ RectTransform:
   - {fileID: 2597323899917708884}
   - {fileID: 3606373352663918032}
   - {fileID: 7807309999811623931}
-  - {fileID: 2661743020603822163}
   - {fileID: 6174557250434509199}
   - {fileID: 8229903060932186993}
   - {fileID: 6838888557362665578}
@@ -313,6 +312,7 @@ RectTransform:
   - {fileID: 2052101710308356047}
   - {fileID: 60688369435393534}
   - {fileID: 7394673867649560427}
+  - {fileID: 2661743020603822163}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3790,7 +3790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3817,7 +3817,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 44.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

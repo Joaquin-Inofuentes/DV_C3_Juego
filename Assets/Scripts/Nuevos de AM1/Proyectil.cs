@@ -144,9 +144,12 @@ public class Proyectil : MonoBehaviour
             float DistanciaParaAtacar =
                 enemigo.ModoAtaqueMelee ?
                 enemigo.DistanciaParaAtaqueMelee : enemigo.DistanciaParaAtaqueLargo;
-            if (Vector3.Distance(
+            if (Creador != null && enemigo != null &&
+
+                Vector3.Distance(
                 enemigo.transform.position
-                , Creador.transform.position) > DistanciaParaAtacar)
+                , Creador.transform.position) > DistanciaParaAtacar
+                )
             {
                 if (!enemigo.name.Contains("Jugador"))
                 {
