@@ -6,6 +6,8 @@ public class AudioManager : MonoBehaviour
     static public AudioManager instance;
 
     public List<string> nombresDeClips = new List<string>();
+    // TP2 - JOAQUIN INOFUENTES
+    // Uso de diccionarios para almacenar los clips de audio
     public static Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
 
     private bool sonidosEscaneados = false; // Nuevo flag
@@ -37,13 +39,14 @@ public class AudioManager : MonoBehaviour
         AudioClip[] cargados = Resources.LoadAll<AudioClip>("Audio");
 
         foreach (AudioClip clip in cargados)
-        {
-            if (!clips.ContainsKey(clip.name))
-            {
-                clips.Add(clip.name, clip);
-                nombresDeClips.Add(clip.name);
-            }
-        }
+{
+    if (!clips.ContainsKey(clip.name))
+    {
+        clips.Add(clip.name, clip);
+        nombresDeClips.Add(clip.name);
+        clip.LoadAudioData(); // 🔊 ← esta línea carga el audio en RAM
+    }
+}
 
         sonidosEscaneados = true; // Marcar como ejecutado
     }

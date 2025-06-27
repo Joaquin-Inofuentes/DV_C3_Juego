@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TP2_Scrip hecho por Javier Espiñeira
+
 public class A2_H2_Explosiva : A2_Trampa
 {
     public override void Activate()
