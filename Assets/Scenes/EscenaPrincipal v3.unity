@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3906,7 +3906,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4198674384120190356, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1552667483}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6837533125788142255, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2016745114}
   m_SourcePrefab: {fileID: 100100000, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
 --- !u!1001 &321361109
 PrefabInstance:
@@ -14388,6 +14391,134 @@ Transform:
   - {fileID: 1724364406}
   m_Father: {fileID: 2982607105607962146}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1159487902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1159487903}
+  - component: {fileID: 1159487904}
+  m_Layer: 0
+  m_Name: ColisionesRio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1159487903
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159487902}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.59079945, y: -0.06029045, z: 0.13226044, w: 0.79361725}
+  m_LocalPosition: {x: -10.62, y: 1.08, z: -33.91}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1159487904
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159487902}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1164661837
 GameObject:
   m_ObjectHideFlags: 0
@@ -19597,7 +19728,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5282964226098417758, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
   m_PrefabInstance: {fileID: 306825972}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2016745103}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0086186a9c190144e904abc91461d385, type: 3}
@@ -19918,6 +20049,59 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 519669685813572173, guid: fd0f76977fd09ae449fcd1fac27c0dfd, type: 3}
   m_PrefabInstance: {fileID: 1694114975}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1968776616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1968776617}
+  - component: {fileID: 1968776619}
+  m_Layer: 0
+  m_Name: riocolision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1968776617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968776616}
+  serializedVersion: 2
+  m_LocalRotation: {x: 6.643466e-12, y: 0.014266739, z: -4.6561383e-10, w: 0.9998983}
+  m_LocalPosition: {x: 13.15, y: -0.09, z: -175.05}
+  m_LocalScale: {x: 22.676857, y: 0.5154197, z: 0.8345885}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1968776619
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968776616}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1976431416
 GameObject:
   m_ObjectHideFlags: 0
@@ -20435,6 +20619,28 @@ Transform:
   - {fileID: 1923097374}
   m_Father: {fileID: 554687697}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2016745103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6837533125788142255, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
+  m_PrefabInstance: {fileID: 306825972}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2016745114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016745103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33df3d7d71df8e45930bcac54663b5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ColisionesRio: {fileID: 1159487904}
+  ClipsChoquesRio:
+  - {fileID: 8300000, guid: 2ef746b19d88cfc42a1e4207e6ebb4c0, type: 3}
+  - {fileID: 8300000, guid: 6b334aeaff5e42142aaa27b9ff579a52, type: 3}
+  - {fileID: 8300000, guid: 84879bcba9122c4478f39f2a03ecd467, type: 3}
 --- !u!1 &2031177692
 GameObject:
   m_ObjectHideFlags: 0
@@ -21125,6 +21331,7 @@ MonoBehaviour:
   puente: {fileID: 7624257689859688971}
   piezaQueActiva: {fileID: 9166582541873474173}
   Puente: {fileID: 915800110}
+  riocolision: {fileID: 1968776616}
   obstacle: {fileID: 0}
   duracionPuente: 15
 --- !u!23 &1045772561794665116
@@ -21269,6 +21476,7 @@ MonoBehaviour:
   puente: {fileID: 7624257689859688971}
   piezaQueActiva: {fileID: 1153726096}
   Puente: {fileID: 1203885630}
+  riocolision: {fileID: 1968776616}
   obstacle: {fileID: 0}
   duracionPuente: 15
 --- !u!33 &1673642407983322489
@@ -21436,8 +21644,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25, y: 3.67, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.35165697, y: 3.6700008, z: 1}
+  m_Center: {x: -0.05160264, y: 3.4203227e-17, z: 0.0076653026}
 --- !u!1 &2758315686885325520
 GameObject:
   m_ObjectHideFlags: 0
@@ -22282,11 +22490,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.07, y: 0.5, z: 3.825}
+  m_Extents: {x: 0.07, y: 0.5, z: 3.415}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.04, y: 0, z: -0.48}
   m_TimeToStationary: 0.5
 --- !u!4 &5425959413001839461
 Transform:
@@ -23282,6 +23490,7 @@ MonoBehaviour:
   puente: {fileID: 7624257689859688971}
   piezaQueActiva: {fileID: 3174587130602973587}
   Puente: {fileID: 1389521830}
+  riocolision: {fileID: 1968776616}
   obstacle: {fileID: 0}
   duracionPuente: 15
 --- !u!208 &8366217607518285076
@@ -23294,7 +23503,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.265, y: 0.5, z: 3.145}
+  m_Extents: {x: 0.265, y: 0.5, z: 3.22}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -23356,7 +23565,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   puente: {fileID: 7624257689859688971}
   piezaQueActiva: {fileID: 1194835465}
-  Puente: {fileID: 0}
+  Puente: {fileID: 261546504}
+  riocolision: {fileID: 1968776616}
   obstacle: {fileID: 0}
   duracionPuente: 15
 --- !u!208 &8527173592287790160
@@ -23373,7 +23583,7 @@ NavMeshObstacle:
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.06, y: 0, z: 0}
   m_TimeToStationary: 0.5
 --- !u!33 &8660542874106348994
 MeshFilter:
@@ -23617,7 +23827,9 @@ SceneRoots:
   - {fileID: 1772737536}
   - {fileID: 2982607105607962146}
   - {fileID: 6930280185950809792}
+  - {fileID: 1968776617}
   - {fileID: 7057732651516506465}
+  - {fileID: 1159487903}
   - {fileID: 1646160864}
   - {fileID: 1997163143}
   - {fileID: 1980602136}

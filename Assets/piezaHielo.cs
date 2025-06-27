@@ -9,6 +9,7 @@ public class PiezaHielo : MonoBehaviour
     public PuenteDeHielo puente;
     public GameObject piezaQueActiva;
     public GameObject Puente;
+    public GameObject riocolision;
     public NavMeshObstacle obstacle;
     public float duracionPuente = 15f;
     private Coroutine coroutineDesactivar;
@@ -33,7 +34,7 @@ public class PiezaHielo : MonoBehaviour
         {
             Debug.Log("2");
             puente.ActivarPlataformaCercana(piezaQueActiva.transform.position);
-           
+            riocolision.gameObject.SetActive(false);
             obstacle.enabled = false;
 
         }
@@ -44,6 +45,7 @@ public class PiezaHielo : MonoBehaviour
         {
             // Iniciamos la cuenta regresiva para desactivar el puente
             coroutineDesactivar = StartCoroutine(DesactivarPuenteDespuesDeTiempo());
+            //other.gameObject.SetActive(true);
         }
     }
 
@@ -53,6 +55,7 @@ public class PiezaHielo : MonoBehaviour
 
         Puente.SetActive(false);
         obstacle.enabled = true;
+        riocolision.SetActive(true);
         coroutineDesactivar = null;
     }
 
