@@ -176,6 +176,13 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public Vector3 DestinoAsignado = Vector3.zero;
     public override void IrAlDestino(Vector3 destino)
     {
+
+        if (gameObject.name.Contains("ArqueraDuende"))
+        {
+            return;
+        }
+        if (Vector3.Distance(destino, DestinoAsignado) < 3) return;
+
         if (Congelado) return;
         if (estaMuerto) return;
         agent.isStopped = false;
@@ -191,20 +198,29 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
     }
 
+    public AudioClip SonidoAlMorir; // Sonido al morir
+
     public override void Morir()
     {
-        agent.enabled = false;
-        PadreDebarraDevida.SetActive(false);
-        // transform.Translate(0, -0.7f, 0); Correcion del bug de eliminar al boss
-        anim.SetBool("life", false);
-        StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
-        Debug.Log("Falta animacion de morir");
-        GetComponent<BoxCollider>().enabled = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         if (estaMuerto) return;
-        estaMuerto = true;
+        try
+        {
+            AudioManager.CrearEfectoSonoro(transform.position, SonidoAlMorir); // Reproducir sonido al morir
+            agent.enabled = false;
+            PadreDebarraDevida.SetActive(false);
+            // transform.Translate(0, -0.7f, 0); Correcion del bug de eliminar al boss
+            anim.SetBool("life", false);
+            StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
+            Debug.Log("Falta animacion de morir");
+            GetComponent<BoxCollider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        }
+        finally
+        {
+            estaMuerto = true;
+        }
     }
 
     private IEnumerator DesaparecerDespuesDeSegundos(float segundos)
@@ -235,11 +251,11 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public bool PendienteDeCargaElectrica = false;
     public ReportadorDeLasColisiones CargaElectrica;
-
+    public AudioClip AudioAlRecibirDanio; // Sonido al recibir daño
     public override void RecibirDanio(int cantidad)
     {
-        //if()
-        if (ultimoProyectilRecibido.Contains("hitboxCubo") 
+        Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
+        if (ultimoProyectilRecibido.Contains("hitboxCubo")
             && PendienteDeCargaElectrica == true)
         {
             if (PrimerAtaqueAAnular)
@@ -251,13 +267,16 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             ultimoProyectilRecibido = "";
             Vida -= cantidad;
             CargaElectrica.ElectrocutarCercanos();
-         
+
             Color amarilloElectrico = new Color(1f, 0.858f, 0.039f);
             Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡DESCARGA ENCADENADA!", amarilloElectrico);
 
             PendienteDeCargaElectrica = false;
         }
-
+        if (AudioAlRecibirDanio)
+        {
+            AudioManager.CrearEfectoSonoro(transform.position, AudioAlRecibirDanio); // Reproducir sonido al recibir daño
+        }
         //Debug.Log(1);
         Vida -= cantidad;
         S_RecibirDano.Play(); // Reproducir sonido al recibir daño
@@ -316,7 +335,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
         Color celesteHielo = new Color(0.5f, 1f, 1f);
         Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡FRACTURA CONGELADA!", celesteHielo);
-        
+
         if (Feedbacks.Componente.S_MomentoEpico != null)
             Feedbacks.Componente.S_MomentoEpico.Play();
 
@@ -337,6 +356,12 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
                       // Cï¿½digo propio de ArquerasElfas
         anchoOriginal = BarraDeVida.transform.localScale.x;
 
+
+        if (gameObject.name.Contains("ArqueraDuende"))
+        {
+            Iniciar();
+        }
+
     }
 
 
@@ -346,7 +371,14 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         base.Update(); // Llama al Update del padre
         float velocidad = agent.velocity.magnitude;
         //Debug.Log("Velocidad agente: " + velocidad);
-        anim.SetFloat("velocidad", velocidad);
+        if (anim)
+        {
+            anim.SetFloat("velocidad", velocidad);
+        }
+        else
+        {
+            Debug.Log("Falta el anim de " + gameObject.name, gameObject);
+        }
         ActualizarBarraDevida();
         if (Vector3.Distance(transform.position, DestinoAsignado) < 2f)
         {
@@ -354,6 +386,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
         if (Vida < 10)
         {
+            Debug.Log("se tiene " + Vida);
             Morir();
         }
 
@@ -361,6 +394,22 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             Congelado = false; // Si el efecto de congelación ya no existe, desactivar el estado de congelación
             RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo
+        }
+
+
+        if (gameObject.name.Contains("ArqueraDuende"))
+        {
+            //Debug.Log(1);
+
+            if (objetivoActual != null)
+            {
+                Reaparaciones();
+            }
+
+            if (objetivoActual != null)
+            {
+                transform.LookAt(objetivoActual.transform.position);
+            }
         }
     }
 
@@ -398,4 +447,95 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         Debug.Log("Descongelar enemigo", gameObject);
     }
 
+    [Header("Configuración")]
+    public List<Transform> puntosSpawn;
+    public GameObject proyectilPrefab;
+
+    float tiempoSiguienteCambio;
+    float intervaloCambio;
+
+    float tiempoSiguienteAtaque;
+    float intervaloAtaque;
+
+
+    void Iniciar()
+    {
+        //anim = GetComponent<Animator>();
+        GenerarNuevoIntervaloCambio();
+        GenerarNuevoIntervaloAtaque();
+        tiempoSiguienteCambio = Time.time + intervaloCambio;
+        tiempoSiguienteAtaque = Time.time + intervaloAtaque;
+    }
+
+    void Reaparaciones()
+    {
+        string nombreAnim = anim.GetCurrentAnimatorClipInfo(0).Length > 0 ? anim.GetCurrentAnimatorClipInfo(0)[0].clip.name : "";
+
+        if (nombreAnim.Contains("Ataque"))
+            return;
+
+        // Cambio de posición aleatorio
+        if (Time.time >= tiempoSiguienteCambio)
+        {
+            CambiarDePosicion();
+            GenerarNuevoIntervaloCambio();
+            tiempoSiguienteCambio = Time.time + intervaloCambio;
+        }
+
+        // Ataque aleatorio
+        if (Time.time >= tiempoSiguienteAtaque)
+        {
+            ActivarYAtacar();
+            GenerarNuevoIntervaloAtaque();
+            tiempoSiguienteAtaque = Time.time + intervaloAtaque;
+        }
+    }
+
+    public AudioClip SonidoDeTeletransportacion;
+    void CambiarDePosicion()
+    {
+        int index = Random.Range(0, puntosSpawn.Count);
+        transform.position = puntosSpawn[index].position;
+        AudioManager.CrearEfectoSonoro(transform.position, SonidoDeTeletransportacion);
+        //transform.LookAt(objetivo.position); // Mirar hacia el objetivo
+    }
+
+    void GenerarNuevoIntervaloCambio()
+    {
+        intervaloCambio = Random.Range(3.1f, 6f);
+    }
+
+    void GenerarNuevoIntervaloAtaque()
+    {
+        intervaloAtaque = Random.Range(1f, 3f);
+    }
+
+    public void ActivarYAtacar()
+    {
+        anim.SetTrigger("ataque1");
+    }
+
+    public void EndAnimationAtack()
+    {
+        Debug.Log("Se inicio el ataque");
+        Atacar(objetivoActual.position);
+        Vector3 dir = objetivoActual.position - transform.position;
+        transform.right = dir;
+
+        GameObject nuevo = Instantiate(proyectilPrefab, transform.position, Quaternion.identity);
+        nuevo.GetComponent<Proyectil>().Inicializar(dir.normalized);
+        nuevo.GetComponent<Proyectil>().Creador = gameObject; // Asignar el creador del proyectil
+    }
+
+    public void GenerarHitboxAtaqueRapido()
+    {
+        Debug.Log("Hitbox generado");
+        // Tu lógica de daño
+    }
+
+    public void AsignarEnemigo(GameObject gameObject)
+    {
+        Objetivo = gameObject;
+        objetivoActual = gameObject.transform;
+    }
 }

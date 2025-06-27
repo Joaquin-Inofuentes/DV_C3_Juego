@@ -395,7 +395,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7357bff82e3beab43911aed97a73aa46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Creador: {fileID: 0}
+  EfectoEspecial: {fileID: 0}
+  AutoDestruir: 1
+  AudioAlAparecer: {fileID: 8300000, guid: 5f550bace4c82e542bf099f879e8ef36, type: 3}
+  velocidad: 10
   danio: 10
+  PuntoDeColision: {x: 0, y: 0, z: 0}
+  AudioAlColisionar: {fileID: 8300000, guid: df7ff507c7a744d489007b77511dc4de, type: 3}
 --- !u!65 &7342949865089916581
 BoxCollider:
   m_ObjectHideFlags: 0

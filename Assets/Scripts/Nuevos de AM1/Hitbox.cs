@@ -5,7 +5,13 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     public int danio;
+    public AudioClip AudioTrasAtacarAAlguien;
+    public AudioClip AudioAtaqueAlAire;
+    public void Start()
+    {
 
+    }
+    public bool AtacoAAlguien;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.Contains("Jugador")) return;
@@ -14,10 +20,21 @@ public class Hitbox : MonoBehaviour
         {
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
             enemigo.RecibirDanio(danio);
+            AtacoAAlguien = true;
             Destroy(gameObject); // Solo golpea una vez
         }
     }
-
+    public void OnDestroy()
+    {
+        if (AtacoAAlguien)
+        {
+            AudioManager.CrearEfectoSonoro(transform.position, AudioTrasAtacarAAlguien);
+        }
+        else
+        {
+            AudioManager.CrearEfectoSonoro(transform.position, AudioAtaqueAlAire);
+        }
+    }
 
     public void ConfigurarDanio(int cantidad)
     {

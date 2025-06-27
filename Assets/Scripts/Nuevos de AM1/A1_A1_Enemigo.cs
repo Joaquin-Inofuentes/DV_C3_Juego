@@ -36,7 +36,7 @@ public abstract class A1_A1_Enemigo : A1_Entidad
     public static List<GameObject> ListaDeEnemigosActivos = new List<GameObject>();
 
     // Privado
-    protected Transform objetivoActual;
+    public Transform objetivoActual;
 
     // Unity Methods
     protected virtual void Start()
