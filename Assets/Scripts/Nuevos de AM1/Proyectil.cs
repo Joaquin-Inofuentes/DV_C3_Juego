@@ -7,16 +7,27 @@ public class Proyectil : MonoBehaviour
     public GameObject Creador;
     public GameObject EfectoEspecial;
     public bool AutoDestruir = true;
+    public AudioClip AudioAlAparecer;
+
     // Start is called before the first frame update
     void Start()
     {
         Destroy(gameObject, 2);
+        AudioManager.CrearEfectoSonoro(transform.position, AudioAlAparecer);
     }
 
-    // Update is called once per frame
+    public float velocidad = 10f;
+    private Vector3 direccion;
+
+    public void Inicializar(Vector3 dir)
+    {
+        direccion = dir;
+        Destroy(gameObject, 5f); // autodestruir
+    }
+
     void Update()
     {
-
+        transform.position += direccion * velocidad * Time.deltaTime;
     }
 
 
@@ -62,11 +73,13 @@ public class Proyectil : MonoBehaviour
 
     public int danio = 10;
     public Vector3 PuntoDeColision;
+    public AudioClip AudioAlColisionar;
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
         //Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
         // Colisiono con Moustro Mas cercano tag Untagged Tipo: CollisionEnter
         if (collision == Creador) return;
+
         if (collision.tag == "Ambiente" || collision.name == "Terrain")
         {
             //Debug.Log(collision.ToString() + TipoDeColision);
@@ -137,7 +150,8 @@ public class Proyectil : MonoBehaviour
             {
                 if (!enemigo.name.Contains("Jugador"))
                 {
-                    enemigo.IrAlDestino(Creador.transform.position);
+                    if (enemigo.gameObject.name != "Jugador 1")
+                        enemigo.IrAlDestino(Creador.transform.position);
                 }
             }
         }
@@ -167,7 +181,7 @@ public class Proyectil : MonoBehaviour
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
         }
 
-        if (gameObject.name.Contains("Electrico") && EfectoEspecial)
+        else if (gameObject.name.Contains("Electrico") && EfectoEspecial)
         {
             GameObject Efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
             ATK_Congelar Componente = Efecto.GetComponent<ATK_Congelar>();
@@ -190,4 +204,9 @@ public class Proyectil : MonoBehaviour
         }
     }
 
+
+    public void OnDestroy()
+    {
+        AudioManager.CrearEfectoSonoro(PuntoDeColision, AudioAlColisionar);
+    }
 }

@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Analytics;
+using System;
 
 public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 {
@@ -19,13 +20,13 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public GameObject Flechazo;
     public GameObject hitboxCuboPrefab;
     public float fuerzaDisparo = 500f;
-    public GameObject espada; 
+    public GameObject espada;
     public Transform Origen;
     public GameObject trailObject;
     public TrailRenderer trail;
     public float trailTime = 0.5f;
     public float clearDelay = 0.1f;
-    
+
 
 
 
@@ -38,7 +39,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     private bool estaMuerto = false;
     private bool hitboxGenerada = false;
     public Vector3 Destino;
-    
+
 
     [Header("🎨 Feedbacks y Partículas")]
     public ParticleSystem Particulas;
@@ -52,7 +53,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public Color Color_SeCura;
 
     [Header("Efectos sonido")]
-    
+
     public AudioSource Coins;
 
     public int CantidadDeMonedas;
@@ -149,7 +150,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 _TimerManager.TransicionarModoVisual();
 
                 _TimerManager.enModoMagico = true;
-                               IndicadoresMelee.SetActive(false);
+                IndicadoresMelee.SetActive(false);
                 Debug.Log("Modo cambiado a RANGO");
                 anim.SetLayerWeight(0, 1f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 0f); // capa 1 = Melee
@@ -158,13 +159,13 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                     espada.SetActive(false);
                 }
 
-                
+
             }
         }
 
 
-    // 5) Rotar flecha hacia cursor si existe
-    RotarFlechaHaciaElCursor();
+        // 5) Rotar flecha hacia cursor si existe
+        RotarFlechaHaciaElCursor();
     }
 
     /// <summary>
@@ -211,7 +212,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         // 1) Chequear cooldown “general” (índice 6)
         if (_TimerManager.IsTimerCharging(6)) return;
         _TimerManager.SetTimerToMax(6);
-        
+
         GameObject ProyectilUsado = null;
 
         // --- HECHIZOS / ATAQUES ---
@@ -220,7 +221,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             if (!modoMelee)
             {
                 if (_TimerManager.IsTimerCharging(0)) return;
-                anim.SetTrigger("magic1"); 
+                anim.SetTrigger("magic1");
                 ProyectilUsado = BolaDeFuego;
                 _TimerManager.SetTimerToMax(0);
 
@@ -263,7 +264,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             else
             {
                 if (_TimerManager.IsTimerCharging(5)) return;
-                anim.SetTrigger("melee3"); 
+                anim.SetTrigger("melee3");
                 _TimerManager.SetTimerToMax(5);
             }
             anim.SetFloat("velocidad", 0f);
@@ -430,8 +431,11 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         S_Caminar.Stop();
     }
 
+    public Vector3 DestinoGuardado;
     public override void IrAlDestino(Vector3 destino)
     {
+        if (Vector3.Distance(destino, DestinoGuardado) < 2) return;
+        DestinoGuardado = destino;
         if (estaMuerto) return;
         agent.isStopped = false;
         transform.LookAt(destino);
@@ -457,7 +461,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     }
 
-   
+
 
     public override void OnCollision(Collision collider)
     {
@@ -469,7 +473,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         get => VidaMax;
     }
-    public int vidaActual {
+    public int vidaActual
+    {
         get => Vida;
         set => Vida = value;
     }
@@ -498,7 +503,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         SonidoDeMorir.Play();
         FondoOscuroSangriendo.SetActive(true);
     }
-     void CargaEscenaDerrota()
+    void CargaEscenaDerrota()
     {
         SceneManager.LoadScene("Derrota");
     }
@@ -513,7 +518,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         Time.timeScale = 1f;
     }
 
-   
+
 
     /// <summary>
     /// Rotar la flecha hacia el cursor (solo en el plano XZ).
@@ -602,7 +607,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         get { return CantidadDeMonedas; }
     }
-    public void SumarMonedas (int cantidad)
+    public void SumarMonedas(int cantidad)
     {
         CantidadDeMonedas += cantidad;
         ActualizarTextoMonedas();
@@ -611,8 +616,24 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         if (textoMonedasUI != null)
         {
-            textoMonedasUI.text = CantidadDeMonedas.ToString();      
+            textoMonedasUI.text = CantidadDeMonedas.ToString();
+        }
+    }
+
+
+
+    public AudioClip SonidoDeCaminarEnHielo;
+    public AudioClip SonidoDeCaminarEnPasto;
+    public void ReproducirSonidoDeCaminar()
+    {
+        float PosicionEnZ = Math.Abs(transform.position.z);
+        if (PosicionEnZ < 195
+            && PosicionEnZ > 175
+            )
+            S_Caminar.clip = SonidoDeCaminarEnHielo;
+        else
+        {
+            S_Caminar.clip = SonidoDeCaminarEnPasto;
         }
     }
 }
-   

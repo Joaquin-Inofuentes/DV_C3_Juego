@@ -2096,6 +2096,7 @@ MonoBehaviour:
   S_Caminar: {fileID: 5209441214416743401}
   rangoDeteccion: 6
   rangoAtaque: 4
+  objetivoActual: {fileID: 0}
   EstadoActual: {fileID: 0}
   BolaDeAtaque: {fileID: 3314820458270015711, guid: a08f35a6d1f17e9428cdc2949b7debd6, type: 3}
   AtaqueActual: {fileID: 0}
@@ -2109,12 +2110,15 @@ MonoBehaviour:
   AnimacionActual: 
   DestinoDelAtaque: {x: 0, y: 0, z: 0}
   DestinoAsignado: {x: 0, y: 0, z: 0}
+  SonidoAlMorir: {fileID: 8300000, guid: 436a09e34ee42cf4b80728b82d7c343b, type: 3}
   RecibiraDobleDanoLaProximaVez: 0
   S_RecibirDano: {fileID: 7009627826712038730}
   PendienteDeCargaElectrica: 0
   CargaElectrica: {fileID: 7474941633747556650}
   VFXDeRopturaDeHielo: {fileID: 1437506766677768766, guid: 02c678d08b0846c4e8a3775ad904fe03, type: 3}
   S_RupturaDeHielo: {fileID: 8506818581573726860}
+  puntosSpawn: []
+  proyectilPrefab: {fileID: 0}
 --- !u!114 &4886365123928998457
 MonoBehaviour:
   m_ObjectHideFlags: 0

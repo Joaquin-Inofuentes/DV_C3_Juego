@@ -121,6 +121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   danio: 10
+  AudioTrasAtacarAAlguien: {fileID: 8300000, guid: a8ea8073f60385d46875ad9f9577035b, type: 3}
+  AudioAtaqueAlAire: {fileID: 8300000, guid: 99cfb40ac3bf5124c83a66f1ea0ecb5f, type: 3}
+  AtacoAAlguien: 0
 --- !u!114 &-5942179509972181106
 MonoBehaviour:
   m_ObjectHideFlags: 0

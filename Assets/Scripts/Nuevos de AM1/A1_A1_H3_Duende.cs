@@ -6,6 +6,18 @@ using UnityEngine;
 
 public class A1_A1_H3_Duende : A1_A1_Enemigo
 {
+    [Header("Configuración")]
+    public List<Transform> puntosSpawn;
+    public GameObject proyectilPrefab;
+    public Transform objetivo;
+
+    float tiempoSiguienteCambio;
+    float intervaloActual;
+
+
+
+
+
     public GameObject BolaDeAtaque;
     public GameObject AtaqueActual;
 
@@ -152,12 +164,13 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
         base.Start(); // Llama al Start del padre
                       // Cï¿½digo propio de ArquerasElfas
         anchoOriginal = BarraDeVida.transform.localScale.x;
-
+        Iniciar();
     }
 
     protected override void Update()
     {
         base.Update(); // Llama al Update del padre
+        Reapariciones(); // Llama al metodo de reapariciones
         float velocidad = agent.velocity.magnitude;
         //Debug.Log("Velocidad agente: " + velocidad);
         anim.SetFloat("velocidad", velocidad);
@@ -187,4 +200,109 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
 
         UtilidadesDeGizmos.DibujarCirculoPlano(transform.position, DistanciaParaPerseguir, 32, Color.blue);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void Iniciar()
+    {
+        anim = GetComponent<Animator>();
+        GenerarNuevoIntervalo();
+        tiempoSiguienteCambio = Time.time + intervaloActual;
+    }
+
+    void Reapariciones()
+    {
+        string nombreAnim = anim.GetCurrentAnimatorStateInfo(0).IsName("") ? "" : anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+
+        // Si está en animación que contiene "Ataque", no mover
+        if (nombreAnim.Contains("Ataque"))
+            return;
+
+        if (Time.time >= tiempoSiguienteCambio)
+        {
+            CambiarDePosicion();
+            GenerarNuevoIntervalo();
+            tiempoSiguienteCambio = Time.time + intervaloActual;
+        }
+    }
+
+    void CambiarDePosicion()
+    {
+        int index = Random.Range(0, puntosSpawn.Count);
+        transform.position = puntosSpawn[index].position;
+    }
+
+    void GenerarNuevoIntervalo()
+    {
+        intervaloActual = Random.Range(2f, 6f);
+    }
+
+    /// <summary>
+    /// Llamado externamente para activar ataque.
+    /// </summary>
+    public void ActivarYAtacar()
+    {
+        anim.SetTrigger("Atacar");
+    }
+
+    /// <summary>
+    /// Evento al final de la animación de ataque.
+    /// </summary>
+    public void EndAnimationAtack()
+    {
+        Vector3 dir = objetivo.position - transform.position;
+        transform.right = dir;
+
+        GameObject nuevo = Instantiate(proyectilPrefab, transform.position, Quaternion.identity);
+        nuevo.GetComponent<Proyectil>().Inicializar(dir.normalized);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+        Emptys donde aparecera y desaparecera cada 2 a 6 segundos de manera aleatorio pero en ese intervalo
+
+        Al tocar X elemento se activara y empezara a atacar
+
+        Metodos
+
+        - Orquestador
+        Tener 2 timers aleatorios
+
+
+        - CambiarDePosicion
+        Selecciona 1 empty aleatorio de una lista
+        Se asigna su transform position
+
+        - Atacar 
+        Solo iniciar animacion de ataque
+
+        - EndAnimationAtack
+        _ al finalizar animacion de ataque
+        Mirar
+        Crear proyectil
+	        Hacia la pos del player
+     */
 }
