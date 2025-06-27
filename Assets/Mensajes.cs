@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-    // Cámara para proyectar la posición al canvas
+// Cámara para proyectar la posición al canvas
 
 
 public class Mensajes : MonoBehaviour
@@ -73,15 +73,22 @@ public class Mensajes : MonoBehaviour
         {
             Instance = this;
         }
-        if (textoTutorial == null) return;
-        if (textoTutorial.text == "¡Felicidades! Has completado el tutorial. Ahora estás listo para jugar.")
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Transform padre = textoTutorial.transform.parent;
-            if (padre != null)
+            SiguienteFase();
+        }
+        if (textoTutorial != null)
+        {
+
+            if (textoTutorial.text == "¡Felicidades! Has completado el tutorial. Ahora estás listo para jugar.")
             {
-                // Aquí puedes trabajar con el padre, por ejemplo:
-                Debug.Log("El nombre del padre es: " + padre.name);
-                Destroy(padre.gameObject,3); // Destruye el padre del texto al finalizar el tutorial
+                Transform padre = textoTutorial.transform.parent;
+                if (padre != null)
+                {
+                    // Aquí puedes trabajar con el padre, por ejemplo:
+                    Debug.Log("El nombre del padre es: " + padre.name);
+                    Destroy(padre.gameObject, 3); // Destruye el padre del texto al finalizar el tutorial
+                }
             }
         }
     }
