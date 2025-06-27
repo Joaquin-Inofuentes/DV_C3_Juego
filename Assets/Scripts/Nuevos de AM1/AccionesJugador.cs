@@ -25,6 +25,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public TrailRenderer trail;
     public float trailTime = 0.5f;
     public float clearDelay = 0.1f;
+    
+
 
 
     [Header("🗡️ Datos de Combate Cuerpo a Cuerpo")]
@@ -218,7 +220,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             if (!modoMelee)
             {
                 if (_TimerManager.IsTimerCharging(0)) return;
-                anim.SetTrigger("magic1");
+                anim.SetTrigger("magic1"); 
                 ProyectilUsado = BolaDeFuego;
                 _TimerManager.SetTimerToMax(0);
 

@@ -15,7 +15,7 @@ public class Feedbacks : MonoBehaviour
     public TextMeshProUGUI Text_CantidadDeMonedas;
     public AudioSource S_MomentoEpico;
     public static Feedbacks Componente; // Singleton para acceder f�cilmente desde otros scripts
-    public UIFadeCombo UIFadeComboScript;
+    public UI UIFadeComboScript;
 
     void Start()
     {

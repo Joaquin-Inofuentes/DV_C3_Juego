@@ -82,7 +82,10 @@ public class TimerManager : MonoBehaviour
 
             // Activar solo los del modo actual
             bool esMagia = i <= 2;
-            wrappers[i].gameObject.SetActive(enModoMagico ? esMagia : !esMagia);
+            bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+            bool estaEnCooldown = timers[i] > 0f;
+            bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+            wrappers[i].gameObject.SetActive(deberiaEstarActivo);
         }
 
 
@@ -100,7 +103,6 @@ public class TimerManager : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-
             if (timers[i] > 0f)
             {
                 timers[i] -= Time.deltaTime;
@@ -113,15 +115,21 @@ public class TimerManager : MonoBehaviour
             var wrapper = wrappers[i];
             if (wrapper == null) continue;
 
-            if (!wrapper.gameObject.activeInHierarchy) continue;
+            bool esMagia = i <= 2;
+            bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+            bool estaEnCooldown = timers[i] > 0f;
+            bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
 
+            if (!wrapper.gameObject.activeSelf && deberiaEstarActivo)
+            {
+                wrapper.gameObject.SetActive(true);
+            }
 
             // Obtenemos el Image del overlay (hijo #1)
             var overlayRT = wrapper.GetChild(1) as RectTransform;
             var overlayImg = overlayRT?.GetComponent<Image>();
             if (overlayImg != null)
                 overlayImg.fillAmount = timersPercent[i];
-
 
             if (isTimerZero[i] && Mathf.Approximately(timers[i], 0f))
             {
@@ -138,9 +146,10 @@ public class TimerManager : MonoBehaviour
                 yaHizoEfecto[i] = false; // Se reinicia cuando vuelva a cargar
             }
 
-            bool esMagia = i <= 2;
-            if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
+            // Solo saltamos si NO pertenece al modo actual y NO está en cooldown
+            if (!perteneceAlModo && !estaEnCooldown)
                 continue;
+
             if (readyEffectTimers[i] > 0f)
             {
                 readyEffectTimers[i] -= Time.deltaTime;
@@ -163,9 +172,26 @@ public class TimerManager : MonoBehaviour
                 if (w != null)
                     w.localScale = Vector3.one;
             }
+        }
 
+        // 🔽 NUEVO BLOQUE: oculta íconos que ya no deberían estar activos
+        for (int i = 0; i < 6; i++)
+        {
+            var wrapper = wrappers[i];
+            if (wrapper == null) continue;
+
+            bool esMagia = i <= 2;
+            bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+            bool estaEnCooldown = timers[i] > 0f;
+            bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+
+            if (wrapper.gameObject.activeSelf != deberiaEstarActivo)
+            {
+                wrapper.gameObject.SetActive(deberiaEstarActivo);
+            }
         }
     }
+
 
     private IEnumerator DoFlashEffect(int index)
     {
@@ -214,13 +240,23 @@ public class TimerManager : MonoBehaviour
 
     public void SetTimerToMax(int index)
     {
-        bool esMagia = index <= 2;
-        if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
-            return;
-
         if (index < 0 || index >= 6) return;
+
         timers[index] = maxTimers[index];
+
+        // Asegurar que el ícono sea visible si está en cooldown
+        bool esMagia = index <= 2;
+        bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+        bool estaEnCooldown = timers[index] > 0f;
+
+        bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+
+        if (wrappers[index] != null && !wrappers[index].gameObject.activeSelf && deberiaEstarActivo)
+        {
+            wrappers[index].gameObject.SetActive(true);
+        }
     }
+
 
     public bool IsTimerCharging(int index)
     {
@@ -315,7 +351,15 @@ public class TimerManager : MonoBehaviour
 
     public void TransicionarModoVisual()
     {
-        if (enTransicionVisual) return;
+        if (!enTransicionVisual)
+        {
+            EjecutarTimers();
+        }
+        else
+        {
+            ActualizarTimersDuranteTransicion();
+        }
+
         enTransicionVisual = true;
         DOTween.Kill(this);
 
@@ -351,8 +395,6 @@ public class TimerManager : MonoBehaviour
             seq.Join(mini);
         }
 
-
-
         seq.AppendInterval(0.05f);
 
         // 2) Animación de entrada de los nuevos
@@ -379,9 +421,8 @@ public class TimerManager : MonoBehaviour
 
         }
 
-
-
-        seq.OnComplete(() => {
+        seq.OnComplete(() => 
+    {
         enTransicionVisual = false;
 
         for (int i = 0; i < wrappers.Length; i++)
@@ -401,7 +442,11 @@ public class TimerManager : MonoBehaviour
 
                 // Asegurar que estén activos los del modo correcto
                 bool esMagia = i <= 2;
-                bool deberiaEstarActivo = enModoMagico ? esMagia : !esMagia;
+                bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+                bool estaEnCooldown = timers[i] > 0f;
+
+                // Mostrar si es del modo actual o si todavía está cargando
+                bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
                 wrappers[i].gameObject.SetActive(deberiaEstarActivo);
             }
         }
@@ -412,6 +457,21 @@ public class TimerManager : MonoBehaviour
         seq.Play();
 
     }
+    private void ActualizarTimersDuranteTransicion()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            var wrapper = wrappers[i];
+            if (wrapper == null || !wrapper.gameObject.activeInHierarchy) continue;
+
+            float percent = maxTimers[i] > 0f ? timers[i] / maxTimers[i] : 0f;
+            var overlayRT = wrapper.GetChild(1) as RectTransform;
+            var overlayImg = overlayRT?.GetComponent<Image>();
+            if (overlayImg != null)
+                overlayImg.fillAmount = percent;
+        }
+    }
+    
 
 
 }
