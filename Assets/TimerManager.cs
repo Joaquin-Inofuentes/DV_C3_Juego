@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using CustomInspector;
 using System.Collections;
 using System.Xml.Serialization;
+using DG.Tweening;
 
 /// <summary>
 /// TimerManager gestiona 6 cooldowns (3 mágicos + 3 melee) y feedback visual.
@@ -23,11 +24,8 @@ public class TimerManager : MonoBehaviour
     public bool[] isTimerZero = new bool[6];
     public float[] timersPercent = new float[6];
 
-    [Header("🖼️ Overlays UI (6 Image con Fill)")]
-    public Image[] cooldownOverlays = new Image[6];
-
-    [Header("🎯 Iconos completos (padres de los cooldowns)")]
-    public RectTransform[] iconosCompletos = new RectTransform[6];
+    [Header("🧰 Wrappers de habilidad (padre de icono + overlay)")]
+    public RectTransform[] wrappers = new RectTransform[6];
 
     [Header("✨ Efecto visual cuando la habilidad está lista")]
     public float effectDuration = 0.5f;
@@ -50,6 +48,9 @@ public class TimerManager : MonoBehaviour
     private Vector2[] originalOverlayPositions;
     private float[] readyEffectTimers = new float[6];
     private bool[] yaHizoEfecto = new bool[6];
+    public bool enTransicionVisual = false;
+    private Vector2[] originalWrapperPositions;
+
 
     public static TimerManager Controler;
 
@@ -60,35 +61,48 @@ public class TimerManager : MonoBehaviour
         originalOverlayPositions = new Vector2[6];
         yaHizoEfecto = new bool[6];
 
-        for (int i = 0; i < 6; i++)
-        {
-            var overlay = cooldownOverlays[i];
-            if (overlay != null)
-            {
-                originalColors[i] = overlay.color;
-                originalOverlayPositions[i] = overlay.rectTransform.anchoredPosition;
-            }
+        originalWrapperPositions = new Vector2[wrappers.Length];
 
-            if (iconosCompletos[i] != null)
-                originalIconPositions[i] = iconosCompletos[i].anchoredPosition;
+        // 2) Guarda la posición de cada wrapper
+        for (int i = 0; i < wrappers.Length; i++)
+        {
+            if (wrappers[i] == null) continue;
+
+            // Guardar posición del wrapper
+            originalWrapperPositions[i] = wrappers[i].anchoredPosition;
+
+            // Guardar posición de hijos
+            var iconRT = wrappers[i].GetChild(0) as RectTransform;
+            if (iconRT != null)
+                originalIconPositions[i] = iconRT.anchoredPosition;
+
+            var overlayRT = wrappers[i].GetChild(1) as RectTransform;
+            if (overlayRT != null)
+                originalOverlayPositions[i] = overlayRT.anchoredPosition;
+
+            // Activar solo los del modo actual
+            bool esMagia = i <= 2;
+            bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+            bool estaEnCooldown = timers[i] > 0f;
+            bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+            wrappers[i].gameObject.SetActive(deberiaEstarActivo);
         }
+
+
     }
 
     void Update()
     {
 
+        if (enTransicionVisual) return;
         EjecutarTimers();
-        if(Controler == null)
-        {
-            Controler = this;
-        }
+        if (Controler == null) Controler = this;
     }
 
     public void EjecutarTimers()
     {
         for (int i = 0; i < 6; i++)
         {
-
             if (timers[i] > 0f)
             {
                 timers[i] -= Time.deltaTime;
@@ -98,8 +112,24 @@ public class TimerManager : MonoBehaviour
             timersPercent[i] = maxTimers[i] > 0f ? timers[i] / maxTimers[i] : 0f;
             isTimerZero[i] = timers[i] <= 0f;
 
-            if (cooldownOverlays[i] != null)
-                cooldownOverlays[i].fillAmount = timersPercent[i];
+            var wrapper = wrappers[i];
+            if (wrapper == null) continue;
+
+            bool esMagia = i <= 2;
+            bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+            bool estaEnCooldown = timers[i] > 0f;
+            bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+
+            if (!wrapper.gameObject.activeSelf && deberiaEstarActivo)
+            {
+                wrapper.gameObject.SetActive(true);
+            }
+
+            // Obtenemos el Image del overlay (hijo #1)
+            var overlayRT = wrapper.GetChild(1) as RectTransform;
+            var overlayImg = overlayRT?.GetComponent<Image>();
+            if (overlayImg != null)
+                overlayImg.fillAmount = timersPercent[i];
 
             if (isTimerZero[i] && Mathf.Approximately(timers[i], 0f))
             {
@@ -116,35 +146,63 @@ public class TimerManager : MonoBehaviour
                 yaHizoEfecto[i] = false; // Se reinicia cuando vuelva a cargar
             }
 
-            bool esMagia = i <= 2;
-            if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
+            // Solo saltamos si NO pertenece al modo actual y NO está en cooldown
+            if (!perteneceAlModo && !estaEnCooldown)
                 continue;
+
             if (readyEffectTimers[i] > 0f)
             {
                 readyEffectTimers[i] -= Time.deltaTime;
-                if (iconosCompletos[i] != null)
+
+                var w = wrappers[i];
+                if (w != null)
                 {
                     float scaleFactor = 1f + Mathf.Sin(Time.time * pulseSpeed) * pulseAmount;
-                    iconosCompletos[i].localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+                    w.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
                 }
 
-                if (readyEffectTimers[i] <= 0f && iconosCompletos[i] != null)
+                if (readyEffectTimers[i] <= 0f && w != null)
                 {
-                    iconosCompletos[i].localScale = Vector3.one;
+                    w.localScale = Vector3.one;
                 }
             }
             else
             {
-                if (iconosCompletos[i] != null)
-                    iconosCompletos[i].localScale = Vector3.one;
+                var w = wrappers[i];
+                if (w != null)
+                    w.localScale = Vector3.one;
+            }
+        }
+
+        // 🔽 NUEVO BLOQUE: oculta íconos que ya no deberían estar activos
+        for (int i = 0; i < 6; i++)
+        {
+            var wrapper = wrappers[i];
+            if (wrapper == null) continue;
+
+            bool esMagia = i <= 2;
+            bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+            bool estaEnCooldown = timers[i] > 0f;
+            bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+
+            if (wrapper.gameObject.activeSelf != deberiaEstarActivo)
+            {
+                wrapper.gameObject.SetActive(deberiaEstarActivo);
             }
         }
     }
 
+
     private IEnumerator DoFlashEffect(int index)
     {
-        var iconRT = iconosCompletos[index];
+        // 1) Toma el wrapper de la habilidad
+        var wrapper = wrappers[index];
+        if (wrapper == null) yield break;
+
+        // 2) Dentro del wrapper, el primer hijo (GetChild(0)) es tu IconoCompleto
+        var iconRT = wrapper.GetChild(0) as RectTransform;
         if (iconRT == null) yield break;
+
 
         var image = iconRT.GetComponent<Image>();
         if (image == null) yield break;
@@ -182,13 +240,23 @@ public class TimerManager : MonoBehaviour
 
     public void SetTimerToMax(int index)
     {
-        bool esMagia = index <= 2;
-        if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
-            return;
-
         if (index < 0 || index >= 6) return;
+
         timers[index] = maxTimers[index];
+
+        // Asegurar que el ícono sea visible si está en cooldown
+        bool esMagia = index <= 2;
+        bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+        bool estaEnCooldown = timers[index] > 0f;
+
+        bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+
+        if (wrappers[index] != null && !wrappers[index].gameObject.activeSelf && deberiaEstarActivo)
+        {
+            wrappers[index].gameObject.SetActive(true);
+        }
     }
+
 
     public bool IsTimerCharging(int index)
     {
@@ -199,32 +267,59 @@ public class TimerManager : MonoBehaviour
 
     public void MostrarFeedbackNoDisponible(int index)
     {
+        // Validación de modo
         bool esMagia = index <= 2;
         if ((enModoMagico && !esMagia) || (!enModoMagico && esMagia))
             return;
 
-        if (index < 0 || index >= 6) return;
-        var overlay = cooldownOverlays[index];
-        if (overlay == null) return;
+        // Validación de índice
+        if (index < 0 || index >= wrappers.Length) return;
 
+        // Obtenemos el wrapper
+        var wrapper = wrappers[index];
+        if (wrapper == null) return;
+
+        // Obtenemos el overlay como hijo #1
+        var overlayRT = wrapper.GetChild(1) as RectTransform;
+        var overlayImg = overlayRT?.GetComponent<Image>();
+        if (overlayImg == null) return;
+
+        // Si ya había una coroutine activa, la detenemos y restauramos estado
         if (flashCoroutines[index] != null)
         {
             StopCoroutine(flashCoroutines[index]);
-            overlay.color = originalColors[index];
-            overlay.rectTransform.anchoredPosition = originalOverlayPositions[index];
-            if (iconosCompletos[index] != null)
-                iconosCompletos[index].anchoredPosition = originalIconPositions[index];
+
+            // Restauramos color y posición del overlay
+            overlayImg.color = originalColors[index];
+            overlayRT.anchoredPosition = originalOverlayPositions[index];
+
+            // Restauramos la posición del icono completo (hijo #0)
+            var iconRT = wrapper.GetChild(0) as RectTransform;
+            if (iconRT != null)
+                iconRT.anchoredPosition = originalIconPositions[index];
         }
 
+        // Iniciamos la nueva rutina de flash+shake
         flashCoroutines[index] = StartCoroutine(FlashAndShake(index));
     }
 
+
     private IEnumerator FlashAndShake(int index)
     {
-        var overlay = cooldownOverlays[index];
-        var overlayRT = overlay.rectTransform;
-        var iconRT = iconosCompletos[index];
+        // 1) Obtener el wrapper
+        var wrapper = wrappers[index];
+        if (wrapper == null) yield break;
 
+        // 2) Obtener el overlay (hijo #1) y su RectTransform
+        var overlayRT = wrapper.GetChild(1) as RectTransform;
+        var overlayImg = overlayRT?.GetComponent<Image>();
+        if (overlayImg == null) yield break;
+
+        // 3) Obtener el icono (hijo #0) y su RectTransform
+        var iconRT = wrapper.GetChild(0) as RectTransform;
+        if (iconRT == null) yield break;
+
+        // 4) Variables originales
         var origColor = originalColors[index];
         var origOverlayPos = originalOverlayPositions[index];
         var origIconPos = originalIconPositions[index];
@@ -232,24 +327,153 @@ public class TimerManager : MonoBehaviour
         float duration = 0.15f;
         float elapsed = 0f;
 
+        // 5) Loop de shake
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
             Vector2 shake = Random.insideUnitCircle * 5f;
 
-            overlay.color = Color.red;
-            if (overlayRT != null) overlayRT.anchoredPosition = origOverlayPos + shake;
-            if (iconRT != null) iconRT.anchoredPosition = origIconPos + shake;
+            // Aplicar shake
+            overlayImg.color = Color.red;
+            overlayRT.anchoredPosition = origOverlayPos + shake;
+            iconRT.anchoredPosition = origIconPos + shake;
 
             yield return null;
         }
 
-        if (overlay != null) overlay.color = origColor;
-        if (overlayRT != null) overlayRT.anchoredPosition = origOverlayPos;
-        if (iconRT != null) iconRT.anchoredPosition = origIconPos;
+        // 6) Restaurar estado
+        overlayImg.color = origColor;
+        overlayRT.anchoredPosition = origOverlayPos;
+        iconRT.anchoredPosition = origIconPos;
 
         flashCoroutines[index] = null;
     }
+
+    public void TransicionarModoVisual()
+    {
+        if (!enTransicionVisual)
+        {
+            EjecutarTimers();
+        }
+        else
+        {
+            ActualizarTimersDuranteTransicion();
+        }
+
+        enTransicionVisual = true;
+        DOTween.Kill(this);
+
+        bool modoAnterior = enModoMagico;
+        enModoMagico = !enModoMagico;
+
+        int[] actuales = modoAnterior ? new[] { 0, 1, 2 } : new[] { 3, 4, 5 };
+        int[] nuevos   = enModoMagico ? new[] { 0, 1, 2 } : new[] { 3, 4, 5 };
+        float d = 0.4f;
+
+        Sequence seq = DOTween.Sequence();
+
+        foreach (int i in actuales)
+        {
+            RectTransform w = wrappers[i];
+            if (w == null) continue;
+
+            CanvasGroup cg = w.GetComponent<CanvasGroup>() ?? w.gameObject.AddComponent<CanvasGroup>();
+
+            w.gameObject.SetActive(true);
+            w.localEulerAngles = Vector3.zero;
+            cg.alpha = 1;
+            w.anchoredPosition = originalWrapperPositions[i];
+
+            // ⚠ Mini secuencia separada para cada ícono
+            Sequence mini = DOTween.Sequence();
+            mini.Append(cg.DOFade(0, d / 2f));
+            mini.Join(w.DOLocalRotate(new Vector3(0, 90, 0), d / 2f, RotateMode.FastBeyond360));
+            
+            RectTransform wCopy = w;
+            mini.AppendCallback(() => wCopy.gameObject.SetActive(false));
+            // Sumás esta mini secuencia al grupo
+            seq.Join(mini);
+        }
+
+        seq.AppendInterval(0.05f);
+
+        // 2) Animación de entrada de los nuevos
+        // 2) Animación de entrada de los nuevos, uno por uno
+        foreach (int i in nuevos)
+        {
+            RectTransform w = wrappers[i];
+            CanvasGroup cg = w.GetComponent<CanvasGroup>() ?? w.gameObject.AddComponent<CanvasGroup>();
+
+            w.gameObject.SetActive(true);
+            w.anchoredPosition = originalWrapperPositions[i];
+            w.localEulerAngles = new Vector3(0, -90, 0);
+            cg.alpha = 0;
+
+            // ⚠️ Guardar referencia temporal para el closure (por seguridad)
+            RectTransform wTemp = w;
+            CanvasGroup cgTemp = cg;
+
+            // Crear una mini secuencia por ícono
+            Sequence miniEntrada = DOTween.Sequence();
+            miniEntrada.Join(cgTemp.DOFade(1, d / 2f));
+            miniEntrada.Join(wTemp.DOLocalRotate(Vector3.zero, d / 2f).SetEase(Ease.OutBack));
+            seq.Append(miniEntrada);
+
+        }
+
+        seq.OnComplete(() => 
+    {
+        enTransicionVisual = false;
+
+        for (int i = 0; i < wrappers.Length; i++)
+        {
+            if (wrappers[i] != null)
+            {
+                wrappers[i].anchoredPosition = originalWrapperPositions[i];
+
+                // Restaurar visibilidad
+                var cg = wrappers[i].GetComponent<CanvasGroup>();
+                if (cg != null)
+                {
+                    cg.alpha = 1f;
+                    cg.interactable = true;
+                    cg.blocksRaycasts = true;
+                }
+
+                // Asegurar que estén activos los del modo correcto
+                bool esMagia = i <= 2;
+                bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+                bool estaEnCooldown = timers[i] > 0f;
+
+                // Mostrar si es del modo actual o si todavía está cargando
+                bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+                wrappers[i].gameObject.SetActive(deberiaEstarActivo);
+            }
+        }
+        
+    });
+
+
+        seq.Play();
+
+    }
+    private void ActualizarTimersDuranteTransicion()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            var wrapper = wrappers[i];
+            if (wrapper == null || !wrapper.gameObject.activeInHierarchy) continue;
+
+            float percent = maxTimers[i] > 0f ? timers[i] / maxTimers[i] : 0f;
+            var overlayRT = wrapper.GetChild(1) as RectTransform;
+            var overlayImg = overlayRT?.GetComponent<Image>();
+            if (overlayImg != null)
+                overlayImg.fillAmount = percent;
+        }
+    }
+    
+
+
 }
 
 

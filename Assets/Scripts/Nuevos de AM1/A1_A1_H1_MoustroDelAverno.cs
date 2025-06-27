@@ -251,6 +251,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             ultimoProyectilRecibido = "";
             Vida -= cantidad;
             CargaElectrica.ElectrocutarCercanos();
+         
+            Color amarilloElectrico = new Color(1f, 0.858f, 0.039f);
+            Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡DESCARGA ENCADENADA!", amarilloElectrico);
+
             PendienteDeCargaElectrica = false;
         }
 
@@ -309,16 +313,20 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     void RalentizarTiempo()
     {
         Time.timeScale = 0.3f;
-        Feedbacks.Componente.PantallaDeCombo.SetActive(true);
-        Invoke(nameof(RestaurarTiempo), 0.3f);
+
+        Color celesteHielo = new Color(0.5f, 1f, 1f);
+        Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡FRACTURA CONGELADA!", celesteHielo);
+        
         if (Feedbacks.Componente.S_MomentoEpico != null)
             Feedbacks.Componente.S_MomentoEpico.Play();
+
+        Invoke(nameof(RestaurarTiempo), 0.3f);
     }
+
 
     void RestaurarTiempo()
     {
         Time.timeScale = 1f;
-        Feedbacks.Componente.PantallaDeCombo.SetActive(false);
     }
 
 

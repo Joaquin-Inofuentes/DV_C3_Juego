@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+    // Cámara para proyectar la posición al canvas
+
+
 public class Mensajes : MonoBehaviour
 {
     public List<string> ListaDeMensajes = new List<string>
@@ -113,4 +116,5 @@ public class Mensajes : MonoBehaviour
             Debug.LogWarning("AudioSource o AudioClip no asignados en Mensajes.");
         }
     }
+
 }

@@ -1,35 +1,126 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 
-public class UIFade : MonoBehaviour
+public class UI : MonoBehaviour
 {
-    public RawImage rawImage;
+    [Header("Movimiento")]
+    public Transform objetivo;              
+    public Camera camara;
+    public Vector3 offset = new Vector3(0, 1.8f, 0); 
+    public float suavizado = 12f;
+
+    [Header("Animación y Visual")]
+    public CanvasGroup canvasGroup;
+    public TextMeshProUGUI textoUI;
+    public float fadeTime = 0.3f;
+    public float duracionVisible = 3f;
+
+    [Header("Textos de diálogo puzzle")]
+    public List<string> textosDePuzzle = new List<string>
+    {
+    "No puedo pasar por ahí",
+    "No puedo",
+    "¿Vos querés que me muera?"
+    };
+
+    private RectTransform rectTransform;
+    private Vector3 destinoAnterior;
+    public TextMeshProUGUI textoCombo;
     public float fadeDuration = 2f;
 
-    private void OnEnable()
+    public void MostrarTexto(string mensaje, Color color)
     {
-        // Aseguramos color blanco opaco antes de empezar el fade
-        rawImage.color = new Color(1f, 1f, 1f, 1f);
+        textoCombo.text = mensaje;
+        textoCombo.color = new Color(color.r, color.g, color.b, 1f); 
+
+        StopAllCoroutines();
+        gameObject.SetActive(true);
         StartCoroutine(FadeOut());
     }
 
+
     private System.Collections.IEnumerator FadeOut()
     {
-        float t = 0f;
+        float elapsed = 0f;
+        Color originalColor = textoCombo.color;
 
-        while (t < fadeDuration)
+        while (elapsed < fadeDuration)
         {
-            t += Time.deltaTime;
-            float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
-
-            // Debug: Mostramos el valor actual de alpha
-            //Debug.Log("Alpha: " + alpha);
-
-            rawImage.color = new Color(1f, 1f, 1f, alpha);
+            elapsed += Time.unscaledDeltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            textoCombo.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
             yield return null;
         }
 
-        rawImage.color = new Color(1f, 1f, 1f, 0f);
+        textoCombo.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        gameObject.SetActive(false);
+    }
+    void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+
+        if (canvasGroup == null)
+            canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+    }
+    void LateUpdate()
+    {
+        if (objetivo == null || camara == null) return;
+
+        Vector3 screenPos = camara.WorldToScreenPoint(objetivo.position + offset);
+
+        if (screenPos.z < 0)
+        {
+            canvasGroup.alpha = 0;
+            return;
+        }
+
+        // Suaviza el movimiento de la burbuja
+        if (destinoAnterior == Vector3.zero)
+            destinoAnterior = screenPos;
+
+        Vector3 posSuavizada = Vector3.Lerp(destinoAnterior, screenPos, Time.deltaTime * suavizado);
+        rectTransform.position = posSuavizada;
+        destinoAnterior = posSuavizada;
+    }
+
+    public void Mostrar(string mensaje)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MostrarRutina(mensaje));
+    }
+
+    private IEnumerator MostrarRutina(string mensaje)
+    {
+        textoUI.text = mensaje;
+        canvasGroup.alpha = 0;
+        gameObject.SetActive(true);
+
+        // Fade in
+        float t = 0;
+        while (t < fadeTime)
+        {
+            t += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(0, 1, t / fadeTime);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(duracionVisible);
+
+        // Fade out
+        t = 0;
+        while (t < fadeTime)
+        {
+            t += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(1, 0, t / fadeTime);
+            yield return null;
+        }
+
         gameObject.SetActive(false);
     }
 }
+
+
