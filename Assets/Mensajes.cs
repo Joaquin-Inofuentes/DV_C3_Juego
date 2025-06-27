@@ -73,6 +73,17 @@ public class Mensajes : MonoBehaviour
         {
             Instance = this;
         }
+        if (textoTutorial == null) return;
+        if (textoTutorial.text == "¡Felicidades! Has completado el tutorial. Ahora estás listo para jugar.")
+        {
+            Transform padre = textoTutorial.transform.parent;
+            if (padre != null)
+            {
+                // Aquí puedes trabajar con el padre, por ejemplo:
+                Debug.Log("El nombre del padre es: " + padre.name);
+                Destroy(padre.gameObject,3); // Destruye el padre del texto al finalizar el tutorial
+            }
+        }
     }
 
     public void SiguienteFase()
