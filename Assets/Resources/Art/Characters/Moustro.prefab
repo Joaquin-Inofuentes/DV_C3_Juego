@@ -1436,21 +1436,21 @@ AudioSource:
   m_GameObject: {fileID: 3779376852257871640}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: b94345a2ef82471498ab2a95cbf4d744, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.06
+  m_Pitch: 0.73
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  DopplerLevel: 0
+  MinDistance: 0
+  MaxDistance: 30
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1483,7 +1483,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1513,7 +1513,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 1.1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1689,7 +1689,7 @@ AudioSource:
   m_GameObject: {fileID: 5069879829555935697}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: a8ea8073f60385d46875ad9f9577035b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1699,11 +1699,11 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  DopplerLevel: 0
+  MinDistance: 0
+  MaxDistance: 30
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -1736,7 +1736,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -2115,10 +2115,12 @@ MonoBehaviour:
   S_RecibirDano: {fileID: 7009627826712038730}
   PendienteDeCargaElectrica: 0
   CargaElectrica: {fileID: 7474941633747556650}
+  AudioAlRecibirDanio: {fileID: 0}
   VFXDeRopturaDeHielo: {fileID: 1437506766677768766, guid: 02c678d08b0846c4e8a3775ad904fe03, type: 3}
   S_RupturaDeHielo: {fileID: 8506818581573726860}
   puntosSpawn: []
   proyectilPrefab: {fileID: 0}
+  SonidoDeTeletransportacion: {fileID: 0}
 --- !u!114 &4886365123928998457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3157,7 +3159,7 @@ AudioSource:
   m_GameObject: {fileID: 8822389393899506575}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -3167,11 +3169,11 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  DopplerLevel: 0
+  MinDistance: 0
+  MaxDistance: 30
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -3204,7 +3206,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

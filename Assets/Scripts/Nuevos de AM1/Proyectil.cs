@@ -207,9 +207,9 @@ public class Proyectil : MonoBehaviour
         }
     }
 
-
+    public float Volumen = 1f;
     public void OnDestroy()
     {
-        AudioManager.CrearEfectoSonoro(PuntoDeColision, AudioAlColisionar);
+        AudioManager.CrearEfectoSonoro(PuntoDeColision, AudioAlColisionar, Volumen);
     }
 }

@@ -27,7 +27,7 @@ public class AudioManager : MonoBehaviour
 
     void UpdateScrollbarsFromMixer()
     {
-        
+
 
         if (audioMixer.GetFloat("VFX", out float vfxDb))
             vfxScrollbar.value = Mathf.Pow(10f, vfxDb / 20f);
@@ -173,6 +173,93 @@ public class AudioManager : MonoBehaviour
         audioSource.rolloffMode = AudioRolloffMode.Linear;
         audioSource.minDistance = 1f;
         audioSource.maxDistance = 30f;
+
+        return parlante;
+    }
+
+
+    public static GameObject CrearEfectoSonoro(Vector3 posicion, AudioClip audioClip, bool Es3D)
+    {
+        if (audioClip == null)
+        {
+            Debug.LogWarning("AudioClip es nulo.");
+            return null;
+        }
+
+        GameObject parlante = new GameObject("EfectoSonoro_" + audioClip.name);
+        parlante.transform.position = posicion;
+
+        AudioSource audioSource = parlante.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        audioSource.loop = false;
+        audioSource.Play();
+
+        Object.Destroy(parlante, audioClip.length);
+        AudioMixer audioMixer = instance.AudioMixer;
+        audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("VFX")[0];
+        audioSource.spatialBlend = Es3D ? 1 : 0;
+        audioSource.dopplerLevel = 0f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 1f;
+        audioSource.maxDistance = 30f;
+
+        return parlante;
+    }
+
+    public static GameObject CrearEfectoSonoro(Vector3 posicion, AudioClip audioClip, bool Es3D,float Volumen)
+    {
+        if (audioClip == null)
+        {
+            Debug.LogWarning("AudioClip es nulo.");
+            return null;
+        }
+
+        GameObject parlante = new GameObject("EfectoSonoro_" + audioClip.name);
+        parlante.transform.position = posicion;
+
+        AudioSource audioSource = parlante.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        audioSource.loop = false;
+        audioSource.Play();
+
+        Object.Destroy(parlante, audioClip.length);
+        AudioMixer audioMixer = instance.AudioMixer;
+        audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("VFX")[0];
+        audioSource.spatialBlend = Es3D ? 1 : 0;
+        audioSource.dopplerLevel = 0f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 1f;
+        audioSource.maxDistance = 30f;
+        audioSource.volume = Volumen; // Ajustar el volumen del AudioSource
+
+        return parlante;
+    }
+
+    public static GameObject CrearEfectoSonoro(Vector3 posicion, AudioClip audioClip, float Volumen = 1)
+    {
+        if (audioClip == null)
+        {
+            Debug.LogWarning("AudioClip es nulo.");
+            return null;
+        }
+
+        GameObject parlante = new GameObject("EfectoSonoro_" + audioClip.name);
+        parlante.transform.position = posicion;
+
+        AudioSource audioSource = parlante.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        audioSource.loop = false;
+        audioSource.Play();
+
+        Object.Destroy(parlante, audioClip.length);
+        AudioMixer audioMixer = instance.AudioMixer;
+        audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("VFX")[0];
+        audioSource.spatialBlend = 1f;
+        audioSource.dopplerLevel = 0f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 1f;
+        audioSource.maxDistance = 30f;
+        audioSource.volume = Volumen; // Ajustar el volumen del AudioSource
 
         return parlante;
     }

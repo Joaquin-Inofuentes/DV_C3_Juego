@@ -14,7 +14,7 @@ public class CollisionInvoker : MonoBehaviour
         {
             Debug.Log("Se registro entrada");
             onJugadorTrigger?.Invoke();
-            //Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 }
