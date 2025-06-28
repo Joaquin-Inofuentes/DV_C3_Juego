@@ -17,6 +17,11 @@ public class AssignAudioMixerToAll : MonoBehaviour
         {
             // Asignar el AudioMixer al AudioSource (sin especificar grupo)
             audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("VFX")[0];  // O cualquier grupo que prefieras
+            audioSource.spatialBlend = 1f;
+            audioSource.dopplerLevel = 0f;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            audioSource.minDistance = 1f;
+            audioSource.maxDistance = 30f;
         }
     }
 }

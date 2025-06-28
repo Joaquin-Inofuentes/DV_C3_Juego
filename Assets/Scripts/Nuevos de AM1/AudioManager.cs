@@ -160,14 +160,19 @@ public class AudioManager : MonoBehaviour
         GameObject parlante = new GameObject("EfectoSonoro_" + audioClip.name);
         parlante.transform.position = posicion;
 
-        AudioSource nuevoAudioSource = parlante.AddComponent<AudioSource>();
-        nuevoAudioSource.clip = audioClip;
-        nuevoAudioSource.loop = false;
-        nuevoAudioSource.Play();
+        AudioSource audioSource = parlante.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        audioSource.loop = false;
+        audioSource.Play();
 
         Object.Destroy(parlante, audioClip.length);
         AudioMixer audioMixer = instance.AudioMixer;
-        nuevoAudioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Master")[0];  // O cualquier grupo que prefieras
+        audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("VFX")[0];
+        audioSource.spatialBlend = 1f;
+        audioSource.dopplerLevel = 0f;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 1f;
+        audioSource.maxDistance = 30f;
 
         return parlante;
     }
