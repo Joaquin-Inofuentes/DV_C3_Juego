@@ -422,7 +422,7 @@ AudioSource:
   m_GameObject: {fileID: 1358570313102436049}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -646,7 +646,7 @@ AudioSource:
   m_GameObject: {fileID: 1970466327573200876}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: e520a56b12f7d8c40b108f770153f1cb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -838,7 +838,7 @@ AudioSource:
   m_GameObject: {fileID: 2195799526374917803}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -966,7 +966,7 @@ AudioSource:
   m_GameObject: {fileID: 2260956275751558078}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: b94345a2ef82471498ab2a95cbf4d744, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1157,7 +1157,7 @@ AudioSource:
   m_GameObject: {fileID: 2961957453098658869}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1452,7 +1452,7 @@ AudioSource:
   m_GameObject: {fileID: 4009682625386152091}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -1959,7 +1959,7 @@ AudioSource:
   m_GameObject: {fileID: 4571462551366960579}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -2277,7 +2277,7 @@ AudioSource:
   m_GameObject: {fileID: 5005135855584629634}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -3118,6 +3118,7 @@ GameObject:
   - component: {fileID: 4342667390874665725}
   - component: {fileID: 9002616348641846020}
   - component: {fileID: 4792762317882474366}
+  - component: {fileID: 5180759835298651816}
   m_Layer: 0
   m_Name: Jugador 1
   m_TagString: Untagged
@@ -3385,7 +3386,7 @@ AudioSource:
   m_GameObject: {fileID: 6837533125788142255}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 3fd89ccf77772ac439fff65853108410, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -3481,7 +3482,7 @@ AudioSource:
   m_GameObject: {fileID: 6837533125788142255}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 8f107ccc56cc9534b8baf7c9a7960737, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -3600,6 +3601,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2ef746b19d88cfc42a1e4207e6ebb4c0, type: 3}
   - {fileID: 8300000, guid: 6b334aeaff5e42142aaa27b9ff579a52, type: 3}
   - {fileID: 8300000, guid: 84879bcba9122c4478f39f2a03ecd467, type: 3}
+--- !u!114 &5180759835298651816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837533125788142255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab191ee4290161a43b75d861f94e2727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
 --- !u!1 &6988654245736247078
 GameObject:
   m_ObjectHideFlags: 0
@@ -4318,7 +4332,7 @@ AudioSource:
   m_GameObject: {fileID: 9211884164481466392}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5591710523038545099, guid: b3cd0b4c017c16e4fb19dd220904951b, type: 2}
   m_audioClip: {fileID: 8300000, guid: 68e40b462f1f3c74abe944f83e5ba947, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1

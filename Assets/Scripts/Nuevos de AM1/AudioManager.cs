@@ -1,9 +1,58 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
     static public AudioManager instance;
+
+    public AudioMixer audioMixer;
+
+    public Scrollbar masterScrollbar;
+    public Scrollbar vfxScrollbar;
+    public Scrollbar ambienteScrollbar;
+
+    void Iniciar()
+    {
+        // Sincronizar al iniciar
+        UpdateScrollbarsFromMixer();
+    }
+
+    void actualizar2()
+    {
+        // Reflejar el estado del mixer en las scrollbars
+        UpdateScrollbarsFromMixer();
+    }
+
+    void UpdateScrollbarsFromMixer()
+    {
+        
+
+        if (audioMixer.GetFloat("VFX", out float vfxDb))
+            vfxScrollbar.value = Mathf.Pow(10f, vfxDb / 20f);
+
+        else if (audioMixer.GetFloat("Ambiente", out float ambienteDb))
+            ambienteScrollbar.value = Mathf.Pow(10f, ambienteDb / 20f);
+        else if (audioMixer.GetFloat("Master", out float masterDb))
+            masterScrollbar.value = Mathf.Pow(10f, masterDb / 20f);
+    }
+
+    public void SetMasterVolume(float value)
+    {
+        audioMixer.SetFloat("Master", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20f);
+    }
+
+    public void SetVFXVolume(float value)
+    {
+        audioMixer.SetFloat("VFX", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20f);
+    }
+
+    public void SetAmbienteVolume(float value)
+    {
+        audioMixer.SetFloat("Ambiente", Mathf.Log10(Mathf.Max(value, 0.0001f)) * 20f);
+    }
+
 
     public List<string> nombresDeClips = new List<string>();
     // TP2 - Bruno Barzola
@@ -15,10 +64,12 @@ public class AudioManager : MonoBehaviour
     public void Start()
     {
         EscanearSonidosDisponibles();
+        Iniciar();
     }
 
     void Update()
     {
+        actualizar2();
         if (!sonidosEscaneados)
         {
             EscanearSonidosDisponibles();
@@ -97,7 +148,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-
+    public AudioMixer AudioMixer;
     public static GameObject CrearEfectoSonoro(Vector3 posicion, AudioClip audioClip)
     {
         if (audioClip == null)
@@ -115,6 +166,8 @@ public class AudioManager : MonoBehaviour
         nuevoAudioSource.Play();
 
         Object.Destroy(parlante, audioClip.length);
+        AudioMixer audioMixer = instance.AudioMixer;
+        nuevoAudioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("Master")[0];  // O cualquier grupo que prefieras
 
         return parlante;
     }
