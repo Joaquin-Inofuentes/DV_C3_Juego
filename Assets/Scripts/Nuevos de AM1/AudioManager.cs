@@ -9,9 +9,9 @@ public class AudioManager : MonoBehaviour
 
     public AudioMixer audioMixer;
 
-    public Scrollbar masterScrollbar;
-    public Scrollbar vfxScrollbar;
-    public Scrollbar ambienteScrollbar;
+    public Slider masterScrollbar;
+    public Slider vfxScrollbar;
+    public Slider ambienteScrollbar;
 
     void Iniciar()
     {
