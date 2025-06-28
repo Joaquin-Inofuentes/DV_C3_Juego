@@ -5,13 +5,13 @@ using UnityEngine.Audio;
 
 public class AssignAudioMixerToAll : MonoBehaviour
 {
-    [Button(nameof(Start))]
+    
     public AudioMixer audioMixer;  // El AudioMixer que deseas asignar a todos los AudioSource
 
     void Start()
     {
         // Obtener todos los AudioSource en la escena
-        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+        /*AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
         foreach (AudioSource audioSource in audioSources)
         {
@@ -22,6 +22,6 @@ public class AssignAudioMixerToAll : MonoBehaviour
             audioSource.rolloffMode = AudioRolloffMode.Linear;
             audioSource.minDistance = 1f;
             audioSource.maxDistance = 30f;
-        }
+        }*/
     }
 }
