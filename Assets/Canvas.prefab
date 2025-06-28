@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1970547645604844088}
   - component: {fileID: 106249024619263134}
   - component: {fileID: 1727493938712218048}
+  - component: {fileID: 8422956542069217966}
   m_Layer: 5
   m_Name: Fisico (3)
   m_TagString: Untagged
@@ -75,6 +76,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8422956542069217966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24075269319366554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c8978320bcda244bd7d5d7dfbc0887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1727493938712218048}
 --- !u!1 &129980085808122421
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +611,7 @@ RectTransform:
   m_Father: {fileID: 688177050854759246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -761,6 +775,7 @@ GameObject:
   - component: {fileID: 7650618001621408459}
   - component: {fileID: 6272034608166560474}
   - component: {fileID: 6897487920631695750}
+  - component: {fileID: 4588236072207658403}
   m_Layer: 5
   m_Name: Magico (6)
   m_TagString: Untagged
@@ -825,6 +840,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4588236072207658403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102903012039716065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c8978320bcda244bd7d5d7dfbc0887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 6897487920631695750}
 --- !u!1 &1487250037560265590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,7 +1158,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1608,6 +1636,7 @@ GameObject:
   - component: {fileID: 2432989871888063010}
   - component: {fileID: 7960450086565305930}
   - component: {fileID: 5852203476180940736}
+  - component: {fileID: 249497473265312607}
   m_Layer: 5
   m_Name: Fisico (5)
   m_TagString: Untagged
@@ -1672,6 +1701,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &249497473265312607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2681181159937237441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c8978320bcda244bd7d5d7dfbc0887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 5852203476180940736}
 --- !u!1 &2831993810726617559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3131,7 +3173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2661743020603822163
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4367,8 +4409,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4019898862947551391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4443,7 +4485,7 @@ RectTransform:
   m_Father: {fileID: 3053497576354561662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4518,7 +4560,7 @@ RectTransform:
   m_Father: {fileID: 4546430001209529537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4718,6 +4760,7 @@ GameObject:
   - component: {fileID: 4042873927372958112}
   - component: {fileID: 6313980794548729784}
   - component: {fileID: 625506223887506372}
+  - component: {fileID: 1762491238050833659}
   m_Layer: 5
   m_Name: Fisico (4)
   m_TagString: Untagged
@@ -4782,6 +4825,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1762491238050833659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7089151962530934704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c8978320bcda244bd7d5d7dfbc0887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 625506223887506372}
 --- !u!1 &7507857268684251790
 GameObject:
   m_ObjectHideFlags: 0
@@ -5337,6 +5393,7 @@ GameObject:
   - component: {fileID: 8451342174379878175}
   - component: {fileID: 3763810585017846399}
   - component: {fileID: 2718650149055551007}
+  - component: {fileID: 8460430470514653323}
   m_Layer: 5
   m_Name: Magico (4)
   m_TagString: Untagged
@@ -5401,6 +5458,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8460430470514653323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7713980204635398110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c8978320bcda244bd7d5d7dfbc0887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 2718650149055551007}
 --- !u!1 &7766068743366736952
 GameObject:
   m_ObjectHideFlags: 0
@@ -5528,11 +5598,11 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  DopplerLevel: 0
+  MinDistance: 0
+  MaxDistance: 30
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -5565,7 +5635,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -6129,7 +6199,7 @@ RectTransform:
   m_Father: {fileID: 2676018710484105855}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6182,6 +6252,7 @@ GameObject:
   - component: {fileID: 5948787651687470777}
   - component: {fileID: 6532538293968536433}
   - component: {fileID: 952846133554222466}
+  - component: {fileID: 8056002248030609086}
   m_Layer: 5
   m_Name: Magico (5)
   m_TagString: Untagged
@@ -6246,6 +6317,19 @@ MonoBehaviour:
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8056002248030609086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8843086439692010137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c8978320bcda244bd7d5d7dfbc0887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 952846133554222466}
 --- !u!1 &9068982494623383685
 GameObject:
   m_ObjectHideFlags: 0
@@ -6279,7 +6363,7 @@ RectTransform:
   m_Father: {fileID: 8449820059778979003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

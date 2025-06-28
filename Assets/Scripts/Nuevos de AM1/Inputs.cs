@@ -79,7 +79,11 @@ public class Inputs : MonoBehaviour
                     if (_tutorial.faseActual == 5 && (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3)))
                     {
                         Mensajes.Instance.SiguienteFase(); // Avanzar al primer mensaje del tutorial
-                        _tutorial.textoTutorial.gameObject.transform.parent.gameObject.SetActive(false);
+                        if(_tutorial.textoTutorial != null)
+                        {
+                            _tutorial.textoTutorial.gameObject.transform.parent.gameObject.SetActive(false);
+                        }
+                        //_tutorial.textoTutorial.gameObject.transform.parent.gameObject.SetActive(false);
                         return;
                     }
                 }
@@ -132,6 +136,7 @@ public class Inputs : MonoBehaviour
                  !Input.GetKey(TeclaAtaque2) &&
                  !Input.GetKey(TeclaAtaque3))
         {
+            if (TimerManager.CambiandoDeModo) return; // Evitar cambiar de modo si ya se está cambiando
             enModoMagico = !enModoMagico;
             //Debug.Log("Modo cambiado a " + (enModoMagico ? "mágico" : "melee"));
         }

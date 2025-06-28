@@ -40,6 +40,7 @@ public class ATK_Congelar : MonoBehaviour
 
     public void ReanudarAgente()
     {
+        if (padre == null) return;
         if(padre.GetComponent<A1_A1_H1_MoustroDelAverno>() == null) return; // Asegurarse de que el padre tenga el componente necesario
         //Debug.Log("Se desactivo " + gameObject.name, gameObject);
         //Debug.Log(destinoGuardado +" " + agent);

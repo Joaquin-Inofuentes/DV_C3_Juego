@@ -349,112 +349,122 @@ public class TimerManager : MonoBehaviour
         flashCoroutines[index] = null;
     }
 
+    public static bool CambiandoDeModo;
     public void TransicionarModoVisual()
     {
-        if (!enTransicionVisual)
+        CambiandoDeModo = true;
+        try
         {
-            EjecutarTimers();
-        }
-        else
-        {
-            ActualizarTimersDuranteTransicion();
-        }
 
-        enTransicionVisual = true;
-        DOTween.Kill(this);
-
-        bool modoAnterior = enModoMagico;
-        enModoMagico = !enModoMagico;
-
-        int[] actuales = modoAnterior ? new[] { 0, 1, 2 } : new[] { 3, 4, 5 };
-        int[] nuevos   = enModoMagico ? new[] { 0, 1, 2 } : new[] { 3, 4, 5 };
-        float d = 0.4f;
-
-        Sequence seq = DOTween.Sequence();
-
-        foreach (int i in actuales)
-        {
-            RectTransform w = wrappers[i];
-            if (w == null) continue;
-
-            CanvasGroup cg = w.GetComponent<CanvasGroup>() ?? w.gameObject.AddComponent<CanvasGroup>();
-
-            w.gameObject.SetActive(true);
-            w.localEulerAngles = Vector3.zero;
-            cg.alpha = 1;
-            w.anchoredPosition = originalWrapperPositions[i];
-
-            // ⚠ Mini secuencia separada para cada ícono
-            Sequence mini = DOTween.Sequence();
-            mini.Append(cg.DOFade(0, d / 2f));
-            mini.Join(w.DOLocalRotate(new Vector3(0, 90, 0), d / 2f, RotateMode.FastBeyond360));
-            
-            RectTransform wCopy = w;
-            mini.AppendCallback(() => wCopy.gameObject.SetActive(false));
-            // Sumás esta mini secuencia al grupo
-            seq.Join(mini);
-        }
-
-        seq.AppendInterval(0.05f);
-
-        // 2) Animación de entrada de los nuevos
-        // 2) Animación de entrada de los nuevos, uno por uno
-        foreach (int i in nuevos)
-        {
-            RectTransform w = wrappers[i];
-            CanvasGroup cg = w.GetComponent<CanvasGroup>() ?? w.gameObject.AddComponent<CanvasGroup>();
-
-            w.gameObject.SetActive(true);
-            w.anchoredPosition = originalWrapperPositions[i];
-            w.localEulerAngles = new Vector3(0, -90, 0);
-            cg.alpha = 0;
-
-            // ⚠️ Guardar referencia temporal para el closure (por seguridad)
-            RectTransform wTemp = w;
-            CanvasGroup cgTemp = cg;
-
-            // Crear una mini secuencia por ícono
-            Sequence miniEntrada = DOTween.Sequence();
-            miniEntrada.Join(cgTemp.DOFade(1, d / 2f));
-            miniEntrada.Join(wTemp.DOLocalRotate(Vector3.zero, d / 2f).SetEase(Ease.OutBack));
-            seq.Append(miniEntrada);
-
-        }
-
-        seq.OnComplete(() => 
-    {
-        enTransicionVisual = false;
-
-        for (int i = 0; i < wrappers.Length; i++)
-        {
-            if (wrappers[i] != null)
+            if (!enTransicionVisual)
             {
-                wrappers[i].anchoredPosition = originalWrapperPositions[i];
-
-                // Restaurar visibilidad
-                var cg = wrappers[i].GetComponent<CanvasGroup>();
-                if (cg != null)
-                {
-                    cg.alpha = 1f;
-                    cg.interactable = true;
-                    cg.blocksRaycasts = true;
-                }
-
-                // Asegurar que estén activos los del modo correcto
-                bool esMagia = i <= 2;
-                bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
-                bool estaEnCooldown = timers[i] > 0f;
-
-                // Mostrar si es del modo actual o si todavía está cargando
-                bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
-                wrappers[i].gameObject.SetActive(deberiaEstarActivo);
+                EjecutarTimers();
             }
+            else
+            {
+                ActualizarTimersDuranteTransicion();
+            }
+
+            enTransicionVisual = true;
+            DOTween.Kill(this);
+
+            bool modoAnterior = enModoMagico;
+            enModoMagico = !enModoMagico;
+
+            int[] actuales = modoAnterior ? new[] { 0, 1, 2 } : new[] { 3, 4, 5 };
+            int[] nuevos = enModoMagico ? new[] { 0, 1, 2 } : new[] { 3, 4, 5 };
+            float d = 0.4f;
+
+            Sequence seq = DOTween.Sequence();
+
+            foreach (int i in actuales)
+            {
+                RectTransform w = wrappers[i];
+                if (w == null) continue;
+
+                CanvasGroup cg = w.GetComponent<CanvasGroup>() ?? w.gameObject.AddComponent<CanvasGroup>();
+
+                w.gameObject.SetActive(true);
+                w.localEulerAngles = Vector3.zero;
+                cg.alpha = 1;
+                w.anchoredPosition = originalWrapperPositions[i];
+
+                // ⚠ Mini secuencia separada para cada ícono
+                Sequence mini = DOTween.Sequence();
+                mini.Append(cg.DOFade(0, d / 2f));
+                mini.Join(w.DOLocalRotate(new Vector3(0, 90, 0), d / 2f, RotateMode.FastBeyond360));
+
+                RectTransform wCopy = w;
+                mini.AppendCallback(() => wCopy.gameObject.SetActive(false));
+                // Sumás esta mini secuencia al grupo
+                seq.Join(mini);
+            }
+
+            seq.AppendInterval(0.05f);
+
+            // 2) Animación de entrada de los nuevos
+            // 2) Animación de entrada de los nuevos, uno por uno
+            foreach (int i in nuevos)
+            {
+                RectTransform w = wrappers[i];
+                CanvasGroup cg = w.GetComponent<CanvasGroup>() ?? w.gameObject.AddComponent<CanvasGroup>();
+
+                w.gameObject.SetActive(true);
+                w.anchoredPosition = originalWrapperPositions[i];
+                w.localEulerAngles = new Vector3(0, -90, 0);
+                cg.alpha = 0;
+
+                // ⚠️ Guardar referencia temporal para el closure (por seguridad)
+                RectTransform wTemp = w;
+                CanvasGroup cgTemp = cg;
+
+                // Crear una mini secuencia por ícono
+                Sequence miniEntrada = DOTween.Sequence();
+                miniEntrada.Join(cgTemp.DOFade(1, d / 2f));
+                miniEntrada.Join(wTemp.DOLocalRotate(Vector3.zero, d / 2f).SetEase(Ease.OutBack));
+                seq.Append(miniEntrada);
+
+            }
+
+            seq.OnComplete(() =>
+        {
+            enTransicionVisual = false;
+
+            for (int i = 0; i < wrappers.Length; i++)
+            {
+                if (wrappers[i] != null)
+                {
+                    wrappers[i].anchoredPosition = originalWrapperPositions[i];
+
+                    // Restaurar visibilidad
+                    var cg = wrappers[i].GetComponent<CanvasGroup>();
+                    if (cg != null)
+                    {
+                        cg.alpha = 1f;
+                        cg.interactable = true;
+                        cg.blocksRaycasts = true;
+                    }
+
+                    // Asegurar que estén activos los del modo correcto
+                    bool esMagia = i <= 2;
+                    bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
+                    bool estaEnCooldown = timers[i] > 0f;
+
+                    // Mostrar si es del modo actual o si todavía está cargando
+                    bool deberiaEstarActivo = perteneceAlModo || estaEnCooldown;
+                    wrappers[i].gameObject.SetActive(deberiaEstarActivo);
+                }
+            }
+
+        });
+
+
+            seq.Play();
         }
-        
-    });
-
-
-        seq.Play();
+        finally
+        {
+            CambiandoDeModo = false;
+        }
 
     }
     private void ActualizarTimersDuranteTransicion()
@@ -471,7 +481,7 @@ public class TimerManager : MonoBehaviour
                 overlayImg.fillAmount = percent;
         }
     }
-    
+
 
 
 }

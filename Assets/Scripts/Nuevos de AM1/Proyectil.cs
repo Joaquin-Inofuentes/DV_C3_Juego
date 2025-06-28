@@ -109,9 +109,9 @@ public class Proyectil : MonoBehaviour
 
             if (EfectoEspecial != null)
             {
+                GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
                 if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Hielo"))
                 {
-                    GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
                     EnemigoV2Real.Congelado = true;
                     EnemigoV2Real.PrimerAtaqueAAnular = true;
@@ -126,7 +126,6 @@ public class Proyectil : MonoBehaviour
 
                 else if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Electrico"))
                 {
-                    GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
                     EnemigoV2Real.Congelado = true;
                     EnemigoV2Real.PrimerAtaqueAAnular = true;
@@ -208,8 +207,9 @@ public class Proyectil : MonoBehaviour
     }
 
     public float Volumen = 1f;
+    public float RadioDeImpactoSonoro = 50f;
     public void OnDestroy()
     {
-        AudioManager.CrearEfectoSonoro(PuntoDeColision, AudioAlColisionar, Volumen);
+        AudioManager.CrearEfectoSonoro(transform.position, AudioAlColisionar, Volumen, RadioDeImpactoSonoro);
     }
 }

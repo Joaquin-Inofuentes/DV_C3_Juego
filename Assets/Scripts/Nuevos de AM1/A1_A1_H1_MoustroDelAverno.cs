@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 {
@@ -537,5 +538,24 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     {
         Objetivo = gameObject;
         objetivoActual = gameObject.transform;
+    }
+
+
+
+
+    public void OnDestroy()
+    {
+        if(gameObject.name == "ArqueraDuende")
+        {
+            SceneManager.LoadScene("Victoria");
+        }
+    }
+
+    public void OnDisable()
+    {
+        if (gameObject.name == "ArqueraDuende")
+        {
+            SceneManager.LoadScene("Victoria");
+        }
     }
 }

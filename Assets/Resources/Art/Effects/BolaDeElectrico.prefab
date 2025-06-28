@@ -24661,7 +24661,8 @@ MonoBehaviour:
   danio: 10
   PuntoDeColision: {x: 0, y: 0, z: 0}
   AudioAlColisionar: {fileID: 0}
-  Volumen: 0.2
+  Volumen: 1
+  RadioDeImpactoSonoro: 50
 --- !u!65 &7342949865089916581
 BoxCollider:
   m_ObjectHideFlags: 0

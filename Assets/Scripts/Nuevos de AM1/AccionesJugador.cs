@@ -108,6 +108,11 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     void Update()
     {
+        if(modoMelee != !_TimerManager.enModoMagico)
+        {
+            modoMelee = !_TimerManager.enModoMagico;
+        }
+
         // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();
 
@@ -510,8 +515,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     public void EfectoDeRelentizarTiempo()
     {
-        Time.timeScale = 0.4f;
-        Invoke(nameof(RestablecerTiempo), 1f);
+        Time.timeScale = 0.6f;
+        Invoke(nameof(RestablecerTiempo), 0.5f);
     }
     public void RestablecerTiempo()
     {

@@ -99,6 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SonidoDeInteraccion: {fileID: 0}
   CantidadDeMonedas: 15
+  SonidoDeInteraccionClip: {fileID: 8300000, guid: b114d2416f49f834c99bc7487437703c, type: 3}
 --- !u!65 &3096670262760460206
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,7 +115,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 64
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
