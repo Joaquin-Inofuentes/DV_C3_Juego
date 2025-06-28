@@ -142,7 +142,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                     espada.SetActive(true);
             }
 
-            else
+            else if(modoMelee)
             {
                 // Cambiar a modo magia
                 modoMelee = false;
