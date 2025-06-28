@@ -69,6 +69,10 @@ public class Mensajes : MonoBehaviour
 
     public void Update()
     {
+        if (Input.anyKeyDown)
+        {
+            SiguienteFase();
+        }
         if (Instance == null)
         {
             Instance = this;
