@@ -14,6 +14,7 @@ public class ATK_Congelar : MonoBehaviour
 
     void Start()
     {
+        Destroy(gameObject, timer); // Destruir el objeto después de un tiempo
         if (anim != null) anim.speed = 0;
         if (this == null) return;
         if (padre == null) return; // Asegurarse de que padre no sea nulo
