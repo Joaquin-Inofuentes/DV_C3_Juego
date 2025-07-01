@@ -3,7 +3,22 @@ guid: dc799e5e3ffe3d14da053b8b22ae20b1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HealthPot_Mat
+    second: {fileID: 2100000, guid: 4d28d651973bd764ab3eaa34971bc627, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ManaPot_mat
+    second: {fileID: 2100000, guid: f9709c2387db7c64baa9ef8d1469a786, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Poison_Mat
+    second: {fileID: 2100000, guid: 8cddb768e7e9c344e81f2e78bb942049, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
