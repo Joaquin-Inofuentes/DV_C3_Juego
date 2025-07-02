@@ -1,6 +1,6 @@
 namespace RTS.Comunicacion
 {
-    public enum EstadoIA
+    public enum EstadoIA // agreagra aa ebenugi
     {
         Detenido,
         Persiguiendo,
