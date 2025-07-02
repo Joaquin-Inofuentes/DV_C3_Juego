@@ -7,14 +7,17 @@ public class PuenteDeHielo : MonoBehaviour
     public float duracionPlataforma = 15f;
     public float duracionTransicion = 0.3f;
     public float retardoEntreBloques = 0.1f;
+    public bool estaActivo =false;
 
     void Start()
     {
         DesactivarTodasLasPlataformas();
+        
     }
 
     public void ActivarPlataformaCercana(Vector3 posicionImpacto)
     {
+        if (estaActivo != false)return;
         Transform plataformaCercana = null;
         float distanciaMinima = Mathf.Infinity;
 
@@ -32,6 +35,7 @@ public class PuenteDeHielo : MonoBehaviour
         {
             plataformaCercana.gameObject.SetActive(true);
             StartCoroutine(AparecerBloquesUnoPorUno(plataformaCercana));
+           estaActivo=true;
         }
     }
 
@@ -71,6 +75,7 @@ public class PuenteDeHielo : MonoBehaviour
         // Esperar antes de ocultar todo
         yield return new WaitForSeconds(duracionPlataforma);
         plataforma.gameObject.SetActive(false);
+        estaActivo = false;
     }
 
     private void DesactivarTodasLasPlataformas()
@@ -78,6 +83,7 @@ public class PuenteDeHielo : MonoBehaviour
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);
+           
         }
     }
 }
