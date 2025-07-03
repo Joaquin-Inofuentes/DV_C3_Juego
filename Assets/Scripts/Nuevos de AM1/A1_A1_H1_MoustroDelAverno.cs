@@ -550,12 +550,4 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             SceneManager.LoadScene("Victoria");
         }
     }
-
-    public void OnDisable()
-    {
-        if (gameObject.name == "ArqueraDuende")
-        {
-            SceneManager.LoadScene("Victoria");
-        }
-    }
 }
