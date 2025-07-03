@@ -5377,6 +5377,10 @@ PrefabInstance:
       propertyPath: FondoOscuroSangriendo
       value: 
       objectReference: {fileID: 1639250814}
+    - target: {fileID: 6595303928773415465, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
+      propertyPath: m_Name
+      value: Trail
+      objectReference: {fileID: 0}
     - target: {fileID: 6837533125788142255, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_Name
       value: Jugador 1
