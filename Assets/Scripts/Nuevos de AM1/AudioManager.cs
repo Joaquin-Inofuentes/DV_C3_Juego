@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour
     public List<string> nombresDeClips = new List<string>();
     // TP2 - Bruno Barzola
     // Uso de diccionarios para almacenar los clips de audio
-    public static Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>();
+    public static Dictionary<string, AudioClip> clips = new Dictionary<string, AudioClip>(); // usar enum
 
     private bool sonidosEscaneados = false; // Nuevo flag
 
