@@ -1,7 +1,0 @@
-Temas q se veran para github
-1. Crear 1 repositorio
-2. Crear los distintos ramales. (1 persona = 1 ramal)
-3. Cargar el .gitignore
-4. Hacer cambios en .txt
-5. Unir ramas
-6. Descargar repositorio hecho
