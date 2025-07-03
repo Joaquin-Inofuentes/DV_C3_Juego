@@ -131,13 +131,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Creador: {fileID: 0}
-  EfectoEspecial: {fileID: 8769622906519228800, guid: f2485fc1ebfbf064181c395a4611e93d, type: 3}
+  EfectoEspecial: {fileID: 100008, guid: 3b686fba4d2064d45a9c7b808cd79755, type: 3}
   AutoDestruir: 1
   AudioAlAparecer: {fileID: 8300000, guid: 5f550bace4c82e542bf099f879e8ef36, type: 3}
   velocidad: 10
   danio: 10
   PuntoDeColision: {x: 0, y: 0, z: 0}
   AudioAlColisionar: {fileID: 8300000, guid: df7ff507c7a744d489007b77511dc4de, type: 3}
+  Volumen: 1
+  RadioDeImpactoSonoro: 50
 --- !u!65 &7342949865089916581
 BoxCollider:
   m_ObjectHideFlags: 0
