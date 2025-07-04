@@ -24656,12 +24656,12 @@ MonoBehaviour:
   Creador: {fileID: 0}
   EfectoEspecial: {fileID: 8769622906519228800, guid: e09fa38268a791340bc129bdbd24f03c, type: 3}
   AutoDestruir: 1
-  AudioAlAparecer: {fileID: 0}
+  AudioAlAparecer: {fileID: 8300000, guid: bdcbd3b1f1f54b442b8edcaf101dee2a, type: 3}
   velocidad: 10
   danio: 10
   PuntoDeColision: {x: 0, y: 0, z: 0}
   AudioAlColisionar: {fileID: 0}
-  Volumen: 1
+  Volumen: 100
   RadioDeImpactoSonoro: 50
 --- !u!65 &7342949865089916581
 BoxCollider:
