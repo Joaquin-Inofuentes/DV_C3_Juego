@@ -7,15 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD:Assets/Resources/Art/Characters/Animacion/usa esto damian/Materials/agua.mat
-  m_Name: agua
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: 4a1c294bb55cdf941aacd15ac236562b, type: 2}
-=======
   m_Name: Agua
   m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
->>>>>>> 0c99cb089b4ff5fff830bd094d4926d85051f94e:Assets/Resources/Art/Objetos/Materiales/Agua.mat
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []

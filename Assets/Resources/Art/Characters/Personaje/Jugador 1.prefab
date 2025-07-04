@@ -3332,8 +3332,8 @@ MonoBehaviour:
   SonidoDeMorir: {fileID: 4342667390874665725}
   FondoOscuroSangriendo: {fileID: 0}
   Flecha: {fileID: 5171194209051667546}
-  SonidoDeCaminarEnHielo: {fileID: 0}
-  SonidoDeCaminarEnPasto: {fileID: 0}
+  SonidoDeCaminarEnHielo: {fileID: 8300000, guid: 4630fdeed4ef1564dbefeffc489945e8, type: 3}
+  SonidoDeCaminarEnPasto: {fileID: 8300000, guid: b94345a2ef82471498ab2a95cbf4d744, type: 3}
 --- !u!95 &3817859161315588317
 Animator:
   serializedVersion: 5
