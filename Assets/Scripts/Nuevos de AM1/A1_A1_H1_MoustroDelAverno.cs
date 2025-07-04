@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
@@ -496,6 +497,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     void CambiarDePosicion()
     {
         int index = Random.Range(0, puntosSpawn.Count);
+        CrearAliado(transform.position); // Crear aliado al cambiar de posición
         transform.position = puntosSpawn[index].position;
         AudioManager.CrearEfectoSonoro(transform.position, SonidoDeTeletransportacion);
         //transform.LookAt(objetivo.position); // Mirar hacia el objetivo
@@ -545,28 +547,43 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public void OnDestroy()
     {
-        if(gameObject.name == "ArqueraDuende")
+        if (gameObject.name == "ArqueraDuende")
         {
             SceneManager.LoadScene("Victoria");
         }
     }
 
-
+    public List<GameObject> AliadosCreados = new List<GameObject>(); // Lista de aliados creados
     public GameObject AliadoPrefab; // Prefab del aliado a crear
     public GameObject EfectoDeAparicionDeEnemigo; // Efecto visual al crear el aliado
+    public GameObject VFX_ReAparecer; // Efecto visual al ReAparecer
     public void CrearAliado(Vector3 posicion)
     {
-        Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity);
+        Destroy(Instantiate(VFX_ReAparecer, posicion, Quaternion.identity), 2f); // Destruir el efecto después de 2 segundos
         StartCoroutine(CrearAliadoTrasDelay(posicion));
     }
-
+    int CantidadDeAliados = 5; // Contador de aliados creados
     private IEnumerator CrearAliadoTrasDelay(Vector3 posicion)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
         if (AliadoPrefab != null)
         {
-            Instantiate(AliadoPrefab, posicion, Quaternion.identity);
-            Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity);
+            LimpiarAliadosNulosOMissing();
+            if (AliadosCreados.Count >= CantidadDeAliados) yield break; // No crear más aliados si ya se alcanzó el límite
+            GameObject EnemigoCreado = Instantiate(AliadoPrefab, posicion, Quaternion.identity);
+            Destroy(Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity), 2f); // Destruir el efecto después de 2 segundos
+            EnemigoCreado.GetComponent<A1_A1_Enemigo>().VidaMax = 50; // Asignar vida máxima al nuevo aliado
+            EnemigoCreado.GetComponent<A1_A1_Enemigo>().Vida = 50; // Asignar vida al nuevo aliado
+            EnemigoCreado.GetComponent<NavMeshAgent>().speed = 10f;
+            EnemigoCreado.GetComponent<NavMeshAgent>().acceleration = 10f; // Asignar velocidad al nuevo aliado
+            AliadosCreados.Add(EnemigoCreado); // Agregar el nuevo aliado a la lista
         }
+    }
+    /// <summary>
+    /// Elimina de la lista AliadosCreados todos los elementos que sean null o estén missing.
+    /// </summary>
+    public void LimpiarAliadosNulosOMissing()
+    {
+        AliadosCreados.RemoveAll(item => item == null);
     }
 }
