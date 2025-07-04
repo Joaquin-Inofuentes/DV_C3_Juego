@@ -6082,11 +6082,6 @@ PrefabInstance:
       propertyPath: FondoOscuroSangriendo
       value: 
       objectReference: {fileID: 1639250814}
-<<<<<<< HEAD
-    - target: {fileID: 6595303928773415465, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
-      propertyPath: m_Name
-      value: Trail
-=======
     - target: {fileID: 5283086713172182160, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9608939
@@ -6214,7 +6209,6 @@ PrefabInstance:
     - target: {fileID: 6663140618691410861, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.0339804
->>>>>>> 2-damian
       objectReference: {fileID: 0}
     - target: {fileID: 6837533125788142255, guid: ff56e49b58b068f4889e8107df5f91cc, type: 3}
       propertyPath: m_Name
