@@ -254,6 +254,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public bool PendienteDeCargaElectrica = false;
     public ReportadorDeLasColisiones CargaElectrica;
     public AudioClip AudioAlRecibirDanio; // Sonido al recibir daño
+    public GameObject MensajeDeBugActivado; // Mensaje de bug activado
     public override void RecibirDanio(int cantidad)
     {
         Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
@@ -305,6 +306,13 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
                 Vida -= cantidad * 2;
                 Congelado = false;
                 EfectoDeRopturaDeCongelamiento();
+                if(gameObject.name == "ArqueraDuende")
+                {
+                    Vida = 0;
+                    Morir(); // Matar al enemigo si es ArqueraDuende
+                    MensajeDeBugActivado.SetActive(true);
+                    Destroy(MensajeDeBugActivado, 5f); // Destruir el mensaje después de 5 segundos
+                }
             }
         }
     }
@@ -495,6 +503,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public AudioClip SonidoDeTeletransportacion;
     void CambiarDePosicion()
     {
+        if (estaMuerto) return; // No crear aliados si el monstruo está muerto
         int index = Random.Range(0, puntosSpawn.Count);
         CrearAliado(transform.position); // Crear aliado al cambiar de posición
         transform.position = puntosSpawn[index].position;
@@ -558,6 +567,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public GameObject VFX_ReAparecer; // Efecto visual al ReAparecer
     public void CrearAliado(Vector3 posicion)
     {
+        if(estaMuerto) return; // No crear aliados si el monstruo está muerto
         Destroy(Instantiate(VFX_ReAparecer, posicion, Quaternion.identity), 2f); // Destruir el efecto después de 2 segundos
         StartCoroutine(CrearAliadoTrasDelay(posicion));
     }
@@ -569,6 +579,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             LimpiarAliadosNulosOMissing();
             if (AliadosCreados.Count >= CantidadDeAliados) yield break; // No crear más aliados si ya se alcanzó el límite
+            if (estaMuerto) yield break; // No crear aliados si el monstruo está muerto
             GameObject EnemigoCreado = Instantiate(AliadoPrefab, posicion, Quaternion.identity);
             Destroy(Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity), 2f); // Destruir el efecto después de 2 segundos
             EnemigoCreado.GetComponent<A1_A1_Enemigo>().VidaMax = 50; // Asignar vida máxima al nuevo aliado

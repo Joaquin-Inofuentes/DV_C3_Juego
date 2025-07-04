@@ -13,6 +13,8 @@ public class CodigoGenerico : MonoBehaviour
 
     public void EjecutarSonido()
     {
+        Destroy(gameObject,Sonido.length);
+        GetComponent<BoxCollider>().enabled = false; // Desactiva el collider del objeto para que no colisione más
         AudioManager.CrearEfectoSonoro(transform.position, Sonido, false, 0.3f);
 
         // Le decís al Dialogos que muestre el texto del clip que acabás de reproducir
@@ -25,7 +27,6 @@ public class CodigoGenerico : MonoBehaviour
             Debug.LogWarning("Dialogos manager no asignado");
         }
 
-        Destroy(gameObject);
     }
 }
 

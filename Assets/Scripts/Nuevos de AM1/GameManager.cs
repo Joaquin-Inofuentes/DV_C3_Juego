@@ -28,14 +28,14 @@ public class GameManager : MonoBehaviour
 
     // Propiedades públicas
     public GameObject PadreDeTextDeCreditos; // Objeto donde se muestran los créditos
-   
+
 
     void Start()
     {
         // Inicialización si es necesario
     }
 
-   
+
 
     void Update()
     {
@@ -103,5 +103,14 @@ public class GameManager : MonoBehaviour
 
     public static Vector3 PosicionDelMouseEnElEspacio;
 
-
+    public void Victoria(Collider Objeto)
+    {
+        if(Objeto.gameObject.name != "Jugador 1")
+        {
+            Debug.LogError("Objeto es nulo al intentar registrar victoria.");
+            return;
+        }
+        Debug.Log("Victoria alcanzada con " + Objeto.name);
+        SceneManager.LoadScene("Victoria");
+    }
 }
