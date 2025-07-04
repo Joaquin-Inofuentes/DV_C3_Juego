@@ -550,4 +550,23 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             SceneManager.LoadScene("Victoria");
         }
     }
+
+
+    public GameObject AliadoPrefab; // Prefab del aliado a crear
+    public GameObject EfectoDeAparicionDeEnemigo; // Efecto visual al crear el aliado
+    public void CrearAliado(Vector3 posicion)
+    {
+        Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity);
+        StartCoroutine(CrearAliadoTrasDelay(posicion));
+    }
+
+    private IEnumerator CrearAliadoTrasDelay(Vector3 posicion)
+    {
+        yield return new WaitForSeconds(2f);
+        if (AliadoPrefab != null)
+        {
+            Instantiate(AliadoPrefab, posicion, Quaternion.identity);
+            Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity);
+        }
+    }
 }

@@ -108,7 +108,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     void Update()
     {
-        if(modoMelee != !_TimerManager.enModoMagico)
+        if (modoMelee != !_TimerManager.enModoMagico)
         {
             modoMelee = !_TimerManager.enModoMagico;
         }
@@ -147,7 +147,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                     espada.SetActive(true);
             }
 
-            else if(modoMelee)
+            else if (modoMelee)
             {
                 // Cambiar a modo magia
                 modoMelee = false;
@@ -229,13 +229,17 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 anim.SetTrigger("magic1");
                 ProyectilUsado = BolaDeFuego;
                 _TimerManager.SetTimerToMax(0);
-
+                RegistrarAhora();
             }
             else
             {
                 if (_TimerManager.IsTimerCharging(3)) return;
                 anim.SetTrigger("melee1");
                 _TimerManager.SetTimerToMax(3);
+                if (PasoTiempo(2))
+                {
+                    CrearEfectoDeExplosion();
+                }
             }
         }
         else if (Nombre == "BolaDeHielo" || Nombre == "Melee2")
@@ -639,6 +643,59 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         else
         {
             S_Caminar.clip = SonidoDeCaminarEnPasto;
+        }
+    }
+
+
+
+
+
+
+
+
+
+    private static float tiempoInicio;
+
+    public static void RegistrarAhora()
+    {
+        tiempoInicio = Time.time;
+    }
+
+    public static bool PasoTiempo(float segundos)
+    {
+        return Time.time - tiempoInicio <= segundos;
+    }
+
+
+    public GameObject VFX_ComboExplosion;
+    public AudioClip SonidoComboExplosion;
+    // Efecto de curación al lanzar el hechizo de fuego
+    public GameObject VFX_EfectoDeCuracion;
+    public void CrearEfectoDeExplosion() // Se activa por timer despues de lanzar el primer hechizo de fuego y atacar con melee
+    {
+        if (estaMuerto) return;
+        if (VFX_ComboExplosion == null || SonidoComboExplosion == null) return;
+
+
+        // Posicion del efecto: Origen del ataque
+        Vector3 OrigenDeEfecto = transform.position;
+        // Crea el efecto q daña a todos los enemigos cercanos
+        GameObject efecto = Instantiate(VFX_ComboExplosion, OrigenDeEfecto, Quaternion.identity);
+        // Crea efecto sonoro de combo
+        AudioManager.CrearEfectoSonoro(transform.position, SonidoComboExplosion);
+    }
+
+
+    public void CrearEfectoDeCuracion()
+    {
+        if (estaMuerto) return;
+        if (VFX_EfectoDeCuracion == null) return;
+        // Posicion del efecto: Origen del ataque
+        vidaActual += 20; // Curar al jugador al lanzar el hechizo de fuego
+        if (vidaActual > vidaMaxima) vidaActual = vidaMaxima; // Asegurarse de no superar la vida máxima
+        else if (vidaActual > vidaMaxima)
+        {
+            Instantiate(VFX_EfectoDeCuracion, transform.position, Quaternion.identity);
         }
     }
 }

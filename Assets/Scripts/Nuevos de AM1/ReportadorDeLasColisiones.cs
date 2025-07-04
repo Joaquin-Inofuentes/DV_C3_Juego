@@ -165,7 +165,7 @@ public class ReportadorDeLasColisiones : MonoBehaviour
     public GameObject PrefabDeAtaqueParaCercanos;
     public void ElectrocutarCercanos()
     {
-        Debug.Log("asdas");
+        Debug.Log("Electrocuta a todos los enemigos cercanos");
         // Instanciar el prefab en la posición de este GameObject
         if (PrefabDeAtaqueParaCercanos != null)
         {
@@ -177,7 +177,8 @@ public class ReportadorDeLasColisiones : MonoBehaviour
         {
             if (enemigo != null && PrefabDeAtaqueParaCercanos != null)
             {
-                Instantiate(PrefabDeAtaqueParaCercanos, enemigo.transform.position, Quaternion.identity);
+                GameObject Electrico = Instantiate(PrefabDeAtaqueParaCercanos, enemigo.transform.position, Quaternion.identity);
+                Electrico.GetComponent<Proyectil>().Destino = enemigo;
             }
         }
     }

@@ -70,12 +70,16 @@ public class Proyectil : MonoBehaviour
 
 
 
-
+    public GameObject Destino = null; // Para proyectiles que siguen un destino
     public int danio = 10;
     public Vector3 PuntoDeColision;
     public AudioClip AudioAlColisionar;
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
+        if(Destino != null && Destino != collision)
+        {
+            return; // No colisionar con el destino
+        }
         //Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
         // Colisiono con Moustro Mas cercano tag Untagged Tipo: CollisionEnter
         if (collision == Creador) return;
