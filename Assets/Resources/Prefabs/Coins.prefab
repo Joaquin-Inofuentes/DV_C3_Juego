@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SonidoDeInteraccion: {fileID: 0}
   CantidadDeMonedas: 15
-  SonidoDeInteraccionClip: {fileID: 8300000, guid: b114d2416f49f834c99bc7487437703c, type: 3}
+  SonidoDeInteraccionClip: {fileID: 8300000, guid: e520a56b12f7d8c40b108f770153f1cb, type: 3}
 --- !u!65 &3096670262760460206
 BoxCollider:
   m_ObjectHideFlags: 0
