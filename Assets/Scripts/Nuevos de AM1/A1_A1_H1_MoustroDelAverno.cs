@@ -306,7 +306,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
                 Vida -= cantidad * 2;
                 Congelado = false;
                 EfectoDeRopturaDeCongelamiento();
-                if(gameObject.name == "ArqueraDuende")
+                if (gameObject.name == "ArqueraDuende")
                 {
                     Vida = 0;
                     Morir(); // Matar al enemigo si es ArqueraDuende
@@ -552,12 +552,18 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
 
 
-
+    public GameObject P_PosionDeVida;
     public void OnDestroy()
     {
         if (gameObject.name == "ArqueraDuende")
         {
             SceneManager.LoadScene("Victoria");
+        }
+        if (P_PosionDeVida != null)
+        {
+            float randomX = Random.Range(0f, 1f);
+            if (randomX < 0.60f) return; // 20% de probabilidad de crear el efecto de veneno
+            GameObject posion = Instantiate(P_PosionDeVida, transform.position, Quaternion.identity);
         }
     }
 
@@ -567,7 +573,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public GameObject VFX_ReAparecer; // Efecto visual al ReAparecer
     public void CrearAliado(Vector3 posicion)
     {
-        if(estaMuerto) return; // No crear aliados si el monstruo está muerto
+        if (estaMuerto) return; // No crear aliados si el monstruo está muerto
         Destroy(Instantiate(VFX_ReAparecer, posicion, Quaternion.identity), 2f); // Destruir el efecto después de 2 segundos
         StartCoroutine(CrearAliadoTrasDelay(posicion));
     }
@@ -584,8 +590,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
             Destroy(Instantiate(EfectoDeAparicionDeEnemigo, posicion, Quaternion.identity), 2f); // Destruir el efecto después de 2 segundos
             EnemigoCreado.GetComponent<A1_A1_Enemigo>().VidaMax = 50; // Asignar vida máxima al nuevo aliado
             EnemigoCreado.GetComponent<A1_A1_Enemigo>().Vida = 50; // Asignar vida al nuevo aliado
-            EnemigoCreado.GetComponent<NavMeshAgent>().speed = 10f;
-            EnemigoCreado.GetComponent<NavMeshAgent>().acceleration = 10f; // Asignar velocidad al nuevo aliado
+            EnemigoCreado.GetComponent<NavMeshAgent>().speed = 7f;
+            EnemigoCreado.GetComponent<NavMeshAgent>().acceleration = 7f; // Asignar velocidad al nuevo aliado
             AliadosCreados.Add(EnemigoCreado); // Agregar el nuevo aliado a la lista
         }
     }

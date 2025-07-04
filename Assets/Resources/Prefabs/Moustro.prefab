@@ -2116,11 +2116,17 @@ MonoBehaviour:
   PendienteDeCargaElectrica: 0
   CargaElectrica: {fileID: 7474941633747556650}
   AudioAlRecibirDanio: {fileID: 0}
+  MensajeDeBugActivado: {fileID: 0}
   VFXDeRopturaDeHielo: {fileID: 1437506766677768766, guid: 02c678d08b0846c4e8a3775ad904fe03, type: 3}
   S_RupturaDeHielo: {fileID: 8506818581573726860}
   puntosSpawn: []
   proyectilPrefab: {fileID: 0}
   SonidoDeTeletransportacion: {fileID: 0}
+  P_PosionDeVida: {fileID: 1913296860305729023, guid: 41d11bfb8f2e4c44eadefc6483e2a8c7, type: 3}
+  AliadosCreados: []
+  AliadoPrefab: {fileID: 0}
+  EfectoDeAparicionDeEnemigo: {fileID: 0}
+  VFX_ReAparecer: {fileID: 0}
 --- !u!114 &4886365123928998457
 MonoBehaviour:
   m_ObjectHideFlags: 0
