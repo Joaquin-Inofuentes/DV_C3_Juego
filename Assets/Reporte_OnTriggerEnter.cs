@@ -17,4 +17,14 @@ public class Reporte_OnTriggerEnter : MonoBehaviour
         Debug.Log($"[Trigger Enter] con {other.name}");
         OnTriggerEnterEvent?.Invoke(other);
     }
+
+    public void AutoDestruirse()
+    {
+        Destroy(gameObject);
+    }
+
+    public void AutoDestruirseConTimer(float Timer)
+    {
+        Destroy(gameObject, Timer);
+    }
 }

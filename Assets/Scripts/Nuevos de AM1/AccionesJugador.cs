@@ -670,7 +670,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public GameObject VFX_ComboExplosion;
     public AudioClip SonidoComboExplosion;
     // Efecto de curación al lanzar el hechizo de fuego
-    public GameObject VFX_EfectoDeCuracion;
     public void CrearEfectoDeExplosion() // Se activa por timer despues de lanzar el primer hechizo de fuego y atacar con melee
     {
         if (estaMuerto) return;
@@ -687,6 +686,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     }
 
 
+    public GameObject VFX_EfectoDeCuracion;
+    public AudioClip VFX_A_EfectoDeCuracion;
     public void CrearEfectoDeCuracion()
     {
         if (estaMuerto) return;
@@ -694,9 +695,12 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         // Posicion del efecto: Origen del ataque
         vidaActual += 20; // Curar al jugador al lanzar el hechizo de fuego
         if (vidaActual > vidaMaxima) vidaActual = vidaMaxima; // Asegurarse de no superar la vida máxima
-        else if (vidaActual > vidaMaxima)
+        else if (vidaActual < vidaMaxima)
         {
-            Instantiate(VFX_EfectoDeCuracion, transform.position, Quaternion.identity);
+            GameObject EfectoDeCuracion = Instantiate(VFX_EfectoDeCuracion, transform.position, Quaternion.identity);
+            AudioManager.CrearEfectoSonoro(transform.position, VFX_A_EfectoDeCuracion);
+            Destroy(EfectoDeCuracion, 2f); // Destruir el efecto después de 2 segundos
+            EfectoDeCuracion.transform.SetParent(transform);
         }
     }
 }
