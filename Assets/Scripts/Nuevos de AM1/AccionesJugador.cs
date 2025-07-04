@@ -675,6 +675,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         if (estaMuerto) return;
         if (VFX_ComboExplosion == null || SonidoComboExplosion == null) return;
+        Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡ONDA FLAMEANTE!", new Color(1f, 0.352f, 0f));
 
 
         // Posicion del efecto: Origen del ataque
