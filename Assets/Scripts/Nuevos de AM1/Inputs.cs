@@ -18,6 +18,7 @@ public class Inputs : MonoBehaviour
     public TimerManager C_TimerManager;
 
     public GameObject Menu;
+    public GameObject espada;
 
     public bool enModoMagico = true;
 
@@ -138,6 +139,14 @@ public class Inputs : MonoBehaviour
         {
             if (TimerManager.CambiandoDeModo) return; // Evitar cambiar de modo si ya se está cambiando
             enModoMagico = !enModoMagico;
+            if(enModoMagico != true)
+            {
+                espada.SetActive(true);
+            }
+            else
+            {
+                espada.SetActive(false);
+            }
             //Debug.Log("Modo cambiado a " + (enModoMagico ? "mágico" : "melee"));
         }
     }

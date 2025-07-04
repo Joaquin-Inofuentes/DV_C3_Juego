@@ -5259,6 +5259,10 @@ PrefabInstance:
       propertyPath: _textoTutorial
       value: 
       objectReference: {fileID: 982118007}
+    - target: {fileID: 4884282418640362273, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
       propertyPath: Feedbacks
       value: 
@@ -16406,6 +16410,11 @@ Transform:
   - {fileID: 1813428634}
   m_Father: {fileID: 1872100716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &923773291 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4884282418640362273, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
+  m_PrefabInstance: {fileID: 306825972}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &925480675 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 519669685813572173, guid: fd0f76977fd09ae449fcd1fac27c0dfd, type: 3}
@@ -24449,6 +24458,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8238281289162882338, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: espada
+      value: 
+      objectReference: {fileID: 923773291}
     - target: {fileID: 8238281289162882338, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: C_GameManager
       value: 
