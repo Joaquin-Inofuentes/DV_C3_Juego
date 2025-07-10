@@ -9,6 +9,10 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("EscenaPrincipal v3");
     }
+    public void ModoSupervivencia()
+    {
+        SceneManager.LoadScene("Supervivencia");
+    }
     public void Menu()
     {
         SceneManager.LoadScene("Menu");

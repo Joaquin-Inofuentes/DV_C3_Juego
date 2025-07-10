@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Escenas/Victoria.unity
     guid: c6b73b3bfb8361b449b816d7fe9e1c27
+  - enabled: 1
+    path: Assets/Scenes/Supervivencia/Supervivencia.unity
+    guid: 0fe09ebe3102c3d448bbcc951bde7d04
   m_configObjects: {}
