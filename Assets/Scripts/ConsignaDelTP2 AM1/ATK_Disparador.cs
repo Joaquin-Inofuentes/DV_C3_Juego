@@ -4,37 +4,41 @@ using UnityEngine;
 
 public class ATK_Disparador : MonoBehaviour
 {
-    // ⏱ Tiempo sin nuevas entradas antes de reportar
+    // ⏱ Tiempo a esperar para reportar (aunque no haya detectados)
     public float tiempoEspera = 0.2f;
 
-    // 📣 Evento que se lanza con la lista de colliders detectados
+    // 📣 Evento que se lanza con la lista de colliders detectados (puede estar vacía)
     public event Action<List<Collider>> AlReportar;
 
-    // 📦 Lista de lo que entró
+    // 📦 Lista de objetos detectados que entraron al trigger
     private List<Collider> detectados = new List<Collider>();
 
-    // 🕒 Última vez que alguien entró
+    // 🕒 Última vez que hubo actividad (entrada o creación)
     private float ultimoIngreso;
+
+    void Start()
+    {
+        // Inicializamos el reloj desde el momento que se crea el objeto
+        ultimoIngreso = Time.time;
+    }
 
     void Update()
     {
-        // Si hay detectados y pasó el tiempo sin nuevos ingresos
-        if (detectados.Count > 0 && Time.time - ultimoIngreso > tiempoEspera)
+        // Si pasó el tiempo de espera sin nueva actividad, reportamos y destruimos
+        if (Time.time - ultimoIngreso > tiempoEspera)
         {
-            // 🔔 Reporta a los suscritos
-            AlReportar?.Invoke(new List<Collider>(detectados));
-
-            // 💣 Se destruye automáticamente
-            Destroy(gameObject);
+            AlReportar?.Invoke(new List<Collider>(detectados)); // Puede ser lista vacía
+            Destroy(gameObject); // Destruye el trigger
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
+        // Si no estaba en la lista, lo agregamos y reiniciamos el reloj
         if (!detectados.Contains(other))
         {
             detectados.Add(other);
-            ultimoIngreso = Time.time;
+            ultimoIngreso = Time.time; // Reinicia el temporizador
             Debug.Log("🟢 ATK_Disparador detectó: " + other.name);
         }
     }
