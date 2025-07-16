@@ -438,14 +438,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         Gizmos.DrawWireCube(transform.position, RangoDePerseguir);
     }
 
-
-
-
-
-
-
-
-
     public void CongelarEnemigo()
     {
         Debug.Log("Congelar enemigo", gameObject);
