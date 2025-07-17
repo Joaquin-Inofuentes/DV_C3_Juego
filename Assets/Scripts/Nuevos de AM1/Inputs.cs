@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Inputs : MonoBehaviour
@@ -11,6 +12,7 @@ public class Inputs : MonoBehaviour
     public KeyCode TeclaAtaque3 = KeyCode.Alpha3;
     public KeyCode TeclaCambioModo = KeyCode.M;
     public KeyCode botonPausa = KeyCode.Escape;
+ 
 
     public Vector3 movimientoMouse;
 
@@ -19,13 +21,17 @@ public class Inputs : MonoBehaviour
 
     public GameObject Menu;
     public GameObject espada;
+    private UI ui;
 
     public bool enModoMagico = true;
 
     void Start()
     {
-        if (C_TimerManager == null)
-            Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector.");
+        ui = FindObjectOfType<UI>();
+
+        if (C_TimerManager == null) 
+            Debug.LogWarning("[Inputs] No asignaste TimerManager en el Inspector."); 
+        
     }
     private Mensajes _tutorial;
     void Update()
@@ -169,13 +175,15 @@ public class Inputs : MonoBehaviour
     {
         if (Input.GetKeyDown(botonPausa))
         {
-            Time.timeScale = Time.timeScale == 1 ? 0 : 1;
+            bool pausando = Time.timeScale == 1;
+            Time.timeScale = pausando ? 0 : 1;
         }
     }
-
     public void ReanudarJuego()
     {
         Time.timeScale = 1;
+        Menu.SetActive(false);
+        ui.ActivarCursorJuego(); 
     }
 
     public void SalirDelJuego()
@@ -187,4 +195,4 @@ public class Inputs : MonoBehaviour
 #endif
         Debug.Log("Saliendo del juego");
     }
-}
+ }

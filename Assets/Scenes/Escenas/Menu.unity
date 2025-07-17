@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 78692586}
   - component: {fileID: 78692585}
+  - component: {fileID: 78692587}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -167,6 +168,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &78692587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78692584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a7830ef4b607e7489bf0f493facff9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objetivo: {fileID: 0}
+  camara: {fileID: 0}
+  offset: {x: 0, y: 1.8, z: 0}
+  suavizado: 12
+  canvasGroup: {fileID: 0}
+  textoUI: {fileID: 0}
+  fadeTime: 0.3
+  duracionVisible: 3
+  textosDePuzzle:
+  - "No puedo pasar por ah\xED"
+  - No puedo
+  - "\xBFVos quer\xE9s que me muera?"
+  textoCombo: {fileID: 0}
+  fadeDuration: 2
+  cursorJuego: {fileID: 2800000, guid: 4f3a8776c94571744a91970603a61410, type: 3}
+  cursorMenu: {fileID: 2800000, guid: 60b37b3197a88904295df4a331e990db, type: 3}
+  hotspotJuego: {x: 0, y: 0}
+  hotspotMenu: {x: 0, y: 0}
 --- !u!1 &264865662
 GameObject:
   m_ObjectHideFlags: 0
