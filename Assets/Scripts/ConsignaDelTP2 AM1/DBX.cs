@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class DBX
 {
-    static string logFileName = "debug_log.txt";
+   /* static string logFileName = "debug_log.txt";
     static string logPath;
 
     static DBX()
@@ -41,9 +41,9 @@ public static class DBX
 
         switch (tipo)
         {
-            case "W": Debug.LogWarning(consoleMsg); break;
-            case "E": Debug.LogError(consoleMsg); break;
-            default: Debug.Log(consoleMsg); break;
+            case "W": UnityEngine.Debug.LogWarning(consoleMsg); break;
+            case "E": UnityEngine.Debug.LogError(consoleMsg); break;
+            default: UnityEngine.Debug.Log(consoleMsg); break;
         }
 
         GuardarLog(raw);
@@ -71,7 +71,7 @@ public static class DBX
         int hash = text.GetHashCode();
         byte r = (byte)((hash >> 16) & 0xFF);
         byte g = (byte)((hash >> 8) & 0xFF);
-        byte b = (byte)(hash) & 0xFF;
+        byte b = (byte)hash & 0xFF;
         return $"{r:X2}{g:X2}{b:X2}";
-    }
+    }*/
 }

@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Cream
+    second: {fileID: -1961810292267750497, guid: 144d3faed94f17e4a94341ff7ae904aa, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Ice
     second: {fileID: 2100000, guid: 5f319ac5d67516849be7bc0b0e8495ef, type: 2}
   materials:
