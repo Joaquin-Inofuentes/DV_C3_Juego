@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: -8478183398296487819}
   m_Layer: 9
   m_Name: BolaDeFuego
-  m_TagString: Untagged
+  m_TagString: HechizoDeFuego
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   AutoDestruir: 1
   AudioAlAparecer: {fileID: 8300000, guid: 5f550bace4c82e542bf099f879e8ef36, type: 3}
   velocidad: 10
+  Destino: {fileID: 0}
   danio: 10
   PuntoDeColision: {x: 0, y: 0, z: 0}
   AudioAlColisionar: {fileID: 8300000, guid: df7ff507c7a744d489007b77511dc4de, type: 3}
