@@ -5264,14 +5264,6 @@ PrefabInstance:
       propertyPath: _textoTutorial
       value: 
       objectReference: {fileID: 982118007}
-    - target: {fileID: 4884282418640362273, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
-      propertyPath: Vida
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
       propertyPath: Feedbacks
       value: 
@@ -22259,7 +22251,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1730119566}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a96dfe65d26026540a8cccf7ebebeb12, type: 3}
   m_Name: 
@@ -26868,7 +26860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4927446976228871203, guid: 41d11bfb8f2e4c44eadefc6483e2a8c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 177.76
+      value: 175.84
       objectReference: {fileID: 0}
     - target: {fileID: 4927446976228871203, guid: 41d11bfb8f2e4c44eadefc6483e2a8c7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26876,7 +26868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4927446976228871203, guid: 41d11bfb8f2e4c44eadefc6483e2a8c7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 157.13
+      value: 155.31
       objectReference: {fileID: 0}
     - target: {fileID: 4927446976228871203, guid: 41d11bfb8f2e4c44eadefc6483e2a8c7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -29091,10 +29083,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1071071728}
     m_Modifications:
-    - target: {fileID: 1423284102389582314, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
-      propertyPath: P_PosionDeVida
+    - target: {fileID: 4886365123928998457, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
+      propertyPath: EnemigoFijado
       value: 
-      objectReference: {fileID: 1913296860305729023, guid: 41d11bfb8f2e4c44eadefc6483e2a8c7, type: 3}
+      objectReference: {fileID: 2016745103}
     - target: {fileID: 5780307580212673122, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_Name
       value: Moustro (1)
