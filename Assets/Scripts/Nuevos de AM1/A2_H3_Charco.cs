@@ -6,7 +6,7 @@ public class A2_H3_Charco : A2_Trampa
 {
     public GameObject EfectoEspecial;
     //public ATK_Congelar EfectoDeCongelado;
-    public override void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (!gameObject.activeSelf) return;
         if (!other.gameObject.name.Contains("Jugador"))
@@ -26,7 +26,7 @@ public class A2_H3_Charco : A2_Trampa
                 Componente.agent = enemigo.agent;
                 Componente.anim = enemigo.anim;
 
-                Destroy(efecto, 1f);
+                Destroy(efecto, 5f);
             }
         }
     }
