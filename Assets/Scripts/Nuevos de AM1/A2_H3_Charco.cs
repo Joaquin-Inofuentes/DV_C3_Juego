@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class A2_H3_Charco : A2_Trampa
 {
-    
-
+    public GameObject agua;
+    public GameObject hielo;
     public override void Activate()
     {
         base.Activate();
@@ -19,10 +19,20 @@ public class A2_H3_Charco : A2_Trampa
         // Agregar Logica de desactivar Sonido, Apariencia, Creacion etc
     }
 
-    public override void OnCollisionEnter(Collision collider)
+    private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.name.Contains("Hielo"))
+        {
+            hielo.SetActive(true);
+            agua.SetActive(false);
+            
+        }
+    }
 
-        throw new System.NotImplementedException();
+    public override void OnCollisionEnter(Collision colision)
+    {
+       
+        
     }
 
     protected override void Start()
