@@ -6,7 +6,8 @@ public class GeneradorEnemigos : MonoBehaviour
 {
     public GameObject enemigoPrefab;    
     public GameObject jefePrefab;       
-    public Transform[] puntosSpawn;     
+    public Transform[] puntosSpawn;
+    public GameObject efectoPrefab;
 
     public float tiempoEntreSpawns = 5f;
     public int limiteEnemigos = 10;
@@ -42,11 +43,26 @@ public class GeneradorEnemigos : MonoBehaviour
     {
         Transform punto = puntosSpawn[Random.Range(0, puntosSpawn.Length)];
         GameObject enemigo = Instantiate(enemigoPrefab, punto.position, Quaternion.identity);
+        InvocarEfecto(punto.position);
+        A1_A1_H1_MoustroDelAverno scriptEnemigo = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
+        scriptEnemigo.generador = this;  // <-- Esta línea asigna el generador al enemigo
+
         enemigosActuales.Add(enemigo);
-
-        enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().Morir += () => enemigosActuales.Remove(enemigo);
-
-        enemigosCreados++;
+    }
+    public void EliminarEnemigo(GameObject enemigo)
+    {
+        if (enemigosActuales.Contains(enemigo))
+        {
+            enemigosActuales.Remove(enemigo);
+        }
+    }
+    public void InvocarEfecto(Vector3 posicion)
+    {
+        if (efectoPrefab != null)
+        {
+            GameObject efecto = Instantiate(efectoPrefab, posicion, Quaternion.identity);
+            Destroy(efecto, 5f);  // Desaparece tras 5 segundos
+        }
     }
 
     void CrearJefe()

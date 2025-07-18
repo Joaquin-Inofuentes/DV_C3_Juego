@@ -19,6 +19,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public bool PrimerAtaqueAAnular;
     public ATK_Congelar EfectoDeCongelado; // Efecto visual de congelación
     public string ultimoProyectilRecibido = "";
+    public GeneradorEnemigos generador;
 
     public bool ProximoAtaqueExplosionElectrica = false;
 
@@ -222,6 +223,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         finally
         {
             estaMuerto = true;
+        }
+        if (generador != null)
+        {
+            generador.EliminarEnemigo(gameObject);
         }
     }
 
