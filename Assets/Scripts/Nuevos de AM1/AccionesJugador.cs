@@ -230,6 +230,10 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         if (TimerDeCombos > 0f)
             TimerDeCombos -= Time.deltaTime;
+        if (TimerDeCombos <= 0f)
+        {
+            AtaquesQImpactaron.Clear(); // Reiniciar lista de ataques
+        }
     }
 
     public Transform OrigenDelDisparo;
@@ -400,6 +404,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
         if (TiempoParaDestuirse > 0)
         {
+            Debug.Log("Se empezo a registrar el acciones de jugador");
             ataque.transform.position = Origen.position;
             Destroy(ataque, TiempoParaDestuirse);
             if (Nombre == "RayoElectrico")
@@ -407,7 +412,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 RayoElectrico.gameObject.SetActive(true);
                 RayoElectrico.AutoDesactivarse = true; // Asegurarse de que se desactive automáticamente
                 RayoElectrico.TiempoDeVida = TiempoParaDestuirse;
-                RayoElectrico.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
+                //RayoElectrico.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
                 ataque.gameObject.name = Nombre;
             }
             else
@@ -415,7 +420,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 Llamarada.gameObject.SetActive(true);
                 Llamarada.AutoDesactivarse = true; // Asegurarse de que se desactive automáticamente
                 Llamarada.TiempoDeVida = TiempoParaDestuirse;
-                Llamarada.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
+                //Llamarada.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
                 ataque.gameObject.name = Nombre;
             }
 
