@@ -75,13 +75,30 @@ public class Hitbox : MonoBehaviour
             Destroy(gameObject); // Solo golpea una vez
         }
     }
-
+    public GameObject EfectoDeEscarchaElectrica; // Prefab del efecto de escarcha eléctrica
+    public Transform EfectoDeEscarchaElectricaSpawnPoint; // Punto de spawn del efecto de escarcha eléctrica
+    public void OnEnable()
+    {
+        if (AutoDesactivarse)
+        {
+            Debug.Log("Se activó el hitbox: " + gameObject.name);
+            // Instancia el efecto
+            if (EfectoDeEscarchaElectrica != null && EfectoDeEscarchaElectricaSpawnPoint != null)
+            {
+                GameObject EfectoVisual = Instantiate(EfectoDeEscarchaElectrica,
+                            EfectoDeEscarchaElectricaSpawnPoint.position,
+                            EfectoDeEscarchaElectricaSpawnPoint.rotation);
+                Destroy(EfectoVisual, 2); // Destruye el efecto después de 2 segundos
+            }
+        }
+    }
 
     public void OnDisable()
     {
         if (AutoDesactivarse)
         {
             enemigosAsociados.Clear(); // Limpia la lista de enemigos asociados al desactivar el hitbox
+            Debug.Log("Se desactivó el hitbox: " + gameObject.name);
         }
     }
 

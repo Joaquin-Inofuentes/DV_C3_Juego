@@ -1275,6 +1275,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &3043190154213197007
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3668673000717679239}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3668673000717679239
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3043190154213197007}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0.602, y: -0.054, z: -0.551}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2922531098432132745}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &3335552425908657627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1688,13 +1719,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1693bfad59a2b85449492888c21e7dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  danio: 10
+  danio: 70
   AudioTrasAtacarAAlguien: {fileID: 8300000, guid: 5f550bace4c82e542bf099f879e8ef36, type: 3}
   AudioAtaqueAlAire: {fileID: 0}
   AutoDesactivarse: 0
   TiempoDeVida: 3
   AtacoAAlguien: 0
   enemigosAsociados: []
+  EfectoDeEscarchaElectrica: {fileID: 0}
+  EfectoDeEscarchaElectricaSpawnPoint: {fileID: 0}
 --- !u!1 &4150322862927759363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2375,7 +2408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9213537335880553958
 Transform:
   m_ObjectHideFlags: 0
@@ -3454,7 +3487,7 @@ MonoBehaviour:
   S_Caminar: {fileID: 2429792105912578387}
   BolaDeFuego: {fileID: 3314820458270015711, guid: 39052d6e5cb9e7b4ca82e326288361a9, type: 3}
   BolaDeHielo: {fileID: 3314820458270015711, guid: b61bcb4cc93745443aa4ad7323938276, type: 3}
-  Rayo: {fileID: 3314820458270015711, guid: 74e74340c1a55034fad5afbd087532bf, type: 3}
+  Rayo: {fileID: 3314820458270015711, guid: 546ec90fc7d3a044ca380b6065c77e6d, type: 3}
   ataqueRapido: {fileID: 0}
   Flechazo: {fileID: 2897738269638305032, guid: 77166f4552886be47bbd124f6edb94de, type: 3}
   hitboxCuboPrefab: {fileID: 105775913239620317, guid: ae62f5e04bb196e4fa1242b623262ce9, type: 3}
@@ -4461,7 +4494,8 @@ Transform:
   m_LocalPosition: {x: 0.87, y: 0.06, z: 4.54}
   m_LocalScale: {x: 11.023449, y: 2.677479, z: 12.053089}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3668673000717679239}
   m_Father: {fileID: 1993063142504496213}
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!33 &7731897252815834509
@@ -4547,13 +4581,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1693bfad59a2b85449492888c21e7dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  danio: 10
+  danio: 50
   AudioTrasAtacarAAlguien: {fileID: 8300000, guid: 31d6f97d06d1ab740b1636930b410c55, type: 3}
   AudioAtaqueAlAire: {fileID: 0}
   AutoDesactivarse: 0
   TiempoDeVida: 3
   AtacoAAlguien: 0
   enemigosAsociados: []
+  EfectoDeEscarchaElectrica: {fileID: 8851203871406809218}
+  EfectoDeEscarchaElectricaSpawnPoint: {fileID: 3668673000717679239}
 --- !u!1 &9011601733423795460
 GameObject:
   m_ObjectHideFlags: 0
