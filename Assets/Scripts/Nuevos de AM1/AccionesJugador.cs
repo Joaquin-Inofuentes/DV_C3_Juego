@@ -125,7 +125,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             if (_TimerManager.enModoMagico)
             {
                 _TimerManager.enModoMagico = false;
-               
+
             }
         }
 
@@ -290,6 +290,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     /// </summary>
     public override void Atacar(Vector3 Destino, string Nombre)
     {
+        Debug.Log("iniciadno ataq");
         if (estaMuerto) return;
         if (_TimerManager == null) return;
 
@@ -392,7 +393,11 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
         // 2) Instanciar proyectil si corresponde
         transform.LookAt(Destino);
-        if (ProyectilUsado == null) return;
+        if (ProyectilUsado == null)
+        {
+            Debug.Log("fallo la seleccion de proyectil");
+            return;
+        }
 
         Vector3 direccion = (Destino - Origen.position).normalized;
         GameObject ataque = Instantiate(
@@ -400,7 +405,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             Origen.position,
             Quaternion.LookRotation(direccion)
         );
-
+        ataque.name = Nombre;
+        Debug.Log(ataque.name + " instanciado en " + Origen.position, ataque);
 
         if (TiempoParaDestuirse > 0)
         {
@@ -485,6 +491,22 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             hitboxGenerada = true;
             Destroy(hitbox, 0.5f);
             Invoke(nameof(ResetHitboxFlag), 0.1f);
+            if(danio == 15)
+            {
+                hitbox.name = "Melee1";
+            }
+            else if (danio == 35)
+            {
+                hitbox.name = "Melee3";
+            }
+            else if (danio == 10)
+            {
+                hitbox.name = "Melee2";
+            }
+            else
+            {
+                hitbox.name = "HitboxGenerica";
+            }
         }
     }
     void EmpujarEnemigosConPatada()

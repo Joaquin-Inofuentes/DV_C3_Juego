@@ -5967,18 +5967,6 @@ PrefabInstance:
       propertyPath: _textoTutorial
       value: 
       objectReference: {fileID: 982118007}
-    - target: {fileID: 4884282418640362273, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
-      propertyPath: Rayo
-      value: 
-      objectReference: {fileID: 3314820458270015711, guid: 546ec90fc7d3a044ca380b6065c77e6d, type: 3}
-    - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
-      propertyPath: Vida
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
       propertyPath: Feedbacks
       value: 
@@ -6006,10 +5994,6 @@ PrefabInstance:
     - target: {fileID: 6837533125788142255, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
       propertyPath: m_Name
       value: Jugador 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6837533125788142255, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765182097820496129, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
       propertyPath: m_LocalPosition.x

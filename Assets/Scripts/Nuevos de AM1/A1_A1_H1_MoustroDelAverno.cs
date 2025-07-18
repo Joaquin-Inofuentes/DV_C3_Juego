@@ -49,6 +49,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public Vector3 DestinoDelAtaque = Vector3.zero;
     public override void Atacar(Vector3 Destino, string Nombre = "")
     {
+        return;
         //Debug.Log(0);
         if (estaMuerto) return;
         //Debug.Log(1);
