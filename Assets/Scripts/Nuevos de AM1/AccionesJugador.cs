@@ -34,6 +34,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public bool modoMelee = false;
     public Transform puntoGolpePatada;
     public Transform puntoGolpeEspada;
+    
 
     [Header("❤️ Estado del Jugador")]
     private bool estaMuerto = false;
@@ -108,10 +109,19 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     void Update()
     {
-        if (modoMelee != !_TimerManager.enModoMagico)
+        if (_TimerManager.magiaBloqueadaPorZona)
         {
-            modoMelee = !_TimerManager.enModoMagico;
+            Debug.Log("0");
+            if (_TimerManager.enModoMagico)
+            {
+                _TimerManager.enModoMagico = false;
+                Debug.Log("Modo mágico forzado a melee por Tierra Santa");
+            }
         }
+
+        // 🔁 Sincronizar modoMelee con TimerManager
+        modoMelee = !_TimerManager.enModoMagico;
+
 
         // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();

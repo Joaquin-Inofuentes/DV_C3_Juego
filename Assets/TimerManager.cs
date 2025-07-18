@@ -17,6 +17,8 @@ public class TimerManager : MonoBehaviour
 
     [Header("⚔️ Modo actual")]
     public bool enModoMagico = true;
+    public bool magiaBloqueadaPorZona = false;
+
 
     [Header("⏱ Timers Individuales (6 habilidades)")]
     public float[] timers = new float[6];

@@ -4,13 +4,33 @@ using UnityEngine;
 
 public class A2_H5_TierraSanta : A2_Trampa
 {
+ 
+public class TierraSanta : MonoBehaviour
+{
+   private void OnTriggerEnter(Collider other)
+   {
+
+            if (other.gameObject.name.Contains("Jugador 1"))
+            {
+                Debug.Log("Se registro entrada");
+            } 
+   }
 
 
-    public override void Activate()
+private void OnTriggerExit(Collider other)
+{
+        AccionesJugador jugador = other.GetComponent<AccionesJugador>();
+        if (jugador != null && jugador._TimerManager != null)
+        {
+            jugador._TimerManager.magiaBloqueadaPorZona = false;
+            Debug.Log("Salió de Tierra Santa: magia desbloqueada");
+        }
+}
+}
+
+public override void Activate()
 {
     base.Activate();
-    // Agregar Logica de desactivar Sonido, Apariencia, Creacion etc
-
 }
 
 public override void Desactivar()
