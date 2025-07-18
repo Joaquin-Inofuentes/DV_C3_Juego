@@ -13,7 +13,7 @@ public class Activador : MonoBehaviour
         {
             hielo.SetActive(true);
             agua.SetActive(false);
-            StartCoroutine(desactivador(10f));
+            StartCoroutine(desactivador(5f));
 
         }
 
