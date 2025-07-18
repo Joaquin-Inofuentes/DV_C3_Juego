@@ -14,11 +14,16 @@ public class A2_H5_TierraSanta : A2_Trampa
         AccionesJugador jugador = other.GetComponent<AccionesJugador>();
         if (jugador != null && jugador._TimerManager != null)
         {
-            jugador._TimerManager.magiaBloqueadaPorZona = true;
-            jugador._TimerManager.enModoMagico = false;
-            Indicadores1.SetActive(true); 
-            Indicadores2.SetActive(true);
-            Indicadores3.SetActive(true);
+            if (!jugador.modoMelee)
+            {
+                Debug.Log(2);
+                jugador._TimerManager.magiaBloqueadaPorZona = true;
+                jugador.ModoMelee();
+
+                Indicadores1.SetActive(true);
+                Indicadores2.SetActive(true);
+                Indicadores3.SetActive(true);
+            }
 
         }
     }
@@ -29,13 +34,13 @@ public class A2_H5_TierraSanta : A2_Trampa
         AccionesJugador jugador = other.GetComponent<AccionesJugador>();
         if (jugador != null && jugador._TimerManager != null)
         {
-            jugador._TimerManager.magiaBloqueadaPorZona = false; 
+            jugador._TimerManager.magiaBloqueadaPorZona = false;
             Indicadores1.SetActive(false);
         }
     }
 
 
-public override void Activate()
+    public override void Activate()
     {
         base.Activate();
     }
@@ -64,4 +69,4 @@ public override void Activate()
     }
 }
 
-   
+

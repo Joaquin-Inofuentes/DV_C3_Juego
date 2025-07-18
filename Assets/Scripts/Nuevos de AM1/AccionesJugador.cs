@@ -150,24 +150,10 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         {
             if (!modoMelee)
             {
-                modoMelee = true;
-
-                if (!TimerManager.Controler.enTransicionVisual && Input.GetKeyDown(KeyCode.Alpha4))
-                {
-                    // Cambiar de modo
-                    TimerManager.Controler.TransicionarModoVisual();
-                    TimerManager.Controler.enModoMagico = !TimerManager.Controler.enModoMagico;
-                }
-
-                Debug.Log("Modo cambiado a MELEE");
-                anim.SetLayerWeight(0, 0f);
-                anim.SetLayerWeight(1, 1f);
-                if (espada != null)
-                    espada.SetActive(true);
-                IndicadoresMelee.SetActive(true);
+                ModoMelee();
             }
 
-            else if (modoMelee)
+            else if (modoMelee && _TimerManager.magiaBloqueadaPorZona == false)
             {
                 // Cambiar a modo magia
                 modoMelee = false;
@@ -193,6 +179,26 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         RotarFlechaHaciaElCursor();
         CorrerTimerDeCombos();
     }
+
+    public void ModoMelee()
+    {
+        modoMelee = true;
+
+        if (!TimerManager.Controler.enTransicionVisual && Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            // Cambiar de modo
+            TimerManager.Controler.TransicionarModoVisual();
+            TimerManager.Controler.enModoMagico = !TimerManager.Controler.enModoMagico;
+        }
+
+        Debug.Log("Modo cambiado a MELEE");
+        anim.SetLayerWeight(0, 0f);
+        anim.SetLayerWeight(1, 1f);
+        if (espada != null)
+            espada.SetActive(true);
+        IndicadoresMelee.SetActive(true);
+    }
+
 
     /// <summary>
     /// Reduce _coolDown cada frame y actualiza la barra horizontal (si está asignada).
