@@ -395,7 +395,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         }
         if (Vida < 10)
         {
-            Debug.Log("se tiene " + Vida);
+            //Debug.Log("se tiene " + Vida);
             Morir();
         }
 

@@ -1,14 +1,16 @@
 ﻿using Drakkar.GameUtils;
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
-using UnityEngine.Analytics;
-using System;
+using UnityEngine.UIElements;
 
 public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 {
@@ -34,7 +36,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public bool modoMelee = false;
     public Transform puntoGolpePatada;
     public Transform puntoGolpeEspada;
-    
 
     [Header("❤️ Estado del Jugador")]
     private bool estaMuerto = false;
@@ -76,7 +77,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             ActualizarBarraCoolDown();
         }
     }
-    public Image barraCoolDown; // Opcional: si ya no necesitás la barra horizontal, dejala en null
+    public UnityEngine.UI.Image barraCoolDown; // Opcional: si ya no necesitás la barra horizontal, dejala en null
 
     [Header("🎯 Referencia a TimerManager (cooldowns de habilidades)")]
     public TimerManager _TimerManager;
@@ -109,18 +110,21 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     void Update()
     {
-        if (_TimerManager.magiaBloqueadaPorZona)
+
+        if (Input.GetKeyDown(KeyCode.F1))
         {
-            if (_TimerManager.enModoMagico)
-            {
-                _TimerManager.enModoMagico = false;
-                Debug.Log("Modo mágico forzado ");
-            }
+            AtaqueHardCodeado();
+        }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            AtaqueHardCodeado2();
         }
 
-        // 🔁 Sincronizar modoMelee con TimerManager
-        modoMelee = !_TimerManager.enModoMagico;
 
+        if (modoMelee != !_TimerManager.enModoMagico)
+        {
+            modoMelee = !_TimerManager.enModoMagico;
+        }
 
         // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();
@@ -148,12 +152,12 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                     TimerManager.Controler.enModoMagico = !TimerManager.Controler.enModoMagico;
                 }
 
-                IndicadoresMelee.SetActive(true);
                 Debug.Log("Modo cambiado a MELEE");
                 anim.SetLayerWeight(0, 0f);
                 anim.SetLayerWeight(1, 1f);
                 if (espada != null)
                     espada.SetActive(true);
+                IndicadoresMelee.SetActive(true);
             }
 
             else if (modoMelee)
@@ -164,7 +168,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 _TimerManager.TransicionarModoVisual();
 
                 _TimerManager.enModoMagico = true;
-                IndicadoresMelee.SetActive(false);
                 Debug.Log("Modo cambiado a RANGO");
                 anim.SetLayerWeight(0, 1f); // capa 0 = Rango
                 anim.SetLayerWeight(1, 0f); // capa 1 = Melee
@@ -172,6 +175,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 {
                     espada.SetActive(false);
                 }
+                IndicadoresMelee.SetActive(false);
 
 
             }
@@ -180,6 +184,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
         // 5) Rotar flecha hacia cursor si existe
         RotarFlechaHaciaElCursor();
+        CorrerTimerDeCombos();
     }
 
     /// <summary>
@@ -197,7 +202,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     }
 
     /// <summary>
-    /// Actualiza la barra horizontal de cooldown (opcional).
+    /// Actualiza la barra horizontal de TimerDeCombos (opcional).
     /// Si no se usa, dejar barraCoolDown en null en el Inspector.
     /// </summary>
     private void ActualizarBarraCoolDown()
@@ -212,31 +217,103 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         );
     }
 
+    public List<string> AtaquesQImpactaron = new List<string>();
+    public float TimerDeCombos = 0f;
+    void CorrerTimerDeCombos()
+    {
+        if (TimerDeCombos > 0f)
+            TimerDeCombos -= Time.deltaTime;
+    }
+
+    public Transform OrigenDelDisparo;
+    public void AtaqueHardCodeado()
+    {
+        AtaquesQImpactaron = new List<string> { "Melee1", "Melee2" };
+        TimerDeCombos = 2f; // Duración del combo
+        Vector3 Posicion = OrigenDelDisparo.position;
+        CrearCuboGenerico(Posicion);
+        Atacar(Posicion, "BolaDeFuego");
+    }
+
+    public void AtaqueHardCodeado2()
+    {
+        AtaquesQImpactaron = new List<string> { "Melee3", "Melee2" };
+        TimerDeCombos = 2f; // Duración del combo
+        //gameObject.transform.LookAt(GameManager.PosicionDelMouseEnElEspacio);
+        Vector3 Posicion = OrigenDelDisparo.position;
+        CrearCuboGenerico(Posicion);
+        Atacar(Posicion, "RayoElectrico");
+    }
+
+
+
+    // Pseudocódigo:
+    // 1. Instanciar un cubo genérico en la posición del jugador (o donde desees).
+    // 2. Guardar la referencia al cubo instanciado.
+    // 3. Destruir el cubo después de 2 segundos.
+
+    public void CrearCuboGenerico(Vector3 Posicion)
+    {
+        // Crear un cubo genérico en la posición del jugador
+        GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cubo.transform.position = Posicion;
+
+        // Opcional: ajustar tamaño, color, etc.
+        cubo.transform.localScale = Vector3.one;
+        cubo.GetComponent<Renderer>().material.color = Color.yellow;
+        cubo.GetComponent<BoxCollider>().enabled = false; // Desactivar colisión si no es necesario
+        cubo.transform.rotation = transform.rotation; // Asegurar rotación por defecto
+        // Destruir el cubo después de 2 segundos
+        Destroy(cubo, 2f);
+    }
+
+    public GameObject PrefabDeComboElectrico;
+    public GameObject PrefabDeComboFuego;
+
+    public Hitbox Llamarada;
+    public Hitbox RayoElectrico;
     /// <summary>
     /// Actualiza el fillAmount de cada ícono según los valores de TimerManager.
-    /// fillAmount = 1 → ícono completamente cubierto (cooldown recién iniciado).
-    /// fillAmount = 0 → ícono completamente libre (cooldown terminado).
+    /// fillAmount = 1 → ícono completamente cubierto (TimerDeCombos recién iniciado).
+    /// fillAmount = 0 → ícono completamente libre (TimerDeCombos terminado).
     /// </summary>
-
     public override void Atacar(Vector3 Destino, string Nombre)
     {
         if (estaMuerto) return;
         if (_TimerManager == null) return;
 
-        // 1) Chequear cooldown “general” (índice 6)
+        // 1) Chequear TimerDeCombos “general” (índice 6)
         if (_TimerManager.IsTimerCharging(6)) return;
         _TimerManager.SetTimerToMax(6);
-
+        float TiempoParaDestuirse = 3;
         GameObject ProyectilUsado = null;
-
         // --- HECHIZOS / ATAQUES ---
         if (Nombre == "BolaDeFuego" || Nombre == "Melee1")
         {
-            if (!modoMelee)
+            if (!modoMelee) // Modo magico
             {
                 if (_TimerManager.IsTimerCharging(0)) return;
+                // Revisa el timer
+                // Sustituye la línea problemática por una comparación manual de la lista
+                if (TimerDeCombos > 0 && AtaquesQImpactaron.Count == 2
+                    && AtaquesQImpactaron[0] == "Melee1"
+                    && AtaquesQImpactaron[1] == "Melee2")
+                {
+                    Debug.Log("Se usara combo llamarada");
+                    ProyectilUsado = PrefabDeComboFuego; // Asigna el proyectil de combo de fuego
+                    AtaquesQImpactaron.Clear(); // Limpia la lista de ataques
+                    TimerDeCombos = 0f; // Reinicia el timer de combos
+                    TiempoParaDestuirse = 3f;
+                }
+                // Ejecuta la funcion de ataque combo llamarada
+
+                // else ejecuta la otra
+                else
+                {
+                    ProyectilUsado = BolaDeFuego;
+                }
+
                 anim.SetTrigger("magic1");
-                ProyectilUsado = BolaDeFuego;
                 _TimerManager.SetTimerToMax(0);
                 RegistrarAhora();
             }
@@ -272,11 +349,24 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
         else if (Nombre == "RayoElectrico" || Nombre == "Melee3")
         {
-            if (!modoMelee)
+            if (!modoMelee) // Modo magico
             {
                 if (_TimerManager.IsTimerCharging(2)) return;
+                if (TimerDeCombos > 0 && AtaquesQImpactaron.Count == 2
+                    && AtaquesQImpactaron[0] == "Melee3"
+                    && AtaquesQImpactaron[1] == "Melee2")
+                {
+                    Debug.Log("Se usara electrico combo");
+                    ProyectilUsado = PrefabDeComboElectrico; // Asigna el proyectil de combo de rayo
+                    AtaquesQImpactaron.Clear(); // Limpia la lista de ataques
+                    TimerDeCombos = 0f; // Reinicia el timer de combos
+                    TiempoParaDestuirse = 3;
+                }
+                else
+                {
+                    ProyectilUsado = Rayo;
+                }
                 anim.SetTrigger("magic3");
-                ProyectilUsado = Rayo;
                 _TimerManager.SetTimerToMax(2);
             }
             else
@@ -300,6 +390,30 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             Quaternion.LookRotation(direccion)
         );
 
+
+        if (TiempoParaDestuirse > 0)
+        {
+            ataque.transform.position = Origen.position;
+            Destroy(ataque, TiempoParaDestuirse);
+            if (Nombre == "RayoElectrico")
+            {
+                RayoElectrico.gameObject.SetActive(true);
+                RayoElectrico.AutoDesactivarse = true; // Asegurarse de que se desactive automáticamente
+                RayoElectrico.TiempoDeVida = TiempoParaDestuirse;
+                RayoElectrico.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
+                ataque.gameObject.name = Nombre;
+            }
+            else
+            {
+                Llamarada.gameObject.SetActive(true);
+                Llamarada.AutoDesactivarse = true; // Asegurarse de que se desactive automáticamente
+                Llamarada.TiempoDeVida = TiempoParaDestuirse;
+                Llamarada.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
+                ataque.gameObject.name = Nombre;
+            }
+
+        }
+
         if (ataque.TryGetComponent<Proyectil>(out var proyectil))
         {
             proyectil.Creador = gameObject;
@@ -311,7 +425,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             rb.AddForce(direccion * fuerzaDisparo);
         }
 
-        // 3) Registrar cooldown interno basado en animación
+        // 3) Registrar TimerDeCombos interno basado en animación
         Invoke(nameof(RegistrarCoolDown), 0.1f);
     }
 
@@ -432,6 +546,11 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
     }
 
+
+
+
+
+
     private void ResetHitboxFlag()
     {
         hitboxGenerada = false;
@@ -473,6 +592,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
 
     }
+
+
 
     public override void OnCollision(Collision collider)
     {
@@ -692,6 +813,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public AudioClip VFX_A_EfectoDeCuracion;
     public void CrearEfectoDeCuracion()
     {
+        Debug.Log("Creando efecto de curación");
         if (estaMuerto) return;
         if (VFX_EfectoDeCuracion == null) return;
         // Posicion del efecto: Origen del ataque

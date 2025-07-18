@@ -148,7 +148,7 @@ public class TimerManager : MonoBehaviour
                 yaHizoEfecto[i] = false; // Se reinicia cuando vuelva a cargar
             }
 
-            // Solo saltamos si NO pertenece al modo actual y NO está en cooldown
+            // Solo saltamos si NO pertenece al modo actual y NO está en TimerDeCombos
             if (!perteneceAlModo && !estaEnCooldown)
                 continue;
 
@@ -246,7 +246,7 @@ public class TimerManager : MonoBehaviour
 
         timers[index] = maxTimers[index];
 
-        // Asegurar que el ícono sea visible si está en cooldown
+        // Asegurar que el ícono sea visible si está en TimerDeCombos
         bool esMagia = index <= 2;
         bool perteneceAlModo = enModoMagico ? esMagia : !esMagia;
         bool estaEnCooldown = timers[index] > 0f;
