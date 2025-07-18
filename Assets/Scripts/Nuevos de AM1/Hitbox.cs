@@ -7,7 +7,6 @@ public class Hitbox : MonoBehaviour
     public int danio;
     public AudioClip AudioTrasAtacarAAlguien;
     public AudioClip AudioAtaqueAlAire;
-    public AccionesJugador AccionesJugadorAsociadas;
 
     public bool AutoDesactivarse = false; // Si se destruye al golpear a alguien o no
     public float TiempoDeVida = 3f; // Tiempo de vida del proyectil
@@ -36,27 +35,37 @@ public class Hitbox : MonoBehaviour
     {
         if (other.gameObject.name.Contains("Jugador")) return;
 
+
+        if (AutoDesactivarse == true)
+        {
+            Debug.Log(other.name + " " + other.tag, gameObject);
+            A1_A1_H1_MoustroDelAverno enemigo2 = other.GetComponent<A1_A1_H1_MoustroDelAverno>();
+            if (enemigo2)
+            {
+
+                enemigo2.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
+                if (enemigosAsociados.Contains(enemigo2)) return; // Evita que el mismo enemigo reciba daño varias veces
+                enemigo2.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
+                enemigo2.RecibirDanio(danio);
+                AudioManager.CrearEfectoSonoro(transform.position, AudioTrasAtacarAAlguien);
+            }
+            return;
+        }
+
         A1_Entidad enemigo = other.GetComponent<A1_Entidad>();
         if (enemigo != null)
         {
-            if (AutoDesactivarse == true)
-            {
-                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
-                if (enemigosAsociados.Contains(enemigo)) return; // Evita que el mismo enemigo reciba daño varias veces
-                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
-                enemigo.RecibirDanio(danio);
-                AudioManager.CrearEfectoSonoro(transform.position, AudioTrasAtacarAAlguien);
-                return;
-            }
+
 
 
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
             enemigo.RecibirDanio(danio);
             AtacoAAlguien = true;
-            if (AccionesJugadorAsociadas != null)
+            AccionesJugador accionesJugador = FindObjectOfType<AccionesJugador>()?.gameObject.GetComponent<AccionesJugador>();
+            if (accionesJugador != null)
             {
-                AccionesJugadorAsociadas.AtaquesQImpactaron.Add(gameObject.name);
-                AccionesJugadorAsociadas.TimerDeCombos = 3;
+                accionesJugador.AtaquesQImpactaron.Add(gameObject.name);
+                accionesJugador.TimerDeCombos = 3;
                 Debug.Log($"[Hitbox] Ataque exitoso a {enemigo.name} con {gameObject.name}");
             }
             else
@@ -78,6 +87,7 @@ public class Hitbox : MonoBehaviour
 
     public void OnDestroy()
     {
+        Debug.Log($"[Hitbox] Destruyendo hitbox {gameObject.name}");
         if (AtacoAAlguien)
         {
             AudioManager.CrearEfectoSonoro(transform.position, AudioTrasAtacarAAlguien);
