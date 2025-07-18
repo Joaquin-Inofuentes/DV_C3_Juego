@@ -120,11 +120,18 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             AtaqueHardCodeado2();
         }
 
-
-        if (modoMelee != !_TimerManager.enModoMagico)
+        if (_TimerManager.magiaBloqueadaPorZona)
         {
-            modoMelee = !_TimerManager.enModoMagico;
+            if (_TimerManager.enModoMagico)
+            {
+                _TimerManager.enModoMagico = false;
+               
+            }
         }
+
+        modoMelee = !_TimerManager.enModoMagico;
+
+
 
         // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();
