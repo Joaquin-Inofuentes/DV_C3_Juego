@@ -14413,7 +14413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6993201222344127508, guid: 2080a29d10910254d91ddec976e307cc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7658098321400426158, guid: 2080a29d10910254d91ddec976e307cc, type: 3}
       propertyPath: m_LocalScale.x
@@ -14470,13 +14470,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6993201222344127508, guid: 2080a29d10910254d91ddec976e307cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 714428314}
   m_SourcePrefab: {fileID: 100100000, guid: 2080a29d10910254d91ddec976e307cc, type: 3}
 --- !u!4 &714428312 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7658098321400426158, guid: 2080a29d10910254d91ddec976e307cc, type: 3}
   m_PrefabInstance: {fileID: 714428311}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &714428313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6993201222344127508, guid: 2080a29d10910254d91ddec976e307cc, type: 3}
+  m_PrefabInstance: {fileID: 714428311}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &714428314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714428313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f794ac1f212034342a75861dc8b0503e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EfectoEspecial: {fileID: 8769622906519228800, guid: 17f825a959fd05744b31e49ee7c891bb, type: 3}
 --- !u!1 &714830594
 GameObject:
   m_ObjectHideFlags: 0
@@ -27606,7 +27627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 290.3
+      value: 299.46
       objectReference: {fileID: 0}
     - target: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -27614,7 +27635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 425.4
+      value: 495.96
       objectReference: {fileID: 0}
     - target: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -28717,6 +28738,11 @@ PrefabInstance:
 --- !u!4 &1946518084 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65aac38ab98a3f745896f709afcb559f, type: 3}
+  m_PrefabInstance: {fileID: 1946518083}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1946518085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65aac38ab98a3f745896f709afcb559f, type: 3}
   m_PrefabInstance: {fileID: 1946518083}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1950243098
@@ -30379,6 +30405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2114134495}
   - component: {fileID: 2114134496}
+  - component: {fileID: 2114134497}
   m_Layer: 0
   m_Name: trampa agua
   m_TagString: Untagged
@@ -30395,7 +30422,7 @@ Transform:
   m_GameObject: {fileID: 2114134494}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.43, y: 0.584, z: -1.32}
+  m_LocalPosition: {x: -0.87, y: 0.584, z: -4.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -30418,12 +30445,26 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.2488437, z: 1.4187572}
+  m_Center: {x: 0, y: 0.62442195, z: 0.12963045}
+--- !u!114 &2114134497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114134494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f656726d6170c459d7402f67e37602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hielo: {fileID: 714428313}
+  agua: {fileID: 1946518085}
 --- !u!1 &2120269712
 GameObject:
   m_ObjectHideFlags: 0
