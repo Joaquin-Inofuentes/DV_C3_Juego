@@ -20778,6 +20778,102 @@ Transform:
   - {fileID: 201761090}
   m_Father: {fileID: 1358804655}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1251681726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1251681727}
+  - component: {fileID: 1251681730}
+  - component: {fileID: 1251681729}
+  - component: {fileID: 1251681728}
+  m_Layer: 0
+  m_Name: Voz_tierraSanta
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1251681727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251681726}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.87, y: -0.93, z: 3.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4579623082949062146}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1251681728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251681726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0244f7be5da5f54ea56361f59c82663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sonido: {fileID: 8300000, guid: da9f1b6b3bf8fc34c8114d9ebf04c67f, type: 3}
+  dialogosManager: {fileID: 1923887426}
+--- !u!114 &1251681729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251681726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5842bef2f8c5d174788941e4e7a19ec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onJugadorTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1251681728}
+        m_TargetAssemblyTypeName: CodigoGenerico, Assembly-CSharp
+        m_MethodName: EjecutarSonido
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!65 &1251681730
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251681726}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 11.397588, y: 6.576063, z: 1}
+  m_Center: {x: -0.6119055, y: 2.7880313, z: 0}
 --- !u!1 &1260365462
 GameObject:
   m_ObjectHideFlags: 0
@@ -25407,6 +25503,22 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 799525357}
+    - target: {fileID: 4724542028767701631, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: textos.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724542028767701631, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: textos.Array.data[4]
+      value: Estoy pisando tierra santa,ahgg.. no podre lanzar mis hechizos
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724542028767701631, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: nombreClips.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724542028767701631, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: nombreClips.Array.data[4]
+      value: Voz_tierraSanta
+      objectReference: {fileID: 0}
     - target: {fileID: 4746294816313565873, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: m_Camera
       value: 
@@ -31376,7 +31488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5475333653823827516, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.53
+      value: 2.9
       objectReference: {fileID: 0}
     - target: {fileID: 5475333653823827516, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -31384,7 +31496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5475333653823827516, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -130
+      value: -133.7
       objectReference: {fileID: 0}
     - target: {fileID: 5475333653823827516, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -31416,9 +31528,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5475333653823827516, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1251681727}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
+--- !u!4 &4579623082949062146 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5475333653823827516, guid: e213a6be5b7bd7f46aaf53ef77bb3d3f, type: 3}
+  m_PrefabInstance: {fileID: 4579623082949062145}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &4651576051791028617
 MeshFilter:
   m_ObjectHideFlags: 0
