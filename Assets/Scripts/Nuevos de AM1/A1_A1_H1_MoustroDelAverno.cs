@@ -14,7 +14,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public GameObject BarraDeVida;
 
     private float anchoOriginal;
-    private bool estaMuerto = false;
+    public bool estaMuerto = false;
     public bool Congelado;
     public bool PrimerAtaqueAAnular;
     public ATK_Congelar EfectoDeCongelado; // Efecto visual de congelación
@@ -76,14 +76,14 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         else
         {
             AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
-
             float t = state.normalizedTime;
-            // Si, la animacion termino
-            if (t == 0.95f)
+
+            if (t >= 0.95f)
             {
                 anim.SetTrigger("ataque1");
             }
         }
+
         /* Joaco_Lo cambie. En el "GEO_Moustro" Ahora llamara al AlFinalizarLlamarA al finalizar la animacion de ataque
         else if (AnimacionActual.Contains("ataque"))
         {
@@ -159,7 +159,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
         {
             //Debug.Log("Esta atacando " + gameObject, gameObject);
         }
-
+            
         //Debug.Log(Nombre, gameObject);
     }
 
