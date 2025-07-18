@@ -111,11 +111,10 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         if (_TimerManager.magiaBloqueadaPorZona)
         {
-            Debug.Log("0");
             if (_TimerManager.enModoMagico)
             {
                 _TimerManager.enModoMagico = false;
-                Debug.Log("Modo mágico forzado a melee por Tierra Santa");
+                Debug.Log("Modo mágico forzado ");
             }
         }
 
