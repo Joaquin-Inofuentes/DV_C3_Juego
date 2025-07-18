@@ -423,11 +423,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
     }
 
-
-
-
-
-
     private void ResetHitboxFlag()
     {
         hitboxGenerada = false;
@@ -469,8 +464,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
 
     }
-
-
 
     public override void OnCollision(Collision collider)
     {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class A2_H3_Charco : A2_Trampa
 {
+    
 
     public override void Activate()
     {
@@ -20,6 +21,7 @@ public class A2_H3_Charco : A2_Trampa
 
     public override void OnCollisionEnter(Collision collider)
     {
+
         throw new System.NotImplementedException();
     }
 
