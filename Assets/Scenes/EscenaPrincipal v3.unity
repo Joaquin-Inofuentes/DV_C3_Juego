@@ -5968,6 +5968,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 982118007}
     - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
+      propertyPath: Vida
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5282964226098417758, guid: 5f8d70dd6fdf63b408dba7bd38f90561, type: 3}
       propertyPath: Feedbacks
       value: 
       objectReference: {fileID: 1923887420}
@@ -25067,6 +25071,7 @@ MonoBehaviour:
   PrimerAtaqueAAnular: 0
   EfectoDeCongelado: {fileID: 0}
   ultimoProyectilRecibido: 
+  generador: {fileID: 0}
   ProximoAtaqueExplosionElectrica: 0
   AnimacionActual: 
   DestinoDelAtaque: {x: 0, y: 0, z: 0}
