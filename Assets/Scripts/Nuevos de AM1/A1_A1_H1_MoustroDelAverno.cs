@@ -204,7 +204,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
 
     public AudioClip SonidoAlMorir; // Sonido al morir
 
-    public override void Morir()
+    public void Morir()
     {
         if (estaMuerto) return;
         try
@@ -261,7 +261,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo
     public ReportadorDeLasColisiones CargaElectrica;
     public AudioClip AudioAlRecibirDanio; // Sonido al recibir daño
     public GameObject MensajeDeBugActivado; // Mensaje de bug activado
-    public override void RecibirDanio(int cantidad)
+    public void RecibirDanio(int cantidad)
     {
         Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
         if (ultimoProyectilRecibido.Contains("hitboxCubo")

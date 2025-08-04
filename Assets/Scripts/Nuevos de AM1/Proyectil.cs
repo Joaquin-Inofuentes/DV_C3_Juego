@@ -76,13 +76,14 @@ public class Proyectil : MonoBehaviour
     public AudioClip AudioAlColisionar;
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
-        if(Destino != null && Destino != collision)
+        if (collision.gameObject == Creador) return;
+        if (collision == Creador) return;
+        if (Destino != null && Destino != collision)
         {
             return; // No colisionar con el destino
         }
         //Debug.Log("Colisiono con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, gameObject);
         // Colisiono con Moustro Mas cercano tag Untagged Tipo: CollisionEnter
-        if (collision == Creador) return;
 
         if (collision.tag == "Ambiente" || collision.name == "Terrain")
         {
@@ -131,18 +132,21 @@ public class Proyectil : MonoBehaviour
                 else if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Electrico"))
                 {
                     A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
-                    EnemigoV2Real.Congelado = true;
-                    EnemigoV2Real.PrimerAtaqueAAnular = true;
-                    EnemigoV2Real.PendienteDeCargaElectrica = true;
-                    ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
-                    Componente.padre = collision.transform;
-                    Componente.agent = enemigo.agent;
-                    Componente.anim = enemigo.anim;
+                    if (EnemigoV2Real != null)
+                    {
+                        EnemigoV2Real.Congelado = true;
+                        EnemigoV2Real.PrimerAtaqueAAnular = true;
+                        EnemigoV2Real.PendienteDeCargaElectrica = true;
+                        ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
+                        Componente.padre = collision.transform;
+                        Componente.agent = enemigo.agent;
+                        Componente.anim = enemigo.anim;
+                        //return;
+                    }
                     Destroy(efecto, 1);
-                    //return;
                 }
             }
-            enemigo.RecibirDanio(danio);
+            enemigo.GetComponent<IDaniable>().RecibirDanio(danio);
             Debug.Log(collision.name, collision.gameObject);
             float DistanciaParaAtacar =
                 enemigo.ModoAtaqueMelee ?
@@ -196,9 +200,13 @@ public class Proyectil : MonoBehaviour
             Componente.timerActual = 5;
             Componente.padre = enemigo.transform;
             Debug.Log("Congelando a " + enemigo.name, gameObject);
-            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
-            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
-            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().DestinoAsignado = Creador.transform.position;
+            if (enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>())
+            {
+
+                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
+                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
+                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().DestinoAsignado = Creador.transform.position;
+            }
             Debug.Log(Creador.transform.position, Creador);
             Componente.destinoGuardado = Creador.transform.position;
         }

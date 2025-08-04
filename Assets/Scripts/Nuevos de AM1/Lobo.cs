@@ -103,7 +103,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
             var entidad = jugador.GetComponent<A1_Entidad>();
             if (entidad != null)
             {
-                entidad.RecibirDanio(DañoDeAtaque);
+                entidad.GetComponent<IDaniable>().RecibirDanio(DañoDeAtaque);
                 Debug.Log($"[Lobo] Atacó e hizo {DañoDeAtaque} de daño.");
             }
         }
@@ -221,7 +221,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
                     var entidad = col.GetComponent<A1_Entidad>();
                     if (entidad != null)
                     {
-                        entidad.RecibirDanio(danioLlamarada);
+                        entidad.GetComponent<IDaniable>().RecibirDanio(danioLlamarada);
                         Debug.Log("[Lobo Alfa] Daño por llamarada");
                     }
                 }

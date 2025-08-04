@@ -98,6 +98,11 @@ public class Inputs : MonoBehaviour
             Pausa();
             Menu.SetActive(Time.timeScale == 0); // Mostrar menú si está en pausa
         }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            LimpiarMemoria();
+        }
     }
 
     public void Movimiento()
@@ -195,4 +200,20 @@ public class Inputs : MonoBehaviour
 #endif
         Debug.Log("Saliendo del juego");
     }
- }
+
+
+
+
+    public void LimpiarMemoria()
+    {
+        // 🔥 Fuerza recolección de basura (GC = Garbage Collector)
+        System.GC.Collect();
+        System.GC.WaitForPendingFinalizers();
+
+        // 🧹 Limpia assets no usados (texturas, meshes, audios)
+        Resources.UnloadUnusedAssets();
+
+        Debug.Log("🧽 Memoria limpiada a lo bestia 💥");
+    }
+
+}

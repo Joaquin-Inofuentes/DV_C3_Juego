@@ -83,7 +83,7 @@ public class A1_A1_H2_ArquerasElfas : A1_A1_Enemigo
         agent.SetDestination(destino);
     }
 
-    public override void Morir()
+    public void Morir()
     {
         anim.SetBool("life", false);
         Debug.Log("Falta animacion de morir");
@@ -113,7 +113,7 @@ public class A1_A1_H2_ArquerasElfas : A1_A1_Enemigo
         throw new System.NotImplementedException();
     }
 
-    public override void RecibirDanio(int cantidad)
+    public void RecibirDanio(int cantidad)
     {
         anim.SetTrigger("danio");
         Vida -= cantidad;

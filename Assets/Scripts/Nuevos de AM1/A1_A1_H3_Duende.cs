@@ -109,7 +109,7 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
             transform.rotation = Quaternion.LookRotation(direccion);
     }
 
-    public override void Morir()
+    public void Morir()
     {
         PadreDebarraDevida.SetActive(false);
         GetComponent<BoxCollider>().enabled = false;
@@ -148,7 +148,7 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
         throw new System.NotImplementedException();
     }
 
-    public override void RecibirDanio(int cantidad)
+    public void RecibirDanio(int cantidad)
     {
         anim.SetTrigger("danio");
         Vida -= cantidad;

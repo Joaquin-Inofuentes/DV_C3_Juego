@@ -29,9 +29,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public float trailTime = 0.5f;
     public float clearDelay = 0.1f;
 
-
-
-
     [Header("🗡️ Datos de Combate Cuerpo a Cuerpo")]
     public bool modoMelee = false;
     public Transform puntoGolpePatada;
@@ -41,7 +38,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     private bool estaMuerto = false;
     private bool hitboxGenerada = false;
     public Vector3 Destino;
-
 
     [Header("🎨 Feedbacks y Partículas")]
     public ParticleSystem Particulas;
@@ -55,17 +51,13 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public Color Color_SeCura;
 
     [Header("Efectos sonido")]
-
     public AudioSource Coins;
-
     public int CantidadDeMonedas;
     [SerializeField] private TextMeshProUGUI textoMonedasUI;
 
     [Header("⏱️ Cooldown Interno (barra horizontal)")]
     public float maxCoolDown = 0f;
     private float _coolDown = 0f;
-    // TP 2_Inofuentes Joaquin
-    //get y set
     public float CoolDown
     {
         get => _coolDown;
@@ -77,29 +69,50 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             ActualizarBarraCoolDown();
         }
     }
-    public UnityEngine.UI.Image barraCoolDown; // Opcional: si ya no necesitás la barra horizontal, dejala en null
+    public UnityEngine.UI.Image barraCoolDown;
 
     [Header("🎯 Referencia a TimerManager (cooldowns de habilidades)")]
     public TimerManager _TimerManager;
 
-    [Header("🖼️ Íconos de Habilidad con Fill (Tipo: Filled, Radial 360)")]
-    /// <summary>
-    /// Índices:
-    /// 0 ▶ Bola de Fuego
-    /// 1 ▶ Bola de Hielo
-    /// 2 ▶ Rayo
-    /// 3 ▶ Melee1
-    /// 4 ▶ Melee2
-    /// 5 ▶ Melee3
-    /// 6 ▶ Cooldown “general” (opcional)
-    /// </summary>
-    /// 
     [Header("🛠️ Indicadores Melee/Rango")]
     public GameObject IndicadoresMelee;
+    public GameObject Flecha;
+
+    [Header("Combos")]
+    public List<string> AtaquesQImpactaron = new List<string>();
+    public float TimerDeCombos = 0f;
+    public Transform OrigenDelDisparo;
+    public GameObject PrefabDeComboElectrico;
+    public GameObject PrefabDeComboFuego;
+    public GameObject VFX_ComboExplosion;
+    public AudioClip SonidoComboExplosion;
+    public GameObject VFX_EfectoDeCuracion;
+    public AudioClip VFX_A_EfectoDeCuracion;
+
+    [Header("Sonidos de Pasos")]
+    public AudioClip SonidoDeCaminarEnHielo;
+    public AudioClip SonidoDeCaminarEnPasto;
+
+    // Variables de estado y audio
+    public Vector3 DestinoGuardado;
+    public AudioSource RecibirDanoAudio;
+    public AudioSource SonidoDeMorir;
+    public GameObject FondoOscuroSangriendo;
+    private static float tiempoInicio;
+
+
+    void Awake()
+    {
+        if (trail != null)
+        {
+            trail.time = trailTime;
+            trail.Clear();
+            trail.emitting = false;
+        }
+    }
 
     void Start()
     {
-
         if (_TimerManager == null)
             Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
         if (espada != null)
@@ -110,34 +123,20 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            AtaqueHardCodeado();
-        }
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            AtaqueHardCodeado2();
-        }
+        if (Input.GetKeyDown(KeyCode.F1)) { AtaqueHardCodeado(); }
+        if (Input.GetKeyDown(KeyCode.F2)) { AtaqueHardCodeado2(); }
 
         if (_TimerManager.magiaBloqueadaPorZona)
         {
             if (_TimerManager.enModoMagico)
             {
                 _TimerManager.enModoMagico = false;
-
             }
         }
-
         modoMelee = !_TimerManager.enModoMagico;
 
-
-
-        // 1) Reducir y actualizar el CoolDown interno (barra horizontal)
         CargarBarraDeCoolDown();
 
-
-        // 3) Actualizar animación de movimiento y detenerse si llegó
         float velocidadActual = agent.velocity.magnitude;
         anim.SetFloat("velocidad", velocidadActual);
         if (Vector3.Distance(transform.position, Destino) < 2f)
@@ -145,199 +144,77 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             Detenerse();
         }
 
-        // 4) Alternar modo melee/rango con la tecla 4 (ejemplo)
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             if (!modoMelee)
             {
                 modoMelee = true;
-
-                if (!TimerManager.Controler.enTransicionVisual && Input.GetKeyDown(KeyCode.Alpha4))
+                if (!TimerManager.Controler.enTransicionVisual)
                 {
-                    // Cambiar de modo
                     TimerManager.Controler.TransicionarModoVisual();
-                    TimerManager.Controler.enModoMagico = !TimerManager.Controler.enModoMagico;
+                    TimerManager.Controler.enModoMagico = false;
                 }
-
                 Debug.Log("Modo cambiado a MELEE");
                 anim.SetLayerWeight(0, 0f);
                 anim.SetLayerWeight(1, 1f);
-                if (espada != null)
-                    espada.SetActive(true);
+                if (espada != null) espada.SetActive(true);
                 IndicadoresMelee.SetActive(true);
             }
-
             else if (modoMelee)
             {
-                // Cambiar a modo magia
                 modoMelee = false;
-                // 🔁 Ejecutar animación visual
                 _TimerManager.TransicionarModoVisual();
-
                 _TimerManager.enModoMagico = true;
                 Debug.Log("Modo cambiado a RANGO");
-                anim.SetLayerWeight(0, 1f); // capa 0 = Rango
-                anim.SetLayerWeight(1, 0f); // capa 1 = Melee
-                if (espada != null)
-                {
-                    espada.SetActive(false);
-                }
+                anim.SetLayerWeight(0, 1f);
+                anim.SetLayerWeight(1, 0f);
+                if (espada != null) espada.SetActive(false);
                 IndicadoresMelee.SetActive(false);
-
-
             }
         }
 
-
-        // 5) Rotar flecha hacia cursor si existe
         RotarFlechaHaciaElCursor();
         CorrerTimerDeCombos();
     }
 
-    /// <summary>
-    /// Reduce _coolDown cada frame y actualiza la barra horizontal (si está asignada).
-    /// </summary>
-    void CargarBarraDeCoolDown()
-    {
-        if (_coolDown > 0f)
-            _coolDown -= Time.deltaTime;
-
-        if (_coolDown < 0f)
-            _coolDown = 0f;
-
-        ActualizarBarraCoolDown();
-    }
-
-    /// <summary>
-    /// Actualiza la barra horizontal de TimerDeCombos (opcional).
-    /// Si no se usa, dejar barraCoolDown en null en el Inspector.
-    /// </summary>
-    private void ActualizarBarraCoolDown()
-    {
-        if (barraCoolDown == null || maxCoolDown == 0f) return;
-
-        float porcentaje = 1f - Mathf.Clamp01(_coolDown / maxCoolDown);
-        float anchoMaximo = 200f;
-        barraCoolDown.rectTransform.SetSizeWithCurrentAnchors(
-            RectTransform.Axis.Horizontal,
-            anchoMaximo * porcentaje
-        );
-    }
-
-    public List<string> AtaquesQImpactaron = new List<string>();
-    public float TimerDeCombos = 0f;
-    void CorrerTimerDeCombos()
-    {
-        if (TimerDeCombos > 0f)
-            TimerDeCombos -= Time.deltaTime;
-        if (TimerDeCombos <= 0f)
-        {
-            AtaquesQImpactaron.Clear(); // Reiniciar lista de ataques
-        }
-    }
-
-    public Transform OrigenDelDisparo;
-    public void AtaqueHardCodeado()
-    {
-        AtaquesQImpactaron = new List<string> { "Melee1", "Melee2" };
-        TimerDeCombos = 2f; // Duración del combo
-        Vector3 Posicion = OrigenDelDisparo.position;
-        CrearCuboGenerico(Posicion);
-        Atacar(Posicion, "BolaDeFuego");
-    }
-
-    public void AtaqueHardCodeado2()
-    {
-        AtaquesQImpactaron = new List<string> { "Melee3", "Melee2" };
-        TimerDeCombos = 2f; // Duración del combo
-        //gameObject.transform.LookAt(GameManager.PosicionDelMouseEnElEspacio);
-        Vector3 Posicion = OrigenDelDisparo.position;
-        CrearCuboGenerico(Posicion);
-        Atacar(Posicion, "RayoElectrico");
-    }
-
-
-
-    // Pseudocódigo:
-    // 1. Instanciar un cubo genérico en la posición del jugador (o donde desees).
-    // 2. Guardar la referencia al cubo instanciado.
-    // 3. Destruir el cubo después de 2 segundos.
-
-    public void CrearCuboGenerico(Vector3 Posicion)
-    {
-        // Crear un cubo genérico en la posición del jugador
-        GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cubo.transform.position = Posicion;
-
-        // Opcional: ajustar tamaño, color, etc.
-        cubo.transform.localScale = Vector3.one;
-        cubo.GetComponent<Renderer>().material.color = Color.yellow;
-        cubo.GetComponent<BoxCollider>().enabled = false; // Desactivar colisión si no es necesario
-        cubo.transform.rotation = transform.rotation; // Asegurar rotación por defecto
-        // Destruir el cubo después de 2 segundos
-        Destroy(cubo, 2f);
-    }
-
-    public GameObject PrefabDeComboElectrico;
-    public GameObject PrefabDeComboFuego;
-
-    public Hitbox Llamarada;
-    public Hitbox RayoElectrico;
-    /// <summary>
-    /// Actualiza el fillAmount de cada ícono según los valores de TimerManager.
-    /// fillAmount = 1 → ícono completamente cubierto (TimerDeCombos recién iniciado).
-    /// fillAmount = 0 → ícono completamente libre (TimerDeCombos terminado).
-    /// </summary>
     public override void Atacar(Vector3 Destino, string Nombre)
     {
-        Debug.Log("iniciadno ataq");
-        if (estaMuerto) return;
-        if (_TimerManager == null) return;
+        Debug.Log("Iniciando ataque...");
+        if (estaMuerto || _TimerManager == null || _TimerManager.IsTimerCharging(6))
+        {
+            return;
+        }
 
-        // 1) Chequear TimerDeCombos “general” (índice 6)
-        if (_TimerManager.IsTimerCharging(6)) return;
         _TimerManager.SetTimerToMax(6);
-        float TiempoParaDestuirse = 3;
-        GameObject ProyectilUsado = null;
-        // --- HECHIZOS / ATAQUES ---
+        GameObject prefabDelAtaque = null;
+
+        // --- Lógica de selección de prefab ---
         if (Nombre == "BolaDeFuego" || Nombre == "Melee1")
         {
-            if (!modoMelee) // Modo magico
+            if (!modoMelee)
             {
                 if (_TimerManager.IsTimerCharging(0)) return;
-                // Revisa el timer
-                // Sustituye la línea problemática por una comparación manual de la lista
-                if (TimerDeCombos > 0 && AtaquesQImpactaron.Count == 2
-                    && AtaquesQImpactaron[0] == "Melee1"
-                    && AtaquesQImpactaron[1] == "Melee2")
+                if (TimerDeCombos > 0 && AtaquesQImpactaron.Count == 2 && AtaquesQImpactaron[0] == "Melee1" && AtaquesQImpactaron[1] == "Melee2")
                 {
-                    Debug.Log("Se usara combo llamarada");
-                    ProyectilUsado = PrefabDeComboFuego; // Asigna el proyectil de combo de fuego
-                    AtaquesQImpactaron.Clear(); // Limpia la lista de ataques
-                    TimerDeCombos = 0f; // Reinicia el timer de combos
-                    TiempoParaDestuirse = 3f;
+                    Debug.Log("Usando combo de FUEGO");
+                    prefabDelAtaque = PrefabDeComboFuego;
+                    AtaquesQImpactaron.Clear();
+                    TimerDeCombos = 0f;
                 }
-                // Ejecuta la funcion de ataque combo llamarada
-
-                // else ejecuta la otra
                 else
                 {
-                    ProyectilUsado = BolaDeFuego;
+                    prefabDelAtaque = BolaDeFuego;
                 }
-
                 anim.SetTrigger("magic1");
                 _TimerManager.SetTimerToMax(0);
                 RegistrarAhora();
             }
-            else
+            else // Lógica Melee
             {
                 if (_TimerManager.IsTimerCharging(3)) return;
                 anim.SetTrigger("melee1");
                 _TimerManager.SetTimerToMax(3);
-                if (PasoTiempo(2))
-                {
-                    CrearEfectoDeExplosion();
-                }
+                if (PasoTiempo(2)) CrearEfectoDeExplosion();
             }
         }
         else if (Nombre == "BolaDeHielo" || Nombre == "Melee2")
@@ -346,309 +223,117 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             {
                 if (_TimerManager.IsTimerCharging(1)) return;
                 anim.SetTrigger("magic2");
-                ProyectilUsado = BolaDeHielo;
+                prefabDelAtaque = BolaDeHielo;
                 _TimerManager.SetTimerToMax(1);
             }
             else
             {
-                Debug.Log("Instanciando efecto de patada");
                 if (_TimerManager.IsTimerCharging(4)) return;
                 anim.SetTrigger("melee2");
                 _TimerManager.SetTimerToMax(4);
             }
-            anim.SetFloat("velocidad", 0f);
-            agent.isStopped = true;
         }
         else if (Nombre == "RayoElectrico" || Nombre == "Melee3")
         {
-            if (!modoMelee) // Modo magico
+            if (!modoMelee)
             {
                 if (_TimerManager.IsTimerCharging(2)) return;
-                if (TimerDeCombos > 0 && AtaquesQImpactaron.Count == 2
-                    && AtaquesQImpactaron[0] == "Melee3"
-                    && AtaquesQImpactaron[1] == "Melee2")
+                if (TimerDeCombos > 0 && AtaquesQImpactaron.Count == 2 && AtaquesQImpactaron[0] == "Melee3" && AtaquesQImpactaron[1] == "Melee2")
                 {
-                    Debug.Log("Se usara electrico combo");
-                    ProyectilUsado = PrefabDeComboElectrico; // Asigna el proyectil de combo de rayo
-                    AtaquesQImpactaron.Clear(); // Limpia la lista de ataques
-                    TimerDeCombos = 0f; // Reinicia el timer de combos
-                    TiempoParaDestuirse = 3;
+                    Debug.Log("Usando combo ELÉCTRICO");
+                    prefabDelAtaque = PrefabDeComboElectrico;
+                    AtaquesQImpactaron.Clear();
+                    TimerDeCombos = 0f;
                 }
                 else
                 {
-                    ProyectilUsado = Rayo;
+                    prefabDelAtaque = Rayo;
                 }
                 anim.SetTrigger("magic3");
                 _TimerManager.SetTimerToMax(2);
             }
-            else
+            else // Lógica Melee
             {
                 if (_TimerManager.IsTimerCharging(5)) return;
                 anim.SetTrigger("melee3");
                 _TimerManager.SetTimerToMax(5);
             }
-            anim.SetFloat("velocidad", 0f);
-            agent.isStopped = true;
         }
 
-        // 2) Instanciar proyectil si corresponde
-        transform.LookAt(Destino);
-        if (ProyectilUsado == null)
+        // Si es un ataque Melee, no se instancia un proyectil aquí.
+        if (prefabDelAtaque == null)
         {
-            Debug.Log("fallo la seleccion de proyectil");
+            Debug.Log("Ataque Melee o sin prefab. La generación del hitbox se maneja por evento de animación.");
             return;
         }
 
+        // --- Instanciación del Proyectil ---
+        transform.LookAt(Destino);
         Vector3 direccion = (Destino - Origen.position).normalized;
-        GameObject ataque = Instantiate(
-            ProyectilUsado,
-            Origen.position,
-            Quaternion.LookRotation(direccion)
-        );
-        ataque.name = Nombre;
-        Debug.Log(ataque.name + " instanciado en " + Origen.position, ataque);
+        Quaternion rotacion = Quaternion.LookRotation(direccion);
 
-        if (TiempoParaDestuirse > 0)
-        {
-            Debug.Log("Se empezo a registrar el acciones de jugador");
-            ataque.transform.position = Origen.position;
-            Destroy(ataque, TiempoParaDestuirse);
-            if (Nombre == "RayoElectrico")
-            {
-                RayoElectrico.gameObject.SetActive(true);
-                RayoElectrico.AutoDesactivarse = true; // Asegurarse de que se desactive automáticamente
-                RayoElectrico.TiempoDeVida = TiempoParaDestuirse;
-                //RayoElectrico.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
-                ataque.gameObject.name = Nombre;
-            }
-            else
-            {
-                Llamarada.gameObject.SetActive(true);
-                Llamarada.AutoDesactivarse = true; // Asegurarse de que se desactive automáticamente
-                Llamarada.TiempoDeVida = TiempoParaDestuirse;
-                //Llamarada.AccionesJugadorAsociadas = gameObject.GetComponent<AccionesJugador>();
-                ataque.gameObject.name = Nombre;
-            }
+        GameObject ataqueInstanciado = Instantiate(prefabDelAtaque, Origen.position, rotacion);
+        ataqueInstanciado.name = Nombre; // Muy importante para el sistema de combos
+        Debug.Log($"{ataqueInstanciado.name} instanciado en {Origen.position}", ataqueInstanciado);
 
-        }
-
-        if (ataque.TryGetComponent<Proyectil>(out var proyectil))
-        {
-            proyectil.Creador = gameObject;
-            proyectil.AutoDestruir = true;
-        }
-
-        if (ataque.TryGetComponent<Rigidbody>(out var rb))
+        if (ataqueInstanciado.TryGetComponent<Rigidbody>(out var rb))
         {
             rb.AddForce(direccion * fuerzaDisparo);
         }
 
-        // 3) Registrar TimerDeCombos interno basado en animación
+        Destroy(ataqueInstanciado, 10f); // Destrucción de seguridad
+
+        if (ataqueInstanciado.GetComponent<Proyectil>())
+        {
+            ataqueInstanciado.GetComponent<Proyectil>().Creador = gameObject;
+        }
+        if (ataqueInstanciado.GetComponent<Hitbox>())
+        {
+            ataqueInstanciado.GetComponent<Hitbox>().Creador = gameObject;
+        }
+
         Invoke(nameof(RegistrarCoolDown), 0.1f);
     }
 
-    /// <summary>
-    /// Calcula la duración del CoolDown interno según la animación actual.
-    /// </summary>
-    public void RegistrarCoolDown()
-    {
-        float speed = 1f;
-        string nombreAnimacion = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-
-        if (nombreAnimacion.Contains("01")) speed = 8f;
-        else if (nombreAnimacion.Contains("02")) speed = 4f;
-        else if (nombreAnimacion.Contains("03")) speed = 4f;
-        else if (nombreAnimacion.Contains("ataque_pesadoPersonaje")) speed = 2f;
-        else if (nombreAnimacion.Contains("ataque_rapidoPersonaje")) speed = 3f;
-        else if (nombreAnimacion.Contains("ataque_fuertePersonaje")) speed = 0.9f;
-
-        float tiempoAnim = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
-        CoolDown = Mathf.Min(tiempoAnim, 2f);
-    }
-
-    public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15);
-    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada, 35);
+    #region Hitboxes y Lógica Melee
+    public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15, "Melee1");
+    public void GenerarHitboxAtaquePesado() => GenerarHitbox(puntoGolpeEspada, 35, "Melee3");
     public void GenerarHitboxPie()
     {
-        GenerarHitbox(puntoGolpePatada, 10);
+        GenerarHitbox(puntoGolpePatada, 10, "Melee2");
         EmpujarEnemigosConPatada();
     }
 
-    public void GenerarHitbox(Transform puntoDeGolpe, int danio)
+    public void GenerarHitbox(Transform puntoDeGolpe, int danio, string hitboxName)
     {
         if (hitboxGenerada) return;
-
         if (hitboxCuboPrefab != null && puntoDeGolpe != null)
         {
-            GameObject hitbox = Instantiate(
-                hitboxCuboPrefab,
-                puntoDeGolpe.position,
-                gameObject.transform.rotation
-            );
-            if (hitbox.TryGetComponent<Hitbox>(out var componenteHitbox))
+            GameObject hitboxObj = Instantiate(hitboxCuboPrefab, puntoDeGolpe.position, gameObject.transform.rotation);
+            if (hitboxObj.TryGetComponent<Hitbox>(out var componenteHitbox))
                 componenteHitbox.ConfigurarDanio(danio);
 
+            hitboxObj.name = hitboxName;
             hitboxGenerada = true;
-            Destroy(hitbox, 0.5f);
+            Destroy(hitboxObj, 0.5f);
             Invoke(nameof(ResetHitboxFlag), 0.1f);
-            if(danio == 15)
-            {
-                hitbox.name = "Melee1";
-            }
-            else if (danio == 35)
-            {
-                hitbox.name = "Melee3";
-            }
-            else if (danio == 10)
-            {
-                hitbox.name = "Melee2";
-            }
-            else
-            {
-                hitbox.name = "HitboxGenerica";
-            }
         }
     }
-    void EmpujarEnemigosConPatada()
-    {
-        Collider[] enemigos = Physics.OverlapSphere(puntoGolpePatada.position, 2f);
-
-        foreach (var col in enemigos)
-        {
-            var enemigo = col.GetComponent<A1_A1_H1_MoustroDelAverno>();//interface Idamageable
-            if (enemigo != null)
-            {
-                Rigidbody rb = col.attachedRigidbody;
-                if (rb != null && !rb.isKinematic)
-                {
-                    Vector3 direccion = (col.transform.position - transform.position).normalized;
-
-
-                    NavMeshAgent agent = col.GetComponent<NavMeshAgent>();
-                    if (agent != null)
-                    {
-                        NavMeshHit hit;
-                        if (NavMesh.SamplePosition(agent.transform.position, out hit, 2f, NavMesh.AllAreas))
-                        {
-                            agent.Warp(hit.position);
-                            agent.enabled = false;
-
-                            // Aumentar fuerza para probar
-                            float fuerzaEmpuje = 5f;
-                            rb.AddForce(direccion * fuerzaEmpuje, ForceMode.Impulse);
-
-                            Debug.Log($"Empujando enemigo {col.name} con fuerza {direccion * fuerzaEmpuje}");
-
-                            StartCoroutine(ReactivarAgente(agent, 1f));
-                        }
-                    }
-                    else
-                    {
-                        // Sin NavMeshAgent, aplicar fuerza normal
-                        float fuerzaEmpuje = 5f;
-                        rb.AddForce(direccion * fuerzaEmpuje, ForceMode.Impulse);
-                        Debug.Log($"Empujando enemigo sin NavMeshAgent {col.name} con fuerza {direccion * fuerzaEmpuje}");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"Rigidbody no válido o kinematic para {col.name}");
-                }
-            }
-        }
-    }
-
-
-    private IEnumerator ReactivarAgente(NavMeshAgent agent, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        if (agent != null)
-        {
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(agent.transform.position, out hit, 1.0f, NavMesh.AllAreas))
-            {
-                agent.Warp(hit.position);
-                agent.enabled = true;
-                agent.isStopped = false; // aseguramos que esté activo y listo para moverse
-            }
-            else
-            {
-                Debug.LogWarning("No se encontró posición válida para reactivar agente.");
-                // Como fallback, podrías desactivar agente o manejarlo distinto aquí.
-            }
-        }
-    }
-
-
-
-
-
 
     private void ResetHitboxFlag()
     {
         hitboxGenerada = false;
     }
+    #endregion
 
-    public override void Detenerse()
-    {
-        agent.isStopped = true;
-        S_Caminar.loop = false;
-        S_Caminar.Stop();
-    }
+    #region Salud y Daño
+    public int vidaMaxima => VidaMax;
+    public int vidaActual { get => Vida; set => Vida = value; }
 
-    public Vector3 DestinoGuardado;
-    public override void IrAlDestino(Vector3 destino)
-    {
-        if (Vector3.Distance(destino, DestinoGuardado) < 2) return;
-        DestinoGuardado = destino;
-        if (estaMuerto) return;
-        agent.isStopped = false;
-        transform.LookAt(destino);
-        agent.SetDestination(destino);
-        Destino = destino;
-        if (Particulas)
-        {
-            Particulas.transform.position = destino;
-            Particulas.Play();
-        }
-        if (!Particulas)
-        {
-            //Debug.Log("Falta particulas de caminar");
-        }
-
-        // Reproducir sonido si no está sonando
-        if (!S_Caminar.isPlaying)
-        {
-            //S_Caminar.clip = AudioManager.ObtenerAudioPorNombre("Correr_en_pasto");
-            S_Caminar.loop = true;
-            S_Caminar.Play();
-        }
-
-    }
-
-
-
-    public override void OnCollision(Collision collider)
-    {
-        // Implementar si hace falta
-    }
-    //TP2_DamianFigueredo interface de vida
-    //get y set de vida
-    public int vidaMaxima
-    {
-        get => VidaMax;
-    }
-    public int vidaActual
-    {
-        get => Vida;
-        set => Vida = value;
-    }
-    public AudioSource RecibirDanoAudio;
-    public override void RecibirDanio(int cantidad)
+    public void RecibirDanio(int cantidad)
     {
         Vida -= cantidad;
-        Debug.Log("recibio" + cantidad + "daño, su vida actual es " + vidaActual);
+        Debug.Log($"Recibió {cantidad} de daño, su vida actual es {vidaActual}");
         Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1);
         EfectoDeRelentizarTiempo();
         if (Vida <= 0)
@@ -658,9 +343,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
         RecibirDanoAudio.Play();
     }
-    public AudioSource SonidoDeMorir;
-    public GameObject FondoOscuroSangriendo;
-    public override void Morir()
+
+    public void Morir()
     {
         if (estaMuerto) return;
         Feedbacks.FeedbackRadialVisual(Color_Muere, 4);
@@ -669,6 +353,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         SonidoDeMorir.Play();
         FondoOscuroSangriendo.SetActive(true);
     }
+
     void CargaEscenaDerrota()
     {
         SceneManager.LoadScene("Derrota");
@@ -683,17 +368,74 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         Time.timeScale = 1f;
     }
+    #endregion
 
+    #region Movimiento y Navegación
+    public override void Detenerse()
+    {
+        agent.isStopped = true;
+        if (S_Caminar.isPlaying)
+        {
+            S_Caminar.Stop();
+        }
+    }
 
+    public override void IrAlDestino(Vector3 destino)
+    {
+        if (Vector3.Distance(destino, DestinoGuardado) < 2) return;
+        DestinoGuardado = destino;
+        if (estaMuerto) return;
 
-    /// <summary>
-    /// Rotar la flecha hacia el cursor (solo en el plano XZ).
-    /// </summary>
-    public GameObject Flecha;
+        agent.isStopped = false;
+        transform.LookAt(destino);
+        agent.SetDestination(destino);
+        Destino = destino;
+
+        if (Particulas)
+        {
+            Particulas.transform.position = destino;
+            Particulas.Play();
+        }
+
+        if (!S_Caminar.isPlaying)
+        {
+            S_Caminar.loop = true;
+            S_Caminar.Play();
+        }
+    }
+    #endregion
+
+    #region Utilidades y Helpers
+    void CorrerTimerDeCombos()
+    {
+        if (TimerDeCombos > 0f)
+            TimerDeCombos -= Time.deltaTime;
+        if (TimerDeCombos <= 0f)
+        {
+            AtaquesQImpactaron.Clear();
+        }
+    }
+
+    void CargarBarraDeCoolDown()
+    {
+        if (_coolDown > 0f)
+            _coolDown -= Time.deltaTime;
+        if (_coolDown < 0f)
+            _coolDown = 0f;
+        ActualizarBarraCoolDown();
+    }
+
+    private void ActualizarBarraCoolDown()
+    {
+        if (barraCoolDown == null || maxCoolDown == 0f) return;
+        float porcentaje = 1f - Mathf.Clamp01(_coolDown / maxCoolDown);
+        float anchoMaximo = 200f;
+        barraCoolDown.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, anchoMaximo * porcentaje);
+    }
+
     public void RotarFlechaHaciaElCursor()
     {
         if (Flecha == null) return;
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plano = new Plane(Vector3.up, Flecha.transform.position);
         if (plano.Raycast(ray, out float distancia))
@@ -711,73 +453,158 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             }
         }
     }
-    void Awake()
-    {
-        if (trail == null) return;
-        // Configuramos el tiempo de vida del rastro
-        trail.time = trailTime;
+    #endregion
 
-        // Arrancamos limpios y sin emitir
-        trail.Clear();
-        trail.emitting = false;
+    #region Resto del Código
+
+    // --- Métodos de Depuración y Hardcodeo ---
+
+    public void AtaqueHardCodeado()
+    {
+        AtaquesQImpactaron = new List<string> { "Melee1", "Melee2" };
+        TimerDeCombos = 2f;
+        Vector3 posicion = OrigenDelDisparo.position;
+        CrearCuboGenerico(posicion);
+        Atacar(posicion, "BolaDeFuego");
     }
+
+    public void AtaqueHardCodeado2()
+    {
+        AtaquesQImpactaron = new List<string> { "Melee3", "Melee2" };
+        TimerDeCombos = 2f;
+        Vector3 posicion = OrigenDelDisparo.position;
+        CrearCuboGenerico(posicion);
+        Atacar(posicion, "RayoElectrico");
+    }
+
+    public void CrearCuboGenerico(Vector3 posicion)
+    {
+        GameObject cubo = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cubo.transform.position = posicion;
+        cubo.transform.localScale = Vector3.one;
+        if (cubo.TryGetComponent<Renderer>(out var renderer))
+        {
+            renderer.material.color = Color.yellow;
+        }
+        if (cubo.TryGetComponent<BoxCollider>(out var collider))
+        {
+            collider.enabled = false;
+        }
+        cubo.transform.rotation = transform.rotation;
+        Destroy(cubo, 2f);
+    }
+
+    // --- Lógica de Cooldown y Animación ---
+
+    public void RegistrarCoolDown()
+    {
+        float speed = 1f;
+        if (anim.GetCurrentAnimatorClipInfo(0).Length > 0)
+        {
+            string nombreAnimacion = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            if (nombreAnimacion.Contains("01")) speed = 8f;
+            else if (nombreAnimacion.Contains("02")) speed = 4f;
+            else if (nombreAnimacion.Contains("03")) speed = 4f;
+            else if (nombreAnimacion.Contains("ataque_pesadoPersonaje")) speed = 2f;
+            else if (nombreAnimacion.Contains("ataque_rapidoPersonaje")) speed = 3f;
+            else if (nombreAnimacion.Contains("ataque_fuertePersonaje")) speed = 0.9f;
+
+            float tiempoAnim = anim.GetCurrentAnimatorClipInfo(0)[0].clip.length / speed;
+            CoolDown = Mathf.Min(tiempoAnim, 2f);
+        }
+    }
+
+    // --- Efectos de Habilidades ---
+
+    void EmpujarEnemigosConPatada()
+    {
+        Collider[] enemigos = Physics.OverlapSphere(puntoGolpePatada.position, 2f);
+        foreach (var col in enemigos)
+        {
+            if (col.TryGetComponent<A1_A1_H1_MoustroDelAverno>(out var enemigo))
+            {
+                if (col.TryGetComponent<Rigidbody>(out var rb) && !rb.isKinematic)
+                {
+                    Vector3 direccion = (col.transform.position - transform.position).normalized;
+                    if (col.TryGetComponent<NavMeshAgent>(out var agent))
+                    {
+                        if (NavMesh.SamplePosition(agent.transform.position, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                        {
+                            agent.Warp(hit.position);
+                            agent.enabled = false;
+                            float fuerzaEmpuje = 5f;
+                            rb.AddForce(direccion * fuerzaEmpuje, ForceMode.Impulse);
+                            StartCoroutine(ReactivarAgente(agent, 1f));
+                        }
+                    }
+                    else
+                    {
+                        float fuerzaEmpuje = 5f;
+                        rb.AddForce(direccion * fuerzaEmpuje, ForceMode.Impulse);
+                    }
+                }
+            }
+        }
+    }
+
+    private IEnumerator ReactivarAgente(NavMeshAgent agent, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (agent != null)
+        {
+            if (NavMesh.SamplePosition(agent.transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+                agent.enabled = true;
+                agent.isStopped = false;
+            }
+        }
+    }
+
     public void ActivarEfectoPatada()
     {
-        Instantiate(explosionPrefab, puntoDeImpacto.position, Quaternion.identity);
+        if (explosionPrefab != null)
+        {
+            Instantiate(explosionPrefab, puntoDeImpacto.position, Quaternion.identity);
+        }
     }
+
     public void ActivarTrail()
     {
-        // Limpia cualquier resto antiguo
+        if (trail == null) return;
         trail.Clear();
-        // Empieza a emitir vértices de rastro
         trail.emitting = true;
     }
 
     public void DesactivarTrail()
     {
-        // Solo paramos la emisión de nuevos vértices.
-        // NO desactivamos 'enabled' ni volvemos a llamar a Clear().
+        if (trail == null) return;
         trail.emitting = false;
-        // Los polígonos generados seguirán vivos y se irán desvaneciendo
-        // automáticamente durante 'trail.time' segundos.
     }
-    private IEnumerator ClearAfterDelay(float delay)
+
+    public override void OnCollision(Collision collider)
     {
-        yield return new WaitForSeconds(delay);
-        trail.Clear();
+        // Implementar si es necesario
     }
 
     public override void Colisiono(GameObject col, string TipoDeColision)
     {
-        /*
-        Debug.Log(
-            "El _" 
-            + Colision.name  
-            + "_ Colisiona con _" 
-            + gameObject.name 
-            + "_ Con _" 
-            + TipoDeColision 
-            + "_ Tipo de colision"
-            , gameObject);
-        */
-        // El _Enemigo_ Colisiona con _Jugador v2_ Con _TriggerStay_ Tipo de colision
-        A3_Interactuable interactivo = col.GetComponent<A3_Interactuable>();
-        if (interactivo != null)
+        if (col.TryGetComponent<A3_Interactuable>(out var interactivo))
         {
             interactivo.Interactuar();
         }
-        Debug.DrawLine(col.transform.position, gameObject.transform.position);
     }
-    //TP 2_Damian Figueredo
-    public int ContadorDeMonedas
-    {
-        get { return CantidadDeMonedas; }
-    }
+
+    // --- Sistema de Monedas ---
+
+    public int ContadorDeMonedas => CantidadDeMonedas;
+
     public void SumarMonedas(int cantidad)
     {
         CantidadDeMonedas += cantidad;
         ActualizarTextoMonedas();
     }
+
     public void ActualizarTextoMonedas()
     {
         if (textoMonedasUI != null)
@@ -786,32 +613,22 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
     }
 
+    // --- Sonidos ---
 
-
-    public AudioClip SonidoDeCaminarEnHielo;
-    public AudioClip SonidoDeCaminarEnPasto;
     public void ReproducirSonidoDeCaminar()
     {
-        float PosicionEnZ = Math.Abs(transform.position.z);
-        if (PosicionEnZ < 195
-            && PosicionEnZ > 175
-            )
+        float posicionZ = Mathf.Abs(transform.position.z);
+        if (posicionZ < 195 && posicionZ > 175)
+        {
             S_Caminar.clip = SonidoDeCaminarEnHielo;
+        }
         else
         {
             S_Caminar.clip = SonidoDeCaminarEnPasto;
         }
     }
 
-
-
-
-
-
-
-
-
-    private static float tiempoInicio;
+    // --- Medidor de Tiempo Estático ---
 
     public static void RegistrarAhora()
     {
@@ -823,42 +640,33 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         return Time.time - tiempoInicio <= segundos;
     }
 
+    // --- Efectos de Combos ---
 
-    public GameObject VFX_ComboExplosion;
-    public AudioClip SonidoComboExplosion;
-    // Efecto de curación al lanzar el hechizo de fuego
-    public void CrearEfectoDeExplosion() // Se activa por timer despues de lanzar el primer hechizo de fuego y atacar con melee
+    public void CrearEfectoDeExplosion()
     {
-        if (estaMuerto) return;
-        if (VFX_ComboExplosion == null || SonidoComboExplosion == null) return;
+        if (estaMuerto || VFX_ComboExplosion == null || SonidoComboExplosion == null) return;
+
         Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡ONDA FLAMEANTE!", new Color(1f, 0.352f, 0f));
-
-
-        // Posicion del efecto: Origen del ataque
-        Vector3 OrigenDeEfecto = transform.position;
-        // Crea el efecto q daña a todos los enemigos cercanos
-        GameObject efecto = Instantiate(VFX_ComboExplosion, OrigenDeEfecto, Quaternion.identity);
-        // Crea efecto sonoro de combo
+        Vector3 origenDeEfecto = transform.position;
+        Instantiate(VFX_ComboExplosion, origenDeEfecto, Quaternion.identity);
         AudioManager.CrearEfectoSonoro(transform.position, SonidoComboExplosion);
     }
 
-
-    public GameObject VFX_EfectoDeCuracion;
-    public AudioClip VFX_A_EfectoDeCuracion;
     public void CrearEfectoDeCuracion()
     {
-        Debug.Log("Creando efecto de curación");
-        if (estaMuerto) return;
-        if (VFX_EfectoDeCuracion == null) return;
-        // Posicion del efecto: Origen del ataque
-        vidaActual += 20; // Curar al jugador al lanzar el hechizo de fuego
-        if (vidaActual > vidaMaxima) vidaActual = vidaMaxima; // Asegurarse de no superar la vida máxima
-        else if (vidaActual < vidaMaxima)
+        if (estaMuerto || VFX_EfectoDeCuracion == null) return;
+
+        if (vidaActual < vidaMaxima)
         {
-            GameObject EfectoDeCuracion = Instantiate(VFX_EfectoDeCuracion, transform.position, Quaternion.identity);
+            vidaActual += 20;
+            if (vidaActual > vidaMaxima) vidaActual = vidaMaxima;
+
+            GameObject efectoDeCuracion = Instantiate(VFX_EfectoDeCuracion, transform.position, Quaternion.identity);
             AudioManager.CrearEfectoSonoro(transform.position, VFX_A_EfectoDeCuracion);
-            Destroy(EfectoDeCuracion, 2f); // Destruir el efecto después de 2 segundos
-            EfectoDeCuracion.transform.SetParent(transform);
+            Destroy(efectoDeCuracion, 2f);
+            efectoDeCuracion.transform.SetParent(transform);
         }
     }
+
+    #endregion
 }
