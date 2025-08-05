@@ -125,37 +125,6 @@ public class GameManager : MonoBehaviour
 
 
 
-___Parcial 2 Correcciones
-#1. Cuidado con la cantidad de escenas creadas, si no la usan se borra para reducir peso en el proyecto.
-
-
-
-#3. Al hacer ataques deberian usar interfaces para poder atacar a cualquier enemigo en un futuro y no solo a uno. HECHO
-#5. En el AudioManager la key de los sonidos podría ser un enum. NO
-    Respuesta de alumno = "Sorry. Es q eso iria en contra de la idea principal del audio manager de que usa resources para obtener todos los audios"
-#6. Si todos los enemigos actualizan su barra de vida de la misma manera lo deberían programar en la clase padre.
-#7. Las Interfaces creadas no se usan en ningún lado.
-
-
-
-
-_ Final
-La consigna del final pide lo siguiente. Y entre parentesis esta la propuesta q la hable con el profe y me dio su OK. De en donde aplicar cada una
-
-
-
-#9. Events (Accionar acciones de todos los suscriptos)
-#13. Getters y setters (Feedback visual al aumentar vida o recibir danio y monedas)
-#11. Diccionarios (AudioManager.Clips [String Nombre, Clip Audio])
-
-
-#4. El codigo del player se encarga de demasiadas cosas, no deberia actualizar el canvas por ejemplo. Y tienen un sistema tan complejo de ataque que se merece un script en particular para administrar eso
-#2. Para los nombres de los ataques es mejor que usen enums
-#8. Delegates (Ataque físico y mágico)
-#10. Structs (ataques [tipo, daño, melee])
-#12. Enums (Modo de pelea Físico/Mágico)
-
-
 
 
 
