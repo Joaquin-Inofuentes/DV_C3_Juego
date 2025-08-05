@@ -1,68 +1,128 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class A1_A1_H2_ArquerasElfas : A1_A1_Enemigo
+public class A1_A1_H2_ArquerasElfas : A1_A1_Enemigo, IDaniable
 {
+    [Header("Vida")]
+    [SerializeField] private int _vidaMaxima = 100;
+    [SerializeField] private int _vidaActual = 100;
+
+    // Estas son las propiedades de la interfaz IDaniable
+    public int vidaMaxima
+    {
+        get => _vidaMaxima;
+        set => _vidaMaxima = value;
+    }
+
+    public int vidaActual
+    {
+        get => _vidaActual;
+        set => _vidaActual = value;
+    }
+
+
+
     public GameObject BolaDeAtaque;
     public GameObject AtaqueActual;
 
-    public GameObject PadreDebarraDevida;
-    public GameObject BarraDeVida;
-
-    private float anchoOriginal;
     private bool estaMuerto = false;
 
-    void ActualizarBarraDevida()
+    // --- NUEVAS VARIABLES PARA EL TEMPORIZADOR ---
+    private float tiempoParaDesaparecer = -1f; // -1 indica que el temporizador no está activo.
+    private const float DURACION_DESAPARICION = 10f; // Constante para el tiempo de espera.
+
+    #region Implementacion de Interfaz IDaniable
+    // "Traduce" las variables de la clase base a los nombres requeridos por la interfaz.
+
+    #endregion
+
+    protected override void Start()
     {
-        // 1. Rotar solo en eje Y hacia la cámara
-        Vector3 camPos = Camera.main.transform.position;
-        Vector3 dir = camPos - PadreDebarraDevida.transform.position;
-        dir.y = 0;
-        if (dir != Vector3.zero)
-            PadreDebarraDevida.transform.rotation = Quaternion.LookRotation(dir);
-
-        // 2. Calcular porcentaje real
-        float porcentajeSinClamp = Vida / (float)VidaMax;
-        float porcentaje = Mathf.Clamp01(porcentajeSinClamp);
-        Debug.Log($"[DEBUG] Vida: {Vida}, VidaMax: {VidaMax}, SinClamp: {porcentajeSinClamp}, Clamp01: {porcentaje}");
-
-        // 3. Escalar ancho de la barra
-        Vector3 escala = BarraDeVida.transform.localScale;
-        BarraDeVida.transform.localScale = new Vector3(anchoOriginal * porcentaje, escala.y, escala.z);
-
-        // 4. Mover localmente a la izquierda
-        float offset = (anchoOriginal - (anchoOriginal * porcentaje)) / 2f;
-        BarraDeVida.transform.localPosition = new Vector3(-offset, BarraDeVida.transform.localPosition.y, BarraDeVida.transform.localPosition.z);
+        base.Start();
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        // Si el enemigo no está muerto, ejecuta su lógica normal.
+        if (!estaMuerto)
+        {
+            if (agent != null && anim != null)
+            {
+                float velocidad = agent.velocity.magnitude;
+                anim.SetFloat("velocidad", velocidad);
+            }
+        }
+        // Si el enemigo ESTÁ muerto, maneja el temporizador para desaparecer.
+        else
+        {
+            // Si el temporizador está activo (es mayor que 0)
+            if (tiempoParaDesaparecer > 0)
+            {
+                // Resta el tiempo que pasó desde el último frame.
+                tiempoParaDesaparecer -= Time.deltaTime;
+
+                // Si el tiempo se acabó, destruye el objeto.
+                if (tiempoParaDesaparecer <= 0)
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Este método implementa la función Morir de la interfaz IDaniable
+    /// y sobreescribe la de la clase base A1_A1_Enemigo.
+    /// </summary>
+    public void Morir()
+    {
+        if (estaMuerto) return;
+        estaMuerto = true;
+
+        anim.SetBool("life", false);
+        Debug.Log("Arquera Elfa ha muerto. Desaparecerá en " + DURACION_DESAPARICION + " segundos.");
+
+        // Desactivar componentes para que deje de moverse e interactuar.
+        if (agent != null) agent.enabled = false;
+        var collider = GetComponent<Collider>();
+        if (collider != null) collider.enabled = false;
+
+        // --- REEMPLAZO DE LA COROUTINE ---
+        // Inicia el temporizador para la destrucción del objeto.
+        tiempoParaDesaparecer = DURACION_DESAPARICION;
+    }
+
+    // --- COROUTINE ELIMINADA ---
+    // private IEnumerator DesaparecerDespuesDeSegundos(float segundos) { ... }
+
+    /// <summary>
+    /// Este método implementa la función RecibirDanio de la interfaz IDaniable
+    /// y sobreescribe la de la clase base A1_A1_Enemigo.
+    /// </summary>
+    public void RecibirDanio(int cantidad)
+    {
+        if (estaMuerto) return;
+
+        anim.SetTrigger("danio");
+
+        // Usa la propiedad de la interfaz para reducir la vida.
+        // Esto es más limpio que castear con 'as'.
+        IDaniable daniable = this;
+        daniable.vidaActual -= cantidad;
+
+        // Si la vida llega a cero, llama al método Morir de la interfaz.
+        if (daniable.vidaActual <= 0)
+        {
+            daniable.Morir();
+        }
+    }
+
+    #region Metodos Heredados (Sin cambios)
     public override void Atacar(Vector3 Destino, string Nombre = "")
     {
         if (estaMuerto) return;
-        //ModoAtaqueMelee = false;
-        /* if (AtaqueActual == null)
-         {
-
-             Debug.Log("Atacando");
-             // Crea un efecto de danio
-             //Debug.Log("Atacando");
-             // Crea un efecto de daño
-             GameObject Ataque = Instantiate(BolaDeAtaque, Destino, Quaternion.identity);
-             AtaqueActual = Ataque;
-             Ataque.transform.localScale = new Vector3(50,50,50);
-             // Destruye ese efecto
-             Destroy(Ataque, 1f);
-             if (ModoAtaqueMelee == true) 
-             {
-                 animacion.SetTrigger("boss_ataque1");
-             }
-         }
-         if (AtaqueActual != null)
-         {
-             //Debug.Log("Esta atacando " + gameObject, gameObject);
-         }
-     */
-        //Debug.Log(Nombre, gameObject);
+        // Tu lógica de ataque aquí...
     }
 
     public override void Colisiono(GameObject Colision, string TipoDeColision)
@@ -72,73 +132,31 @@ public class A1_A1_H2_ArquerasElfas : A1_A1_Enemigo
 
     public override void Detenerse()
     {
-        agent.isStopped = true;
-
+        if (agent != null)
+        {
+            agent.isStopped = true;
+        }
     }
 
     public override void IrAlDestino(Vector3 destino)
     {
-        if (estaMuerto) return;
+        if (estaMuerto || agent == null) return;
         agent.isStopped = false;
         agent.SetDestination(destino);
     }
 
-    public void Morir()
-    {
-        anim.SetBool("life", false);
-        Debug.Log("Falta animacion de morir");
-        StartCoroutine(DesaparecerDespuesDeSegundos(10f)); // espera 3 segundos
-        if (estaMuerto) return;
-        estaMuerto = true;
-    }
+    public override void OnEnabled() { }
+    public override void OnDisabled() { }
+    public override void OnCollision(Collision collider) { }
 
-    private IEnumerator DesaparecerDespuesDeSegundos(float segundos)
-    {
-        yield return new WaitForSeconds(segundos);
-        Destroy(gameObject);
-    }
-
-    public override void OnCollision(Collision collider)
+    void IDaniable.RecibirDanio(int cantidad)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void OnDisabled()
+    void IDaniable.Morir()
     {
         throw new System.NotImplementedException();
     }
-
-    public override void OnEnabled()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void RecibirDanio(int cantidad)
-    {
-        anim.SetTrigger("danio");
-        Vida -= cantidad;
-        if (Vida <= 0)
-        {
-            Morir();
-            anim.SetBool("life", false);
-        }
-    }
-
-    protected override void Start()
-    {
-        base.Start(); // Llama al Start del padre
-                      // Cï¿½digo propio de ArquerasElfas
-        anchoOriginal = BarraDeVida.transform.localScale.x;
-
-    }
-
-    protected override void Update()
-    {
-        base.Update(); // Llama al Update del padre
-        float velocidad = agent.velocity.magnitude;
-        //Debug.Log("Velocidad agente: " + velocidad);
-        anim.SetFloat("velocidad", velocidad);
-        ActualizarBarraDevida();
-
-    }
+    #endregion
 }

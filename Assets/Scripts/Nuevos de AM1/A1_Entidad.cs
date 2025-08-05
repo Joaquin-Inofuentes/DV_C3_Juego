@@ -6,8 +6,6 @@ using UnityEngine.AI;
 public abstract class A1_Entidad : MonoBehaviour
 {
     // Atributos públicos
-    public int Vida;
-    public int VidaMax;
     public int Velocidad;
     public int DañoDeAtaque;
     public float VelocidadDeAtaque;

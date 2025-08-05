@@ -126,8 +126,8 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     void ConvertirseEnAlfa()
     {
         esAlfa = true;
-        Vida = Mathf.RoundToInt(Vida * multiplicadorVida);
-        VidaMax = Mathf.RoundToInt(VidaMax * multiplicadorVida);
+        vidaActual = Mathf.RoundToInt(vidaActual * multiplicadorVida);
+        vidaMaxima = Mathf.RoundToInt(vidaMaxima * multiplicadorVida);
         DañoDeAtaque = Mathf.RoundToInt(DañoDeAtaque * multiplicadorDanio);
         Velocidad = Mathf.RoundToInt(Velocidad * multiplicadorVelocidad);
         if (agent != null) agent.speed *= multiplicadorVelocidad;

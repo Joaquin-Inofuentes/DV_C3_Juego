@@ -66,11 +66,16 @@ public class Hitbox : MonoBehaviour
     public GameObject Creador;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == Creador) return;
+        if (other.gameObject == Creador) return; 
         // Usar CompareTag es mucho más eficiente que comparar nombres.
         if (other.CompareTag("Jugador"))
         {
             return;
+        }
+        // Aplicar daño
+        if (other.TryGetComponent<IDaniable>(out var daniable))
+        {
+            daniable.RecibirDanio(danio); 
         }
 
         // Usamos TryGetComponent para eficiencia y seguridad.
@@ -82,11 +87,6 @@ public class Hitbox : MonoBehaviour
                 return;
             }
 
-            // Aplicar daño
-            if (other.TryGetComponent<IDaniable>(out var daniable))
-            {
-                daniable.RecibirDanio(danio);
-            }
 
             // Asignar el nombre del proyectil para combos
             if (enemigo is A1_A1_H1_MoustroDelAverno moustro)

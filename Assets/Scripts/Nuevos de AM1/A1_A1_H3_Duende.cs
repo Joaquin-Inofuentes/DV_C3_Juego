@@ -4,8 +4,28 @@ using Unity.Services.Analytics.Internal;
 using UnityEditor;
 using UnityEngine;
 
-public class A1_A1_H3_Duende : A1_A1_Enemigo
+public class A1_A1_H3_Duende : A1_A1_Enemigo,IDaniable
 {
+
+
+    [Header("Vida")]
+    [SerializeField] private int _vidaMaxima = 100;
+    [SerializeField] private int _vidaActual = 100;
+
+    // Estas son las propiedades de la interfaz IDaniable
+    public int vidaMaxima
+    {
+        get => _vidaMaxima;
+        set => _vidaMaxima = value;
+    }
+
+    public int vidaActual
+    {
+        get => _vidaActual;
+        set => _vidaActual = value;
+    }
+
+
     [Header("Configuración")]
     public List<Transform> puntosSpawn;
     public GameObject proyectilPrefab;
@@ -37,7 +57,7 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
             PadreDebarraDevida.transform.rotation = Quaternion.LookRotation(dir);
 
         // 2. Calcular porcentaje real
-        float porcentajeSinClamp = Vida / (float)VidaMax;
+        float porcentajeSinClamp = vidaActual / (float)vidaMaxima;
         float porcentaje = Mathf.Clamp01(porcentajeSinClamp);
         //Debug.Log($"[DEBUG] Vida: {Vida}, VidaMax: {VidaMax}, SinClamp: {porcentajeSinClamp}, Clamp01: {porcentaje}");
 
@@ -151,8 +171,8 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
     public void RecibirDanio(int cantidad)
     {
         anim.SetTrigger("danio");
-        Vida -= cantidad;
-        if (Vida <= 0)
+        vidaActual -= cantidad;
+        if (vidaActual <= 0)
         {
             Morir();
             anim.SetBool("life", false);
@@ -184,7 +204,7 @@ public class A1_A1_H3_Duende : A1_A1_Enemigo
                 agent.isStopped = true; // Detiene el agente
             }
         }
-        if (Vida <= 0)
+        if (vidaActual <= 0)
         {
             Morir();
             anim.SetBool("life", false);
