@@ -16,7 +16,7 @@ public class HitboxDeLobo : MonoBehaviour
         A1_Entidad entidad = other.GetComponent<A1_Entidad>();
         if (entidad != null && entidad != lobo)
         {
-            entidad.RecibirDanio(lobo.DañoDeAtaque);
+            entidad.GetComponent<IDaniable>().RecibirDanio(lobo.DañoDeAtaque);
             Debug.Log($"[Lobo Hitbox] Dañó a {entidad.name}");
         }
     }

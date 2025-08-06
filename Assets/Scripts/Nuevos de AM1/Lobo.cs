@@ -103,7 +103,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
             var entidad = jugador.GetComponent<A1_Entidad>();
             if (entidad != null)
             {
-                entidad.RecibirDanio(DañoDeAtaque);
+                entidad.GetComponent<IDaniable>().RecibirDanio(DañoDeAtaque);
                 Debug.Log($"[Lobo] Atacó e hizo {DañoDeAtaque} de daño.");
             }
         }
@@ -126,8 +126,8 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     void ConvertirseEnAlfa()
     {
         esAlfa = true;
-        Vida = Mathf.RoundToInt(Vida * multiplicadorVida);
-        VidaMax = Mathf.RoundToInt(VidaMax * multiplicadorVida);
+        vidaActual = Mathf.RoundToInt(vidaActual * multiplicadorVida);
+        vidaMaxima = Mathf.RoundToInt(vidaMaxima * multiplicadorVida);
         DañoDeAtaque = Mathf.RoundToInt(DañoDeAtaque * multiplicadorDanio);
         Velocidad = Mathf.RoundToInt(Velocidad * multiplicadorVelocidad);
         if (agent != null) agent.speed *= multiplicadorVelocidad;
@@ -221,7 +221,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
                     var entidad = col.GetComponent<A1_Entidad>();
                     if (entidad != null)
                     {
-                        entidad.RecibirDanio(danioLlamarada);
+                        entidad.GetComponent<IDaniable>().RecibirDanio(danioLlamarada);
                         Debug.Log("[Lobo Alfa] Daño por llamarada");
                     }
                 }

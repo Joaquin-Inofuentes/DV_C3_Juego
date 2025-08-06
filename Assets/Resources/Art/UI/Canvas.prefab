@@ -680,7 +680,6 @@ GameObject:
   - component: {fileID: 6969200935386412630}
   - component: {fileID: 4724542028767701631}
   - component: {fileID: 1675258057470979541}
-  - component: {fileID: 7942129321507830281}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -993,36 +992,6 @@ MonoBehaviour:
   cursorMenu: {fileID: 2800000, guid: 4f3a8776c94571744a91970603a61410, type: 3}
   hotspotJuego: {x: 0, y: 0}
   hotspotMenu: {x: 0, y: 0}
---- !u!114 &7942129321507830281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895616958082478248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a7830ef4b607e7489bf0f493facff9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objetivo: {fileID: 0}
-  camara: {fileID: 0}
-  offset: {x: 0, y: 1.8, z: 0}
-  suavizado: 12
-  canvasGroup: {fileID: 0}
-  textoUI: {fileID: 0}
-  fadeTime: 0.3
-  duracionVisible: 3
-  textosDePuzzle:
-  - "No puedo pasar por ah\xED"
-  - No puedo
-  - "\xBFVos quer\xE9s que me muera?"
-  textoCombo: {fileID: 0}
-  fadeDuration: 2
-  cursorJuego: {fileID: 2800000, guid: 60b37b3197a88904295df4a331e990db, type: 3}
-  cursorMenu: {fileID: 2800000, guid: 4f3a8776c94571744a91970603a61410, type: 3}
-  hotspotJuego: {x: 0, y: 0}
-  hotspotMenu: {x: 0, y: 0}
 --- !u!1 &942976491904849560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,7 +1025,7 @@ RectTransform:
   m_Father: {fileID: 688177050854759246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4555,7 +4524,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2661743020603822163
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6063,8 +6032,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4019898862947551391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6138,8 +6107,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3053497576354561662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6214,7 +6183,7 @@ RectTransform:
   m_Father: {fileID: 4546430001209529537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8537,7 +8506,7 @@ RectTransform:
   m_Father: {fileID: 2676018710484105855}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8700,8 +8669,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8449820059778979003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}

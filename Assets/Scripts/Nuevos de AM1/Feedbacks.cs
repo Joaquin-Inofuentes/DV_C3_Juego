@@ -6,113 +6,86 @@ using UnityEngine.UI;
 
 public class Feedbacks : MonoBehaviour
 {
-    // Propiedades
+    [Header("Referencias")]
     public AccionesJugador S_AccionesJugador;
-    private Animator animator;
-    public string TipoDeAtaque; // Ejemplo: "F�sico" o "M�gico"
     public RawImage BarraDeVida;
-    public float Vida_TamanoMaximo;
-    public TextMeshProUGUI Text_CantidadDeMonedas;
-    public AudioSource S_MomentoEpico;
-    public static Feedbacks Componente; // Singleton para acceder f�cilmente desde otros scripts
+    public RawImage feedbackImage;
     public UI UIFadeComboScript;
+
+    [Header("Sonidos")]
+    public AudioSource S_MomentoEpico;
+
+    public static Feedbacks Componente;
+
+    private Animator animator;
+    private float Vida_TamanoMaximo;
+    private Coroutine currentRoutine;
+
+    void Awake()
+    {
+        if (Componente == null) Componente = this;
+        else Destroy(gameObject);
+    }
 
     void Start()
     {
-        animator = GetComponent<Animator>(); // Obtiene el Animator del GameObject
-        Vida_TamanoMaximo = BarraDeVida.rectTransform.rect.width;
+        animator = GetComponent<Animator>();
+        if (BarraDeVida != null)
+        {
+            Vida_TamanoMaximo = BarraDeVida.rectTransform.rect.width;
+        }
+        else
+        {
+            Debug.LogError("Referencia a 'BarraDeVida' no asignada en el Inspector de Feedbacks.", this);
+        }
     }
-    private int _CantidadDeMonedas = 0; // Variable para almacenar la cantidad de monedas
-    public AudioSource SonidoDeObtenerMonedas;
+
     void Update()
     {
-        if (Componente == null)
-        {
-            Componente = this; // Asigna la instancia si a�n no est� asignada
-        }
-        // Aqu� podr�as manejar l�gica de actualizaci�n, como el movimiento
-        ActualizarBarra();
-
-        if (GameManager.Componente) return;
-        if (GameManager.Componente)
-        {
-          
-        }
+        // El canvas (barra de vida) se actualiza aquí cada frame para reflejar
+        // los cambios hechos en la propiedad 'vidaActual' del jugador.
+        ActualizarBarraDeVida();
     }
 
-
-    private void ActualizarBarra()
+    /// <summary>
+    /// Ajusta el tamaño visual de la barra de vida.
+    /// Lee los valores directamente de las propiedades del jugador.
+    /// </summary>
+    private void ActualizarBarraDeVida()
     {
+        if (S_AccionesJugador == null || BarraDeVida == null) return;
 
-        float nuevoValor = ((float)S_AccionesJugador.Vida / S_AccionesJugador.VidaMax) * Vida_TamanoMaximo;
-        BarraDeVida.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, nuevoValor);
-
+        float nuevoAncho = ((float)S_AccionesJugador.vidaActual / S_AccionesJugador.vidaMaxima) * Vida_TamanoMaximo;
+        BarraDeVida.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, nuevoAncho);
     }
 
-    public void AnimacionAtaque()
-    {
-        // Llama a la animaci�n de ataque
-        animator.SetTrigger("Ataque"); // Suponiendo que tienes un trigger llamado "Ataque" en el Animator
-    }
+    // El resto de los métodos se mantienen igual, ya que son llamados
+    // desde el script del jugador cuando es necesario.
 
-    public void AnimacionMovimiento()
-    {
-        // Llama a la animaci�n de movimiento
-        animator.SetFloat("Velocidad", 1.0f); // Suponiendo que tienes un par�metro de velocidad
-    }
-
-    public void AnimacionMuerte()
-    {
-        // Llama a la animaci�n de muerte
-        animator.SetTrigger("Muerte"); // Suponiendo que tienes un trigger llamado "Muerte" en el Animator
-    }
-
-    public void CreacionDeProyectiles()
-    {
-        // L�gica para crear proyectiles
-        // Por ejemplo, instanciar un proyectil en una posici�n dada:
-        GameObject proyectil = Instantiate(Resources.Load("ProyectilPrefab") as GameObject, transform.position, Quaternion.identity);
-        // A�adir l�gica de direcci�n, velocidad, etc., al proyectil
-    }
-
-
-    public RawImage feedbackImage;
-    private Coroutine currentRoutine;
-
-
+    #region Feedback Visual Radial
     public void FeedbackRadialVisual(Color color, float duration)
     {
-        // 1. Cancela la rutina previa si existe
-        if (currentRoutine != null)
-            StopCoroutine(currentRoutine);
-
-        // 2. Inicia la nueva y guarda su referencia
+        if (currentRoutine != null) StopCoroutine(currentRoutine);
         currentRoutine = StartCoroutine(DoFeedback(color, duration));
     }
+
     private IEnumerator DoFeedback(Color color, float duration)
     {
         feedbackImage.color = color;
         feedbackImage.gameObject.SetActive(true);
-
         float elapsed = 0f;
-        float startAlpha = color.a; // Guardamos el alpha original
-
+        float startAlpha = color.a;
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            // El alpha va de startAlpha a 0
             float alpha = Mathf.Lerp(startAlpha, 0f, elapsed / duration);
-
             Color c = color;
             c.a = alpha;
             feedbackImage.color = c;
-
             yield return null;
         }
-
         feedbackImage.gameObject.SetActive(false);
         currentRoutine = null;
     }
-
-
+    #endregion
 }

@@ -21,7 +21,7 @@ public class VFXAccionador : MonoBehaviour
         if (other.name == "Jugador 1") return; // Ignorar colisiones con el jugador
         Debug.Log($"[VFXAccionador] Colisionó con: {other.name}");
 
-        A1_Entidad entidad = other.GetComponent<A1_Entidad>();
+        IDaniable entidad = other.GetComponent<IDaniable>();
         if (entidad != null)
         {
             Debug.Log($"[VFXAccionador] Se aplicó {cantidadDeDano} de daño a {other.name}");

@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 306724654520303168}
   - component: {fileID: 4832755805005062437}
   - component: {fileID: 8411519357270455983}
+  - component: {fileID: 1575235933465259284}
   m_Layer: 6
   m_Name: PadreDeBarraDeVida
   m_TagString: Untagged
@@ -243,6 +244,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1575235933465259284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642242179076716732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815b9b23a38bb524e85b5e03460224bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objetivoDuenio: {fileID: 5780307580212673122}
+  PadreDeLaBarraDeVida: {fileID: 642242179076716732}
+  BarraDeVidaVisual: {fileID: 1704734801133257807}
+  anchoOriginal: 1
 --- !u!1 &667094098675590064
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,8 +2097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4f48329cf30ec4bb4da8ac92e8bb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vida: 100
-  VidaMax: 100
   Velocidad: 4
   "Da\xF1oDeAtaque": 10
   VelocidadDeAtaque: 10
@@ -2098,14 +2113,16 @@ MonoBehaviour:
   rangoAtaque: 4
   objetivoActual: {fileID: 0}
   EstadoActual: {fileID: 0}
+  _vidaMaxima: 100
+  _vidaActual: 100
   BolaDeAtaque: {fileID: 3314820458270015711, guid: a08f35a6d1f17e9428cdc2949b7debd6, type: 3}
   AtaqueActual: {fileID: 0}
-  PadreDebarraDevida: {fileID: 642242179076716732}
-  BarraDeVida: {fileID: 1704734801133257807}
+  estaMuerto: 0
   Congelado: 0
   PrimerAtaqueAAnular: 0
   EfectoDeCongelado: {fileID: 0}
   ultimoProyectilRecibido: 
+  generador: {fileID: 0}
   ProximoAtaqueExplosionElectrica: 0
   AnimacionActual: 
   DestinoDelAtaque: {x: 0, y: 0, z: 0}
