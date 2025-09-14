@@ -828,14 +828,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   S_AccionesJugador: {fileID: 0}
-  TipoDeAtaque: 
   BarraDeVida: {fileID: 3213335808775915994}
-  Vida_TamanoMaximo: 0
-  Text_CantidadDeMonedas: {fileID: 2419347404050185544}
-  S_MomentoEpico: {fileID: 0}
-  UIFadeComboScript: {fileID: 6850746121478548286}
-  SonidoDeObtenerMonedas: {fileID: 6671784552605464408}
   feedbackImage: {fileID: 8075106394624983926}
+  UIFadeComboScript: {fileID: 6850746121478548286}
+  S_MomentoEpico: {fileID: 0}
 --- !u!114 &6969200935386412630
 MonoBehaviour:
   m_ObjectHideFlags: 0

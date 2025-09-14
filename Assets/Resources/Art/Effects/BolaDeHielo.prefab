@@ -136,6 +136,7 @@ MonoBehaviour:
   AutoDestruir: 1
   AudioAlAparecer: {fileID: 8300000, guid: 8279626229daee04ba729416df82d9c7, type: 3}
   velocidad: 10
+  Destino: {fileID: 0}
   danio: 10
   PuntoDeColision: {x: 0, y: 0, z: 0}
   AudioAlColisionar: {fileID: 8300000, guid: 613b8a3eba5648649a70b5aeb45322d7, type: 3}
@@ -4966,7 +4967,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

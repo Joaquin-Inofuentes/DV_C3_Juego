@@ -2478,7 +2478,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3280,8 +3280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0086186a9c190144e904abc91461d385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vida: 100
-  VidaMax: 100
   Velocidad: 8
   "Da\xF1oDeAtaque": 10
   VelocidadDeAtaque: 3
@@ -3294,6 +3292,7 @@ MonoBehaviour:
   TimerDeAtaque: 0
   Objetivo: {fileID: 0}
   S_Caminar: {fileID: 2429792105912578387}
+  fisico: {fileID: 0}
   BolaDeFuego: {fileID: 3314820458270015711, guid: 39052d6e5cb9e7b4ca82e326288361a9, type: 3}
   BolaDeHielo: {fileID: 3314820458270015711, guid: b61bcb4cc93745443aa4ad7323938276, type: 3}
   Rayo: {fileID: 3314820458270015711, guid: 74e74340c1a55034fad5afbd087532bf, type: 3}
@@ -3307,10 +3306,11 @@ MonoBehaviour:
   trail: {fileID: 6450557057870232628}
   trailTime: 2
   clearDelay: 1
-  modoMelee: 0
   puntoGolpePatada: {fileID: 4764383804118761135}
   puntoGolpeEspada: {fileID: 1965321082049235299}
+  _vidaMaxima: 100
   Destino: {x: -17.433197, y: -0.00000047683716, z: 1.024231}
+  textoMonedasUI: {fileID: 0}
   Particulas: {fileID: 0}
   explosionPrefab: {fileID: 7898315179254923771, guid: b6a7c8403140cf04782485cd79bc3716, type: 3}
   puntoDeImpacto: {fileID: 6916796193316239591}
@@ -3321,19 +3321,27 @@ MonoBehaviour:
   Color_Muere: {r: 1, g: 0, b: 0, a: 0.47058824}
   Color_SeCura: {r: 0.7019608, g: 0.3395065, b: 0.023529422, a: 0.39607844}
   Coins: {fileID: 2213373354213983859}
-  CantidadDeMonedas: 0
-  textoMonedasUI: {fileID: 0}
+  RecibirDanoAudio: {fileID: 5336727006616752122}
+  SonidoDeMorir: {fileID: 4342667390874665725}
+  FondoOscuroSangriendo: {fileID: 0}
   maxCoolDown: 0
   barraCoolDown: {fileID: 0}
   _TimerManager: {fileID: 0}
   IndicadoresMelee: {fileID: 0}
-  DestinoGuardado: {x: 0, y: 0, z: 0}
-  RecibirDanoAudio: {fileID: 5336727006616752122}
-  SonidoDeMorir: {fileID: 4342667390874665725}
-  FondoOscuroSangriendo: {fileID: 0}
   Flecha: {fileID: 5171194209051667546}
+  modoActual: 0
+  AtaquesQImpactaron: []
+  TimerDeCombos: 0
+  OrigenDelDisparo: {fileID: 0}
+  PrefabDeComboElectrico: {fileID: 0}
+  PrefabDeComboFuego: {fileID: 0}
+  VFX_ComboExplosion: {fileID: 0}
+  SonidoComboExplosion: {fileID: 0}
+  VFX_EfectoDeCuracion: {fileID: 0}
+  VFX_A_EfectoDeCuracion: {fileID: 0}
   SonidoDeCaminarEnHielo: {fileID: 0}
   SonidoDeCaminarEnPasto: {fileID: 0}
+  DestinoGuardado: {x: 0, y: 0, z: 0}
 --- !u!95 &3817859161315588317
 Animator:
   serializedVersion: 5
