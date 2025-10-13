@@ -9,7 +9,6 @@ TagManager:
   - Ambiente
   - Destruibles
   - Jugador
-  - HechizoDeFuego
   layers:
   - Default
   - TransparentFX
