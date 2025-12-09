@@ -6,6 +6,8 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 {
     public static List<Lobo> Manada = new List<Lobo>();
 
+    public static Lobo AlfaActual = null;
+
     public bool esAlfa = false;
     public Transform jugador;
     public float distanciaParaHacerDanio = 3f;
@@ -13,9 +15,9 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     private bool puedeAtacar = true;
 
     [Header("Stats del Alfa")]
-    public float multiplicadorVida = 2f;
-    public float multiplicadorDanio = 2f;
-    public float multiplicadorVelocidad = 1.5f;
+    public float multiplicadorVida = 1.2f;
+    public float multiplicadorVelocidad = 1.2f;
+
     public Vector3 escalaAlfa = new Vector3(1.5f, 1.5f, 1.5f);
 
     [Header("Aura del Alfa")]
@@ -32,7 +34,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     public float duracionLlamarada = 2f;
     public float cooldownLlamarada = 10f;
     public float radioDanioLlamarada = 4f;
-    public int danioLlamarada = 30;
+    public int danioLlamarada = 8;
     public LayerMask capaJugador;
     public float escalaRelativaLlamarada = 0.5f;
     private bool puedeUsarLlamarada = true;
@@ -51,6 +53,17 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 
         // si está en aullido/llamarada, no persigue
         if (enAnimacionEspecial) return;
+
+        if (estaHuyendo)
+        {
+            if (jugador != null)
+            {
+                Vector3 fleeDestino = Flee(jugador.position);
+                agent.SetDestination(fleeDestino);
+            }
+            return;
+        }
+
 
         // IA normal (llama a EjecutarCadaMedioSegundo a través de base.Update())
         base.Update();
@@ -112,7 +125,14 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     void OnDestroy()
     {
         Manada.Remove(this);
+
+        if (esAlfa)
+        {
+            Lobo.AlfaMurio();
+        }
     }
+
+
 
     void IntentarConvertirseEnAlfa()
     {
@@ -126,17 +146,58 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     void ConvertirseEnAlfa()
     {
         esAlfa = true;
+        AlfaActual = this;
+
         vidaActual = Mathf.RoundToInt(vidaActual * multiplicadorVida);
         vidaMaxima = Mathf.RoundToInt(vidaMaxima * multiplicadorVida);
-        DañoDeAtaque = Mathf.RoundToInt(DañoDeAtaque * multiplicadorDanio);
         Velocidad = Mathf.RoundToInt(Velocidad * multiplicadorVelocidad);
-        if (agent != null) agent.speed *= multiplicadorVelocidad;
+
+        if (agent != null)
+            agent.speed = Velocidad; 
+
+
         transform.localScale = escalaAlfa;
+
         if (auraPrefab != null)
             auraInstanciada = Instantiate(auraPrefab, transform);
-        foreach (var l in Manada) l.Aullar();
+
+        foreach (var l in Manada)
+        {
+            if (!l.esAlfa)
+                l.DañoDeAtaque = Mathf.RoundToInt(l.DañoDeAtaque * 1.1f); // +10%
+        }
+
         Debug.Log($"{name} es LOBO ALFA");
+        foreach (var l in Manada) l.Aullar();
     }
+    IEnumerator ProcesoTrasMuerteAlfa()
+    {
+        Debug.Log("El ALFA murió. Los betas huyen.");
+
+        // 1) betas huyen
+        foreach (var l in Manada)
+        {
+            l.IniciarHuida();
+        }
+
+        // 2) esperar unos segundos
+        yield return new WaitForSeconds(3f);
+
+        // 3) si quedan 2 o más, elegir nuevo alfa
+        if (Manada.Count >= 2)
+        {
+            var nuevo = Manada[Random.Range(0, Manada.Count)];
+            nuevo.ConvertirseEnAlfa();
+        }
+
+        // 4) quitar estado de huida
+        foreach (var l in Manada)
+        {
+            l.TerminarHuida();
+        }
+    }
+
+
 
     public void Aullar()
     {
@@ -203,8 +264,6 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         StartCoroutine(DanioPorLlamarada());
     }
 
-
-
     IEnumerator DanioPorLlamarada()
     {
         float t = duracionLlamarada;
@@ -229,6 +288,69 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
             yield return new WaitForSeconds(0.3f);
         }
     }
+
+    bool estaHuyendo = false;
+
+    // Velocidad extra durante huida
+    public float multiplicadorVelocidadHuida = 1.4f;
+
+    // Factor de suavizado
+    public float fuerzaFlee = 8f;
+
+
+    public void IniciarHuida()
+    {
+        Debug.Log(name + " ENTRA EN HUIDA");
+        estaHuyendo = true;
+
+        if (agent != null)
+            agent.speed = Velocidad * multiplicadorVelocidadHuida;
+    }
+
+
+    public void TerminarHuida()
+    {
+        estaHuyendo = false;
+
+        if (agent != null)
+            agent.speed = Velocidad; // normal
+    }
+
+    private Vector3 Flee(Vector3 target)
+    {
+        // Dirección opuesta al jugador
+        Vector3 desired = (transform.position - target).normalized * fuerzaFlee;
+
+        // Convertirlo a un punto de destino en el NavMesh
+        return transform.position + desired;
+    }
+    public static void AlfaMurio()
+    {
+        Debug.Log("ALFA MURIÓ — MANADA REACCIONA");
+
+        // 1) Modo huida
+        foreach (var l in Manada)
+            l.IniciarHuida();
+
+        // 2) Esperar para elegir nuevo alfa
+        if (Manada.Count > 1)
+            Manada[0].StartCoroutine(ProcesoNuevoAlfa());
+    }
+
+    static IEnumerator ProcesoNuevoAlfa()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (Manada.Count >= 2)
+        {
+            var nuevo = Manada[Random.Range(0, Manada.Count)];
+            nuevo.ConvertirseEnAlfa();
+        }
+
+        foreach (var l in Manada)
+            l.TerminarHuida();
+    }
+
 
     void OnDrawGizmosSelected()
     {

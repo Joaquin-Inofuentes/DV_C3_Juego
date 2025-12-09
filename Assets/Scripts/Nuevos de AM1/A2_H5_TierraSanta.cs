@@ -7,27 +7,28 @@ public class A2_H5_TierraSanta : A2_Trampa
     public GameObject Indicadores1;
     public GameObject Indicadores2;
     public GameObject Indicadores3;
+
     private void OnTriggerEnter(Collider other)
     {
-
         Debug.Log("1");
         AccionesJugador jugador = other.GetComponent<AccionesJugador>();
+
         if (jugador != null && jugador._TimerManager != null)
         {
-            if (!jugador.modoMelee)
+            if (jugador.modoActual != ModoPelea.Melee)
             {
-                Debug.Log(2);
+                Debug.Log("2");
+
                 jugador._TimerManager.magiaBloqueadaPorZona = true;
-                jugador.ModoMelee();
+
+                jugador.CambiarModoDeCombate();
 
                 Indicadores1.SetActive(true);
                 Indicadores2.SetActive(true);
                 Indicadores3.SetActive(true);
             }
-
         }
     }
-
 
     private void OnTriggerExit(Collider other)
     {
@@ -35,10 +36,12 @@ public class A2_H5_TierraSanta : A2_Trampa
         if (jugador != null && jugador._TimerManager != null)
         {
             jugador._TimerManager.magiaBloqueadaPorZona = false;
+
             Indicadores1.SetActive(false);
+            Indicadores2.SetActive(false);
+            Indicadores3.SetActive(false);
         }
     }
-
 
     public override void Activate()
     {

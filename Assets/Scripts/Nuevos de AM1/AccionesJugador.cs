@@ -471,7 +471,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         modoActual = _TimerManager.enModoMagico ? ModoPelea.Rango : ModoPelea.Melee;
     }
 
-    private void CambiarModoDeCombate()
+    public void CambiarModoDeCombate()
     {
         if (TimerManager.Controler.enTransicionVisual) return;
 
