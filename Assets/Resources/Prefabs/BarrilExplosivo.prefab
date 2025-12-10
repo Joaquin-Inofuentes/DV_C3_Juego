@@ -102,9 +102,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SonidoDeInteraccion: {fileID: 0}
-  tiempoParaExplotar: 4
+  tiempoParaExplotar: 3
   radioDeExplosion: 5
-  danioExplosion: 10
+  danioExplosion: 30
   efectoEncendido: {fileID: 5099431166652583641, guid: 8c51410e4f579f34f84ac8580fc8ece9, type: 3}
   efectoExplosion: {fileID: 100008, guid: 3b686fba4d2064d45a9c7b808cd79755, type: 3}
   puntoDeEfecto: {fileID: 8549353800321586022}

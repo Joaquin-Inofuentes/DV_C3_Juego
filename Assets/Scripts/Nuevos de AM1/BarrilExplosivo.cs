@@ -61,24 +61,24 @@ public class BarrilExplosivo : A3_Interactuable
         {
             GameObject fx = Instantiate(efectoEncendido, puntoDeEfecto.position, Quaternion.identity);
             ParticleSystem ps = fx.GetComponentInChildren<ParticleSystem>();
-            if (ps != null) ps.Play();
-            Destroy(fx, 1.9f); // destruir después de unos segundos
+            if (ps != null)
+            {
+                ps.Clear(true);
+                ps.Play(true);
+            }
+
+            Destroy(fx, tiempoParaExplotar + 0.5f);
         }
 
-
-
         yield return new WaitForSeconds(tiempoParaExplotar);
-       
-        if (efectoEncendido != null)
-            efectoEncendido.SetActive(false);
-       
+
         if (efectoExplosion != null)
             Instantiate(efectoExplosion, transform.position, Quaternion.identity);
 
         if (SonidoDeInteraccion != null)
             SonidoDeInteraccion.Play();
 
-        
+        // Daño radial
         Collider[] hits = Physics.OverlapSphere(transform.position, radioDeExplosion);
         foreach (Collider hit in hits)
         {
@@ -91,6 +91,7 @@ public class BarrilExplosivo : A3_Interactuable
 
         Destroy(gameObject, 0.2f);
     }
+
 
 
     public override void OnDestroy()
