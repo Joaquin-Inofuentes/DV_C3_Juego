@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 public class Lobo : A1_A1_H1_MoustroDelAverno
 {
     public static List<Lobo> Manada = new List<Lobo>();
-
     public static Lobo AlfaActual = null;
 
     public bool esAlfa = false;
@@ -45,27 +45,38 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
     private bool enAnimacionEspecial = false;
     private GameObject fxLlamaradaInstanciada;
 
+    // Huida
+    bool estaHuyendo = false;
+    public float multiplicadorVelocidadHuida = 1.4f;
+    public float fuerzaFlee = 8f;
+    public float distanciaHuida = 10f; // cuanto se intenta alejar
+
     void Update()
     {
-        // actualizar parámetro de correr
         if (agent != null && anim != null)
             anim.SetFloat("velocidad", agent.velocity.magnitude);
 
-        // si está en aullido/llamarada, no persigue
         if (enAnimacionEspecial) return;
+
+        // Si no hay alfa y la manada es menor a 3 => huir siempre
+        if (AlfaActual == null && Manada.Count < 3)
+        {
+            if (!estaHuyendo) IniciarHuida();
+            // ya está huyendo o iniciando huida; comportamiento de huida en su bloque
+        }
 
         if (estaHuyendo)
         {
-            if (jugador != null)
+            if (jugador != null && agent != null)
             {
-                Vector3 fleeDestino = Flee(jugador.position);
-                agent.SetDestination(fleeDestino);
+                // Calcula un destino de huida en NavMesh
+                Vector3 destino = CalcularDestinoHuidaDesde(jugador.position);
+                agent.SetDestination(destino);
             }
-            return;
+            return; // no ejecutar la IA normal mientras huye
         }
 
-
-        // IA normal (llama a EjecutarCadaMedioSegundo a través de base.Update())
+        // IA normal
         base.Update();
 
         // uso automático de llamarada si es alfa y cerca
@@ -87,8 +98,6 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         Manada.Add(this);
         Invoke(nameof(IntentarConvertirseEnAlfa), 1f);
         jugador = GameObject.FindGameObjectWithTag("Jugador")?.transform;
-
-        
     }
 
     public override void Atacar(Vector3 destino, string nombre = "")
@@ -124,15 +133,15 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 
     void OnDestroy()
     {
+        // lo sacamos de la lista antes de reaccionar
         Manada.Remove(this);
 
         if (esAlfa)
         {
+            // llamamos al handler de alfa muerto
             Lobo.AlfaMurio();
         }
     }
-
-
 
     void IntentarConvertirseEnAlfa()
     {
@@ -153,8 +162,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         Velocidad = Mathf.RoundToInt(Velocidad * multiplicadorVelocidad);
 
         if (agent != null)
-            agent.speed = Velocidad; 
-
+            agent.speed = Velocidad;
 
         transform.localScale = escalaAlfa;
 
@@ -170,34 +178,12 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         Debug.Log($"{name} es LOBO ALFA");
         foreach (var l in Manada) l.Aullar();
     }
+
     IEnumerator ProcesoTrasMuerteAlfa()
     {
-        Debug.Log("El ALFA murió. Los betas huyen.");
-
-        // 1) betas huyen
-        foreach (var l in Manada)
-        {
-            l.IniciarHuida();
-        }
-
-        // 2) esperar unos segundos
-        yield return new WaitForSeconds(3f);
-
-        // 3) si quedan 2 o más, elegir nuevo alfa
-        if (Manada.Count >= 2)
-        {
-            var nuevo = Manada[Random.Range(0, Manada.Count)];
-            nuevo.ConvertirseEnAlfa();
-        }
-
-        // 4) quitar estado de huida
-        foreach (var l in Manada)
-        {
-            l.TerminarHuida();
-        }
+        // Este método ya no se usa; mantengo por compatibilidad si lo necesitas
+        yield break;
     }
-
-
 
     public void Aullar()
     {
@@ -240,22 +226,19 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         // reset
         estadoEspecialActual = EstadoAnimacionEspecial.Ninguno;
         enAnimacionEspecial = false;
-        agent.isStopped = false;
+        if (agent != null) agent.isStopped = false;
     }
 
     public void ActivarLlamarada()
     {
         if (fxLlamaradaHielo == null || puntoSalidaLlamarada == null) return;
 
-        // 1) Instanciar directamente como hijo del hueso:
         GameObject fx = Instantiate(
             fxLlamaradaHielo,
-            puntoSalidaLlamarada       // parent
+            puntoSalidaLlamarada // parent constructor
         );
-        // 2) Resetar transform local para que quede justo en la boca:
         fx.transform.localPosition = Vector3.zero;
         fx.transform.localRotation = Quaternion.identity;
-        // 3) Escala relativa (ajústalo aquí al valor que quieras):
         fx.transform.localScale = Vector3.one * escalaRelativaLlamarada;
 
         fxLlamaradaInstanciada = fx;
@@ -272,7 +255,6 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
             t -= 0.3f;
             if (fxLlamaradaInstanciada != null)
             {
-                // usar posición real del VFX
                 Vector3 centro = fxLlamaradaInstanciada.transform.position;
                 var cols = Physics.OverlapSphere(centro, radioDanioLlamarada, capaJugador);
                 foreach (var col in cols)
@@ -289,68 +271,123 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         }
     }
 
-    bool estaHuyendo = false;
-
-    // Velocidad extra durante huida
-    public float multiplicadorVelocidadHuida = 1.4f;
-
-    // Factor de suavizado
-    public float fuerzaFlee = 8f;
-
+    // -------------------- HUIDA / MANADA --------------------
 
     public void IniciarHuida()
     {
+        if (estaHuyendo) return;
+
         Debug.Log(name + " ENTRA EN HUIDA");
         estaHuyendo = true;
 
         if (agent != null)
+        {
+            agent.isStopped = false;
             agent.speed = Velocidad * multiplicadorVelocidadHuida;
+            // objetivo inicial de huida:
+            if (jugador != null)
+            {
+                Vector3 destino = CalcularDestinoHuidaDesde(jugador.position);
+                agent.SetDestination(destino);
+            }
+        }
     }
-
 
     public void TerminarHuida()
     {
+        if (!estaHuyendo) return;
+
+        Debug.Log(name + " TERMINA HUIDA");
         estaHuyendo = false;
 
         if (agent != null)
             agent.speed = Velocidad; // normal
     }
 
-    private Vector3 Flee(Vector3 target)
+    // Calcula un punto alejado del 'target' en el NavMesh (flee)
+    private Vector3 CalcularDestinoHuidaDesde(Vector3 target)
     {
-        // Dirección opuesta al jugador
-        Vector3 desired = (transform.position - target).normalized * fuerzaFlee;
+        Vector3 direccion = (transform.position - target).normalized;
+        Vector3 objetivo = transform.position + direccion * distanciaHuida;
 
-        // Convertirlo a un punto de destino en el NavMesh
-        return transform.position + desired;
+        // sample para asegurar que está sobre NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(objetivo, out hit, 6f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        // fallback simple: intenta hacia atrás unos metros
+        return transform.position + direccion * (distanciaHuida * 0.5f);
     }
+
+    // Método llamado cuando muere el alfa (estático)
     public static void AlfaMurio()
     {
         Debug.Log("ALFA MURIÓ — MANADA REACCIONA");
 
-        // 1) Modo huida
-        foreach (var l in Manada)
-            l.IniciarHuida();
+        // INMEDIATAMENTE marcar que no hay alfa
+        AlfaActual = null;
 
-        // 2) Esperar para elegir nuevo alfa
-        if (Manada.Count > 1)
-            Manada[0].StartCoroutine(ProcesoNuevoAlfa());
+        // 1) Todos inician huida ahora mismo
+        foreach (var l in Manada)
+        {
+            if (l != null) l.IniciarHuida();
+        }
+
+        // 2) Si quedan 3 o más -> después de un tiempo elegimos nuevo alfa
+        if (Manada.Count >= 3)
+        {
+            // arrancamos coroutine desde cualquiera que exista en Manada para esperar y elegir
+            Lobo starter = Manada.Find(x => x != null);
+            if (starter != null)
+                starter.StartCoroutine(ProcesoNuevoAlfa());
+        }
+        else
+        {
+            // Menos de 3: se queda sin alfa, terminar huida en X segundos
+            Lobo starter = Manada.Find(x => x != null);
+            if (starter != null)
+                starter.StartCoroutine(FinalsHuidaSinAlfa());
+        }
+    }
+
+    static IEnumerator FinalsHuidaSinAlfa()
+    {
+        yield return new WaitForSeconds(3f);
+
+        foreach (var l in Manada)
+        {
+            if (l != null) l.TerminarHuida();
+        }
+
+        AlfaActual = null;
     }
 
     static IEnumerator ProcesoNuevoAlfa()
     {
         yield return new WaitForSeconds(3f);
 
-        if (Manada.Count >= 2)
+        // Volvemos a chequear que haya 3 o más (pueden haber muerto mientras tanto)
+        if (Manada.Count >= 3)
         {
-            var nuevo = Manada[Random.Range(0, Manada.Count)];
-            nuevo.ConvertirseEnAlfa();
+            var candidatos = Manada.FindAll(x => x != null && !x.esAlfa);
+            if (candidatos.Count > 0)
+            {
+                var nuevo = candidatos[Random.Range(0, candidatos.Count)];
+                if (nuevo != null) nuevo.ConvertirseEnAlfa();
+            }
+        }
+        else
+        {
+            Debug.Log("Ya no hay suficientes lobos, NO se elige nuevo alfa.");
         }
 
         foreach (var l in Manada)
-            l.TerminarHuida();
+        {
+            if (l != null) l.TerminarHuida();
+        }
     }
-
 
     void OnDrawGizmosSelected()
     {
@@ -361,4 +398,3 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         }
     }
 }
-
