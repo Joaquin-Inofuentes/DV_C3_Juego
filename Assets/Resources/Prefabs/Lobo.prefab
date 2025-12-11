@@ -985,8 +985,8 @@ Transform:
   m_GameObject: {fileID: 2983781740663718777}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.83, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.83, y: 0.9248, z: -0.049474}
+  m_LocalScale: {x: 0.60541844, y: 0.60541844, z: 0.60541844}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6817902059912656546}
@@ -1152,13 +1152,14 @@ MonoBehaviour:
   AliadoPrefab: {fileID: 0}
   EfectoDeAparicionDeEnemigo: {fileID: 0}
   VFX_ReAparecer: {fileID: 0}
+  tiempoDesaparicionLobo: 2
   esAlfa: 0
   jugador: {fileID: 0}
   distanciaParaHacerDanio: 3
   estaAtacando: 0
   multiplicadorVida: 2
   multiplicadorVelocidad: 1.5
-  escalaAlfa: {x: 1.5, y: 1.5, z: 1.5}
+  escalaAlfa: {x: 1.2, y: 1.2, z: 1.2}
   auraPrefab: {fileID: 6126188424833946103, guid: efa34715ae087eb4e95cb73dd8fb0e27, type: 3}
   sonidoAullido: {fileID: 8300000, guid: 8f9a4d8dfe1b2d249b840a79382934a3, type: 3}
   triggerAnimacionAullido: Aullar
@@ -2580,7 +2581,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 4.83, z: 0}
-  m_LocalScale: {x: -5, y: 0.16289, z: 0.15127}
+  m_LocalScale: {x: -6.3343434, y: 0.16289, z: 0.15127}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4581958233882267782}

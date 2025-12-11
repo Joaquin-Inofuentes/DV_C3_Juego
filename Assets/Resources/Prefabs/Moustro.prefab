@@ -188,7 +188,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.7, z: 0}
-  m_LocalScale: {x: -5, y: 0.075635, z: 0.15127}
+  m_LocalScale: {x: -2.0399337, y: 0.038455103, z: 0.060597252}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 434229115450205418}
@@ -259,7 +259,7 @@ MonoBehaviour:
   objetivoDuenio: {fileID: 5780307580212673122}
   PadreDeLaBarraDeVida: {fileID: 642242179076716732}
   BarraDeVidaVisual: {fileID: 1704734801133257807}
-  anchoOriginal: 1
+  anchoOriginal: 14
 --- !u!1 &667094098675590064
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +794,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.15008, y: -0.5, z: -0.41569}
-  m_LocalScale: {x: 2.2021, y: 0.88084, z: 2.2021}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1651205623756877567}
@@ -1953,7 +1953,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.34, y: 1.37, z: -0.64}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.0993917, y: 2.0993917, z: 2.0993917}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2426335638786349291}

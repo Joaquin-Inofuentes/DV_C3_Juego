@@ -13,7 +13,7 @@ public class Reporte_OnTriggerEnter : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (!activarEvento) return;
-        if (other.gameObject.name == "Jugador 1")
+        if (other.CompareTag("Jugador"))
         {
             VerificarPrimerSuscriptor();
             Debug.Log($"[Trigger Enter] con {other.name}", gameObject);
