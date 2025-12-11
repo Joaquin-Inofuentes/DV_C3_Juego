@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Lobo : A1_A1_H1_MoustroDelAverno
 {
+    public float tiempoDesaparicionLobo = 2f;
+
     public static List<Lobo> Manada = new List<Lobo>();
     public static Lobo AlfaActual = null;
 
@@ -388,6 +390,45 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
             if (l != null) l.TerminarHuida();
         }
     }
+    public override void Morir()
+    {
+        if (estaMuerto) return;
+
+        try
+        {
+            // Lógica de sonido (si existe)
+            if (SonidoAlMorir)
+                AudioManager.CrearEfectoSonoro(transform.position, SonidoAlMorir);
+
+            // Bloquear al enemigo
+            if (agent != null) agent.enabled = false;
+            if (anim != null) anim.SetBool("life", false);
+
+            // Usamos el tiempo especial SOLO para el LOBO
+            StartCoroutine(DesaparecerDespuesDeSegundos(tiempoDesaparicionLobo));
+
+            // Misma lógica que el enemigo base
+            var col = GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+
+            var rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+        }
+        finally
+        {
+            estaMuerto = true;
+        }
+
+        // Avisar al generador si aplica
+        if (generador != null)
+            generador.EliminarEnemigo(gameObject);
+    }
+
 
     void OnDrawGizmosSelected()
     {

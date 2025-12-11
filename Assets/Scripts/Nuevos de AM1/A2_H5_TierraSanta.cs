@@ -10,38 +10,46 @@ public class A2_H5_TierraSanta : A2_Trampa
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("1");
         AccionesJugador jugador = other.GetComponent<AccionesJugador>();
 
         if (jugador != null && jugador._TimerManager != null)
         {
-            if (jugador.modoActual != ModoPelea.Melee)
-            {
-                Debug.Log("2");
+            // Bloquear magia dentro de la zona
+            jugador._TimerManager.magiaBloqueadaPorZona = true;
+            jugador._TimerManager.enModoMagico = false;
 
-                jugador._TimerManager.magiaBloqueadaPorZona = true;
+            // Forzar modo melee
+            jugador.modoActual = ModoPelea.Melee;
 
-                jugador.CambiarModoDeCombate();
+            // Actualizar visual (anim layers, espada y HUD)
+            jugador.ForzarModoMeleeVisual();
 
-                Indicadores1.SetActive(true);
-                Indicadores2.SetActive(true);
-                Indicadores3.SetActive(true);
-            }
+            // Indicadores visuales de la zona
+            Indicadores1.SetActive(true);
+            Indicadores2.SetActive(true);
+            Indicadores3.SetActive(true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         AccionesJugador jugador = other.GetComponent<AccionesJugador>();
+
         if (jugador != null && jugador._TimerManager != null)
         {
+            // Desbloquear magia al salir
             jugador._TimerManager.magiaBloqueadaPorZona = false;
+
+            // Dejar que el jugador controle el HUD otra vez (opcional: forzar refresco)
+            jugador.ForzarRefrescoHUDAlSalirDeZona();
 
             Indicadores1.SetActive(false);
             Indicadores2.SetActive(false);
             Indicadores3.SetActive(false);
         }
     }
+
+
 
     public override void Activate()
     {
@@ -51,7 +59,7 @@ public class A2_H5_TierraSanta : A2_Trampa
     public override void Desactivar()
     {
         base.Desactivar();
-        // Agregar Logica de desactivar Sonido, Apariencia, Creacion etc
+        // Aquí podes agregar lógica adicional de desactivación
     }
 
     public override void OnCollisionEnter(Collision collider)
@@ -61,15 +69,14 @@ public class A2_H5_TierraSanta : A2_Trampa
 
     protected override void Start()
     {
-        base.Start(); // Llama al Start del padre
-                      // Código propio de ArquerasElfas
+        base.Start();
     }
 
     protected override void Update()
     {
-        base.Update(); // Llama al Update del padre
-                       // Código propio de ArquerasElfas
+        base.Update();
     }
 }
+
 
 

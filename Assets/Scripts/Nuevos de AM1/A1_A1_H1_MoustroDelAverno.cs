@@ -25,8 +25,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         set => _vidaActual = value;
     }
 
-
-
     // --- VARIABLES ELIMINADAS ---
     // public GameObject PadreDebarraDevida; --> AHORA ESTÁ EN 'GestorBarraDeVida'
     // public GameObject BarraDeVida; --> AHORA ESTÁ EN 'GestorBarraDeVida'
@@ -39,6 +37,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public bool Congelado;
     public bool PrimerAtaqueAAnular;
     public ATK_Congelar EfectoDeCongelado;
+    public float offsetCongelamiento = 0f;
+
     public string ultimoProyectilRecibido = "";
     public GeneradorEnemigos generador;
     public bool ProximoAtaqueExplosionElectrica = false;
@@ -115,7 +115,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     }
 
     public AudioClip SonidoAlMorir;
-    public void Morir() // Este método es requerido por la interfaz IDaniable
+    public virtual void Morir() // Este método es requerido por la interfaz IDaniable
     {
         if (estaMuerto) return;
         try
@@ -134,7 +134,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         if (generador != null) { generador.EliminarEnemigo(gameObject); }
     }
 
-    private IEnumerator DesaparecerDespuesDeSegundos(float segundos) { yield return new WaitForSeconds(segundos); Destroy(gameObject); }
+    public IEnumerator DesaparecerDespuesDeSegundos(float segundos) { yield return new WaitForSeconds(segundos); Destroy(gameObject); }
 
     public override void OnCollision(Collision collider) { throw new System.NotImplementedException(); }
     public override void OnDisabled() { throw new System.NotImplementedException(); }
@@ -197,18 +197,26 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public AudioSource S_RupturaDeHielo;
     public void EfectoDeRopturaDeCongelamiento()
     {
-        // (Tu código permanece igual)
         EfectoDeCongelado.ReanudarAgente();
-        GameObject efecto = Instantiate(VFXDeRopturaDeHielo, transform.position, Quaternion.identity);
+
+        var rend = GetComponentInChildren<Renderer>();
+        float altura = rend.bounds.size.y * 0.5f;
+
+        Vector3 pos = transform.position + Vector3.up * altura;
+
+        GameObject efecto = Instantiate(VFXDeRopturaDeHielo, pos, Quaternion.identity);
         Destroy(efecto, 2f);
+
         S_RupturaDeHielo.Play();
         S_RupturaDeHielo.loop = false;
         IrAlDestino(DestinoAsignado);
         agent.isStopped = false;
         RecibiraDobleDanoLaProximaVez = false;
         RalentizarTiempo();
+
         if (EfectoDeCongelado) Destroy(EfectoDeCongelado.gameObject);
     }
+
 
     // ... (El resto de tus métodos como RalentizarTiempo, RestaurarTiempo, etc. permanecen exactamente iguales)
     void RalentizarTiempo()
@@ -423,7 +431,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
             EnemigoCreado.GetComponent<NavMeshAgent>().speed = 7f;
             EnemigoCreado.GetComponent<NavMeshAgent>().acceleration = 7f; // Asignar velocidad al nuevo aliado
             AliadosCreados.Add(EnemigoCreado); // Agregar el nuevo aliado a la lista
-        }
+        }   
     }
     /// <summary>
     /// Elimina de la lista AliadosCreados todos los elementos que sean null o estén missing.

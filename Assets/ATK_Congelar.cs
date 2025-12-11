@@ -14,17 +14,35 @@ public class ATK_Congelar : MonoBehaviour
 
     void Start()
     {
-        Destroy(gameObject, timer); // Destruir el objeto después de un tiempo
+        // Si ya existe un hielo en el enemigo, destruir este duplicado
+        var enemy = padre.GetComponent<A1_A1_H1_MoustroDelAverno>();
+        if (enemy.EfectoDeCongelado != null && enemy.EfectoDeCongelado != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Registrar este hielo como el único efecto activo
+        enemy.EfectoDeCongelado = this;
+
+        Destroy(gameObject, timer);
         if (anim != null) anim.speed = 0;
         if (this == null) return;
-        if (padre == null) return; // Asegurarse de que padre no sea nulo
-        if (S_Congelar != null) S_Congelar.Play(); // Reproducir sonido de congelar
-        agent = padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent; // Obtener el agente del monstruo
+        if (padre == null) return;
+        if (S_Congelar != null) S_Congelar.Play();
+
+        // Ajuste de altura del hielo SOLO para enemigos que lo necesiten
+        float offset = padre.GetComponent<A1_A1_H1_MoustroDelAverno>().offsetCongelamiento;
+        transform.position += Vector3.up * offset;
+
+        agent = padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent;
+
         posOriginal = padre.position;
         rotOriginal = padre.rotation;
         timerActual = timer;
         Invoke("DetenerAgente", 0.1f);
     }
+
 
     public NavMeshAgent agent;
     public Vector3 destinoGuardado ;

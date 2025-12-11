@@ -105,6 +105,7 @@ public class Proyectil : MonoBehaviour
         //Debug.Log("___" + collision.ToString() + " _ " + TipoDeColision);
         // 1. Verifica si es enemigo
         A1_Entidad enemigo = collision.gameObject.GetComponent<A1_Entidad>(); //interface
+       
         if (enemigo != null)
         {
             if (enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>())
@@ -112,40 +113,6 @@ public class Proyectil : MonoBehaviour
                 enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
             }
 
-            if (EfectoEspecial != null)
-            {
-                GameObject efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
-                if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Hielo"))
-                {
-                    A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
-                    EnemigoV2Real.Congelado = true;
-                    EnemigoV2Real.PrimerAtaqueAAnular = true;
-                    //EnemigoV2Real.S_RupturaDeHielo
-                    ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
-                    Componente.padre = collision.transform;
-                    Componente.agent = enemigo.agent;
-                    Componente.anim = enemigo.anim;
-                    Destroy(efecto, 1);
-                    //return;
-                }
-
-                else if (EfectoEspecial.GetComponent<ATK_Congelar>() && gameObject.name.Contains("Electrico"))
-                {
-                    A1_A1_H1_MoustroDelAverno EnemigoV2Real = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
-                    if (EnemigoV2Real != null)
-                    {
-                        EnemigoV2Real.Congelado = true;
-                        EnemigoV2Real.PrimerAtaqueAAnular = true;
-                        EnemigoV2Real.PendienteDeCargaElectrica = true;
-                        ATK_Congelar Componente = EfectoEspecial.GetComponent<ATK_Congelar>();
-                        Componente.padre = collision.transform;
-                        Componente.agent = enemigo.agent;
-                        Componente.anim = enemigo.anim;
-                        //return;
-                    }
-                    Destroy(efecto, 1);
-                }
-            }
             enemigo.GetComponent<IDaniable>().RecibirDanio(danio);
             Debug.Log(collision.name, collision.gameObject);
             float DistanciaParaAtacar =

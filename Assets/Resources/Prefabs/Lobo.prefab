@@ -1128,6 +1128,7 @@ MonoBehaviour:
   Congelado: 0
   PrimerAtaqueAAnular: 0
   EfectoDeCongelado: {fileID: 0}
+  offsetCongelamiento: 2
   ultimoProyectilRecibido: 
   generador: {fileID: 0}
   ProximoAtaqueExplosionElectrica: 0
@@ -2561,6 +2562,7 @@ GameObject:
   - component: {fileID: 3319153250595910301}
   - component: {fileID: 9079045020692851484}
   - component: {fileID: 1779865117608811931}
+  - component: {fileID: 3819639854832680989}
   m_Layer: 6
   m_Name: PadreDeBarraDeVida
   m_TagString: Untagged
@@ -2634,6 +2636,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3819639854832680989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6997022735328725492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815b9b23a38bb524e85b5e03460224bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objetivoDuenio: {fileID: 2983781740663718777}
+  PadreDeLaBarraDeVida: {fileID: 6997022735328725492}
+  BarraDeVidaVisual: {fileID: 139548601252333916}
+  anchoOriginal: 1
 --- !u!1 &7027513642874314340
 GameObject:
   m_ObjectHideFlags: 0

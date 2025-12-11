@@ -88,6 +88,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     [Header("🛠️ Indicadores Melee/Rango")]
     public GameObject IndicadoresMelee;
+    public GameObject IndicadoresMagicos;
     public GameObject Flecha;
     public ModoPelea modoActual = ModoPelea.Rango;
 
@@ -315,8 +316,46 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
+            // Si la zona bloquea magia, evitamos el modo mágico
+            if (_TimerManager.magiaBloqueadaPorZona)
+            {
+                // Si ya está en melee, no hacemos nada
+                if (modoActual == ModoPelea.Melee)
+                    return;
+
+                // Si estaba en magia, forzar a quedar en melee
+                modoActual = ModoPelea.Melee;
+                _TimerManager.enModoMagico = false;
+
+                ActualizarHUDModoMelee();
+                return;
+            }
+
+            // Si no está bloqueada la magia, cambio normal
             CambiarModoDeCombate();
         }
+
+        // Al final de Update()
+        if (modoActual == ModoPelea.Melee)
+        {
+            if (IndicadoresMelee != null && !IndicadoresMelee.activeSelf)
+                IndicadoresMelee.SetActive(true);
+
+            // Asegurar también que los hijos estén encendidos
+            if (IndicadoresMelee != null)
+            {
+                foreach (Transform t in IndicadoresMelee.transform)
+                    if (!t.gameObject.activeSelf) t.gameObject.SetActive(true);
+            }
+
+            if (IndicadoresMagicos != null && IndicadoresMagicos.activeSelf)
+                IndicadoresMagicos.SetActive(false);
+
+            if (espada != null && !espada.activeSelf)
+                espada.SetActive(true);
+        }
+
+
 
         RotarFlechaHaciaElCursor();
     }
@@ -475,7 +514,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     {
         if (TimerManager.Controler.enTransicionVisual) return;
 
-        // Cambiamos el modo usando el enum
+        // Alternar modo
         modoActual = (modoActual == ModoPelea.Rango) ? ModoPelea.Melee : ModoPelea.Rango;
 
         _TimerManager.TransicionarModoVisual();
@@ -484,20 +523,29 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         if (modoActual == ModoPelea.Melee)
         {
             Debug.Log("Modo cambiado a MELEE");
+
             anim.SetLayerWeight(0, 0f);
             anim.SetLayerWeight(1, 1f);
+
             if (espada != null) espada.SetActive(true);
-            IndicadoresMelee.SetActive(true);
+
+            if (IndicadoresMelee != null) IndicadoresMelee.SetActive(true);
+            if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(false);
         }
-        else // ModoPelea.Rango
+        else // Rango / Magia
         {
             Debug.Log("Modo cambiado a RANGO");
+
             anim.SetLayerWeight(0, 1f);
             anim.SetLayerWeight(1, 0f);
+
             if (espada != null) espada.SetActive(false);
-            IndicadoresMelee.SetActive(false);
+
+            if (IndicadoresMelee != null) IndicadoresMelee.SetActive(false);
+            if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(true);
         }
     }
+
     #endregion
 
     #region Salud y Daño
@@ -732,6 +780,65 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             CoolDown = Mathf.Min(tiempoAnim, 2f);
         }
     }
+    private void ActualizarHUDModoMelee()
+    {
+        if (IndicadoresMelee != null) IndicadoresMelee.SetActive(true);
+        if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(false);
+
+        if (espada != null) espada.SetActive(true);
+
+        anim.SetLayerWeight(0, 0f);
+        anim.SetLayerWeight(1, 1f);
+    }
+    // Forzar visualmente el modo melee (activaciones que aseguran consistencia)
+    // Forzar visualmente el modo melee (activaciones que aseguran consistencia)
+    public void ForzarModoMeleeVisual()
+    {
+        // Estado interno
+        modoActual = ModoPelea.Melee;
+        if (_TimerManager != null) _TimerManager.enModoMagico = false;
+
+        // Anim layers y espada
+        if (anim != null)
+        {
+            anim.SetLayerWeight(0, 0f);
+            anim.SetLayerWeight(1, 1f);
+        }
+        if (espada != null) espada.SetActive(true);
+
+        // HUD: asegurar que el contenedor de iconos melee esté activo
+        if (IndicadoresMelee != null)
+        {
+            IndicadoresMelee.SetActive(true);
+
+            // Además: activar todos los hijos (cada icono) por si algún sistema los apaga individualmente
+            foreach (Transform t in IndicadoresMelee.transform)
+                t.gameObject.SetActive(true);
+        }
+
+        // Apagar iconos mágicos
+        if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(false);
+    }
+
+    // Método opcional para restaurar HUD cuando salís de zona
+    public void ForzarRefrescoHUDAlSalirDeZona()
+    {
+        // Dejar que el HUD se ajuste según el modo actual (ej: si el jugador estaba en rango antes)
+        if (modoActual == ModoPelea.Rango)
+        {
+            if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(true);
+            if (IndicadoresMelee != null) IndicadoresMelee.SetActive(false);
+            if (espada != null) espada.SetActive(false);
+            if (anim != null) { anim.SetLayerWeight(0, 1f); anim.SetLayerWeight(1, 0f); }
+        }
+        else
+        {
+            ForzarModoMeleeVisual();
+        }
+    }
+
+
+
     public override void OnCollision(Collision collider) { }
     public override void Colisiono(GameObject col, string TipoDeColision)
     {
