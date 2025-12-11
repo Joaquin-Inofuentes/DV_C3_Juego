@@ -328,9 +328,9 @@ MonoBehaviour:
   OnTriggerEnterEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6837533125788142255, guid: e8c052171251edb4a8148f29bdc1277c, type: 3}
+      - m_Target: {fileID: 1281271712325145942, guid: 9f377b0d764f8b342aa7078726e0f9c7, type: 3}
         m_TargetAssemblyTypeName: AccionesJugador, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: CrearEfectoDeCuracion
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

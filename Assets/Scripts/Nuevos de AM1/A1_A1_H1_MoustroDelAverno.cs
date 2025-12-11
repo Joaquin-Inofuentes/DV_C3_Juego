@@ -399,7 +399,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         if (P_PosionDeVida != null)
         {
             float randomX = Random.Range(0f, 1f);
-            if (randomX < 0f) return; // 20% de probabilidad de crear el efecto de veneno
+            if (randomX < 0.5f) return; 
             GameObject posion = Instantiate(P_PosionDeVida, transform.position, Quaternion.identity);
         }
     }

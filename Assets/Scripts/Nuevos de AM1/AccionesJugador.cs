@@ -140,7 +140,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         set => _vidaMaxima = value;
     }
 
-    // #13. GETTER Y SETTER PARA LA VIDA CON FEEDBACKS
     public int vidaActual
     {
         get => _vidaActualInternal;
@@ -149,23 +148,18 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             if (estaMuerto) return;
 
             int vidaPrevia = _vidaActualInternal;
-            // Asegura que la vida nunca sea menor a 0 o mayor al máximo.
             _vidaActualInternal = Mathf.Clamp(value, 0, _vidaMaxima);
 
-            // --- LÓGICA DE FEEDBACK ---
-            if (_vidaActualInternal < vidaPrevia) // Si la vida bajó (DAÑO)
+            if (_vidaActualInternal < vidaPrevia) 
             {
                 int danoRecibido = vidaPrevia - _vidaActualInternal;
                 Debug.Log($"Recibió {danoRecibido} de daño, vida actual: {_vidaActualInternal}");
 
-                // Llama al feedback visual del script Feedbacks
                 Feedbacks.FeedbackRadialVisual(Color_RecibeDano, 1f);
 
-                // Llama a los feedbacks de sonido y efectos
                 RecibirDanoAudio.Play();
                 EfectoDeRelentizarTiempo();
 
-                // Dispara el evento para otros posibles suscriptores
                 AlRecibirDano?.Invoke(danoRecibido);
 
                 if (_vidaActualInternal <= 0)
@@ -173,42 +167,34 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                     Morir();
                 }
             }
-            else if (_vidaActualInternal > vidaPrevia) // Si la vida subió (CURACIÓN)
+            else if (_vidaActualInternal > vidaPrevia) 
             {
                 int curacion = _vidaActualInternal - vidaPrevia;
                 Debug.Log($"Se curó {curacion} de vida, vida actual: {_vidaActualInternal}");
 
-                // Llama al feedback visual para la curación
                 Feedbacks.FeedbackRadialVisual(Color_SeCura, 1.5f);
 
-                // Dispara el evento de curación
                 AlCurarse?.Invoke(curacion);
             }
         }
     }
 
-    // #13. GETTER Y SETTER PARA MONEDAS CON FEEDBACKS
     public int CantidadDeMonedas
     {
         get => _cantidadDeMonedasInternal;
         set
         {
-            // Solo activa el feedback si las monedas aumentan
             if (value > _cantidadDeMonedasInternal)
             {
                 _cantidadDeMonedasInternal = value;
 
-                // --- LÓGICA DE FEEDBACK ---
                 Debug.Log($"Monedas obtenidas. Total: {_cantidadDeMonedasInternal}");
 
-                // Llama a los feedbacks de sonido y visuales
                 Coins?.Play();
                 Feedbacks.FeedbackRadialVisual(Color_ObtieneMonedas, 0.8f);
 
-                // Actualiza el texto en la UI
                 ActualizarTextoMonedas();
 
-                // Dispara el evento de monedas
                 AlObtenerMonedas?.Invoke(_cantidadDeMonedasInternal);
             }
         }
@@ -220,37 +206,30 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     void Start()
     {
-        // Inicializa los valores de las propiedades en Start para asegurar que todo esté cargado.
         _vidaActualInternal = _vidaMaxima;
         _cantidadDeMonedasInternal = 0;
         ActualizarTextoMonedas();
 
-        // ... resto del Start
         InicializarAccionesDeAtaque();
         if (_TimerManager == null) Debug.LogWarning("[AccionesJugador] No asignaste TimerManager en el Inspector.");
         if (espada != null) espada.SetActive(false);
     }
 
-    // El método RecibirDanio ahora es mucho más simple.
-    // Simplemente le pasa el trabajo al 'setter' de la propiedad vidaActual.
     public void RecibirDanio(int cantidad)
     {
-        vidaActual -= cantidad; // Esto llamará al 'set' de vidaActual
+        vidaActual -= cantidad; 
     }
 
-    // Lo mismo para sumar monedas
     public void SumarMonedas(int cantidad)
     {
-        CantidadDeMonedas += cantidad; // Esto llamará al 'set' de CantidadDeMonedas
+        CantidadDeMonedas += cantidad; 
     }
 
-    // Y para la curación
     public void CrearEfectoDeCuracion()
     {
         if (estaMuerto || VFX_EfectoDeCuracion == null) return;
         if (vidaActual < vidaMaxima)
         {
-            // La curación se aplica a través de la propiedad, activando los feedbacks
             vidaActual += 20;
 
             GameObject efectoDeCuracion = Instantiate(VFX_EfectoDeCuracion, transform.position, Quaternion.identity);
@@ -268,12 +247,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
     }
 
-    // --- El resto del código de AccionesJugador permanece igual ---
-    // ...
-    // ... (Todos los demás métodos como Atacar, Update, etc., se quedan como estaban)
     #region Lógica de Combate Principal (Refactorizada)
 
-    // Inicializa el diccionario que mapea enums de ataque a sus métodos correspondientes.
     private void InicializarAccionesDeAtaque()
     {
         _accionesAtaque = new Dictionary<TipoAtaque, AccionAtaqueDelegado>
@@ -316,14 +291,11 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            // Si la zona bloquea magia, evitamos el modo mágico
             if (_TimerManager.magiaBloqueadaPorZona)
             {
-                // Si ya está en melee, no hacemos nada
                 if (modoActual == ModoPelea.Melee)
                     return;
 
-                // Si estaba en magia, forzar a quedar en melee
                 modoActual = ModoPelea.Melee;
                 _TimerManager.enModoMagico = false;
 
@@ -331,17 +303,14 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 return;
             }
 
-            // Si no está bloqueada la magia, cambio normal
             CambiarModoDeCombate();
         }
 
-        // Al final de Update()
         if (modoActual == ModoPelea.Melee)
         {
             if (IndicadoresMelee != null && !IndicadoresMelee.activeSelf)
                 IndicadoresMelee.SetActive(true);
 
-            // Asegurar también que los hijos estén encendidos
             if (IndicadoresMelee != null)
             {
                 foreach (Transform t in IndicadoresMelee.transform)
@@ -368,10 +337,8 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             return;
         }
 
-        // Convierte el string a nuestro enum de ataque
         if (Enum.TryParse<TipoAtaque>(Nombre, true, out var tipoAtaque))
         {
-            // Busca la acción en el diccionario y la ejecuta si existe.
             if (_accionesAtaque.TryGetValue(tipoAtaque, out var accion))
             {
                 _TimerManager.SetTimerToMax(6);
@@ -388,7 +355,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
     }
 
-    // Métodos específicos para cada tipo de ataque
     private void AtacarBolaDeFuego(Vector3 destino)
     {
         if (modoActual == ModoPelea.Rango)
@@ -412,7 +378,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             InstanciarProyectil(prefabDelAtaque, "BolaDeFuego", destino);
             Invoke(nameof(RegistrarCoolDown), 0.1f);
         }
-        else // Melee
+        else 
         {
             if (_TimerManager.IsTimerCharging(3)) return;
             anim.SetTrigger("melee1");
@@ -461,7 +427,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             InstanciarProyectil(prefabDelAtaque, "RayoElectrico", destino);
             Invoke(nameof(RegistrarCoolDown), 0.1f);
         }
-        else // Melee
+        else 
         {
             if (_TimerManager.IsTimerCharging(5)) return;
             anim.SetTrigger("melee3");
@@ -484,7 +450,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             rb.AddForce(direccion * fuerzaDisparo);
         }
 
-        // Asignar creador
         var proyectil = ataqueInstanciado.GetComponent<Proyectil>();
         if (proyectil != null) proyectil.Creador = gameObject;
 
@@ -506,7 +471,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
                 _TimerManager.enModoMagico = false;
             }
         }
-        // Asigna el enum en base a la lógica del TimerManager
         modoActual = _TimerManager.enModoMagico ? ModoPelea.Rango : ModoPelea.Melee;
     }
 
@@ -532,7 +496,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
             if (IndicadoresMelee != null) IndicadoresMelee.SetActive(true);
             if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(false);
         }
-        else // Rango / Magia
+        else 
         {
             Debug.Log("Modo cambiado a RANGO");
 
@@ -578,9 +542,6 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
     #endregion
 
-    // --- El resto de los métodos (Hitboxes, Movimiento, Combos, UI, etc.) ---
-    // --- se mantienen igual ya que su lógica interna no necesitaba cambios ---
-    // --- y ya son llamados por los nuevos métodos de ataque o por el Update. ---
 
     #region Hitboxes y Lógica Melee
     public void GenerarHitboxAtaqueRapido() => GenerarHitbox(puntoGolpeEspada, 15, "Melee1");
@@ -790,15 +751,11 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         anim.SetLayerWeight(0, 0f);
         anim.SetLayerWeight(1, 1f);
     }
-    // Forzar visualmente el modo melee (activaciones que aseguran consistencia)
-    // Forzar visualmente el modo melee (activaciones que aseguran consistencia)
     public void ForzarModoMeleeVisual()
     {
-        // Estado interno
         modoActual = ModoPelea.Melee;
         if (_TimerManager != null) _TimerManager.enModoMagico = false;
 
-        // Anim layers y espada
         if (anim != null)
         {
             anim.SetLayerWeight(0, 0f);
@@ -806,24 +763,19 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         }
         if (espada != null) espada.SetActive(true);
 
-        // HUD: asegurar que el contenedor de iconos melee esté activo
         if (IndicadoresMelee != null)
         {
             IndicadoresMelee.SetActive(true);
 
-            // Además: activar todos los hijos (cada icono) por si algún sistema los apaga individualmente
             foreach (Transform t in IndicadoresMelee.transform)
                 t.gameObject.SetActive(true);
         }
 
-        // Apagar iconos mágicos
         if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(false);
     }
 
-    // Método opcional para restaurar HUD cuando salís de zona
     public void ForzarRefrescoHUDAlSalirDeZona()
     {
-        // Dejar que el HUD se ajuste según el modo actual (ej: si el jugador estaba en rango antes)
         if (modoActual == ModoPelea.Rango)
         {
             if (IndicadoresMagicos != null) IndicadoresMagicos.SetActive(true);
