@@ -53,7 +53,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     [Header("❤️ Estado del Jugador")]
     [SerializeField] private int _vidaMaxima = 100;
     private int _vidaActualInternal;
-    private bool estaMuerto = false;
+    public bool estaMuerto = false;
     private bool hitboxGenerada = false;
     public Vector3 Destino;
 
