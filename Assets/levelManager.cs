@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; 
+using TMPro;
 
 
 
@@ -17,7 +18,8 @@ public class LevelManager : MonoBehaviour
     [Tooltip("Total de enemigos que el jugador debe derrotar en esta oleada.")]
     public int totalEnemies;
 
-
+    public TMP_Text timerText;
+    private int minutos, segundos;
 
     private float currentTime;
     private bool timerIsRunning = false;
@@ -34,7 +36,7 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        if (AccionesJugador != null && AccionesJugador.estaMuerto )
+        if (AccionesJugador != null && AccionesJugador.estaMuerto)
         {
             Derrota();
         }
@@ -43,7 +45,11 @@ public class LevelManager : MonoBehaviour
             if (currentTime > 0)
             {
                 currentTime -= Time.deltaTime;
-                 Debug.Log("Tiempo restante: " + FormatTime(currentTime));
+                if(currentTime < 0)
+                {
+                    currentTime = 0;
+                }
+
             }
             else
             {
@@ -52,8 +58,13 @@ public class LevelManager : MonoBehaviour
                 Derrota();
 
             }
+           
         }
+        minutos = (int)(currentTime / 60f);
+        segundos = (int)(currentTime - minutos * 60f);
+        timerText.text = minutos.ToString("00") + ":" + segundos.ToString("00");
     }
+
 
 
     public void InitializeLevel()
@@ -71,22 +82,5 @@ public class LevelManager : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         Debug.Log("¡DERROTA! El jugador ha muerto.");
         SceneManager.LoadScene(currentSceneIndex);
-    }
-
-
-
-
-
-
-    public string FormatTime(float timeToDisplay)
-    {
-        if (timeToDisplay < 0)
-        {
-            timeToDisplay = 0;
-        }
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-
-        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
