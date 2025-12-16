@@ -14,6 +14,11 @@ public class GeneradorEnemigos : MonoBehaviour
 
     private int enemigosCreados = 0;
     private bool jefeGenerado = false;
+    public int minimoLobos = 3;
+    public int maximoLobos = 3;
+
+    private List<GameObject> lobosActuales = new List<GameObject>();
+
     private List<GameObject> enemigosActuales = new List<GameObject>();
 
     void Start()
@@ -26,18 +31,24 @@ public class GeneradorEnemigos : MonoBehaviour
 
         while (true)
         {
-            if (enemigosActuales.Count < limiteEnemigos)
+            int totalEnEscena = enemigosActuales.Count + lobosActuales.Count;
+
+            // Asegurar mínimo de lobos (sin bloquear el resto)
+            if (lobosActuales.Count < minimoLobos && totalEnEscena < limiteEnemigos)
+            {
+                CrearLobo();
+                totalEnEscena++;
+            }
+
+            // Spawnear enemigos normales en paralelo
+            if (totalEnEscena < limiteEnemigos)
             {
                 CrearEnemigo();
             }
 
-            CrearJefe();
             yield return new WaitForSeconds(tiempoEntreSpawns);
         }
-        /*for(int i = 0; i < 3; i++)
-        {
-            CrearJefe();
-        }*/
+
     }
 
     void CrearEnemigo()
@@ -53,10 +64,12 @@ public class GeneradorEnemigos : MonoBehaviour
     public void EliminarEnemigo(GameObject enemigo)
     {
         if (enemigosActuales.Contains(enemigo))
-        {
             enemigosActuales.Remove(enemigo);
-        }
+
+        if (lobosActuales.Contains(enemigo))
+            lobosActuales.Remove(enemigo);
     }
+
     public void InvocarEfecto(Vector3 posicion)
     {
         if (efectoPrefab != null)
@@ -66,13 +79,18 @@ public class GeneradorEnemigos : MonoBehaviour
         }
     }
 
-    void CrearJefe()
+    void CrearLobo()
     {
-
+        if (lobosActuales.Count >= maximoLobos) return;
 
         Transform punto = puntosSpawn[Random.Range(0, puntosSpawn.Length)];
-        Instantiate(jefePrefab, punto.position, Quaternion.identity);
+        GameObject lobo = Instantiate(jefePrefab, punto.position, Quaternion.identity);
 
+        lobosActuales.Add(lobo);
 
+        var script = lobo.GetComponent<A1_A1_H1_MoustroDelAverno>();
+        if (script != null)
+            script.generador = this;
     }
+
 }

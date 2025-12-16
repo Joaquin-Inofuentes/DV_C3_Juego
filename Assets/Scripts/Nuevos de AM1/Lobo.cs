@@ -59,10 +59,19 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 
         if (enAnimacionEspecial) return;
 
-        if (AlfaActual == null && Manada.Count < 3)
+        bool manadaValida = (Manada.Count >= 3 && AlfaActual != null);
+
+        if (!manadaValida && !esAlfa)
         {
-            if (!estaHuyendo) IniciarHuida();
+            if (!estaHuyendo)
+                IniciarHuida();
         }
+        else
+        {
+            if (estaHuyendo)
+                TerminarHuida();
+        }
+
 
         if (estaHuyendo)
         {
@@ -129,26 +138,39 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 
     void OnDestroy()
     {
-        base.OnDestroy();
         Manada.Remove(this);
 
-        if (esAlfa)
+        if (esAlfa && AlfaActual == this)
         {
-            Lobo.AlfaMurio();
+            AlfaActual = null;
+            AlfaMurio();
         }
     }
+
 
     void IntentarConvertirseEnAlfa()
     {
-        if (Manada.Count >= 3 && !Manada.Exists(l => l.esAlfa))
-        {
-            var elegido = Manada[Random.Range(0, Manada.Count)];
-            elegido.ConvertirseEnAlfa();
-        }
+        if (AlfaActual != null) return;
+        if (Manada.Count < 3) return;
+
+        var candidatos = Manada.FindAll(l => l != null && !l.esAlfa);
+        if (candidatos.Count == 0) return;
+
+        candidatos[Random.Range(0, candidatos.Count)].ConvertirseEnAlfa();
     }
+
 
     void ConvertirseEnAlfa()
     {
+        if (AlfaActual != null && AlfaActual != this)
+            return;
+
+        if (esAlfa) return;
+
+        estaHuyendo = false;
+        if (agent != null)
+            agent.speed = Velocidad;
+
         esAlfa = true;
         AlfaActual = this;
 
@@ -161,18 +183,20 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 
         transform.localScale = escalaAlfa;
 
-        if (auraPrefab != null)
+        if (auraPrefab != null && auraInstanciada == null)
             auraInstanciada = Instantiate(auraPrefab, transform);
 
         foreach (var l in Manada)
         {
-            if (!l.esAlfa)
-                l.DañoDeAtaque = Mathf.RoundToInt(l.DañoDeAtaque * 1.1f); // +10%
+            if (l != null && !l.esAlfa)
+                l.DañoDeAtaque = Mathf.RoundToInt(l.DañoDeAtaque * 1.1f);
         }
 
-        Debug.Log($"{name} es LOBO ALFA");
-        foreach (var l in Manada) l.Aullar();
+        Debug.Log($"[LOBO] {name} ES ALFA (único)");
+        foreach (var l in Manada)
+            if (l != null) l.Aullar();
     }
+
 
     IEnumerator ProcesoTrasMuerteAlfa()
     {
@@ -267,7 +291,7 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
 
     public void IniciarHuida()
     {
-        if (estaHuyendo) return;
+        if (estaHuyendo || esAlfa) return;
 
         Debug.Log(name + " ENTRA EN HUIDA");
         estaHuyendo = true;
@@ -403,6 +427,38 @@ public class Lobo : A1_A1_H1_MoustroDelAverno
         if (generador != null)
             generador.EliminarEnemigo(gameObject);
     }
+    public override void EfectoDeRopturaDeCongelamiento()
+    {
+        EfectoDeCongelado.ReanudarAgente();
+
+        float altura = 1f;
+
+        if (agent != null)
+            altura = agent.height * 0.5f;
+
+        Vector3 pos = transform.position + Vector3.up * altura;
+
+        GameObject efecto = Instantiate(VFXDeRopturaDeHielo, pos, Quaternion.identity);
+        Destroy(efecto, 2f);
+
+        if (S_RupturaDeHielo != null)
+        {
+            S_RupturaDeHielo.loop = false;
+            S_RupturaDeHielo.Play();
+        }
+
+        IrAlDestino(DestinoAsignado);
+
+        if (agent != null)
+            agent.isStopped = false;
+
+        RecibiraDobleDanoLaProximaVez = false;
+        RalentizarTiempo();
+
+        if (EfectoDeCongelado)
+            Destroy(EfectoDeCongelado.gameObject);
+    }
+
 
 
     void OnDrawGizmosSelected()

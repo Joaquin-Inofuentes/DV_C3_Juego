@@ -147,9 +147,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public AudioClip AudioAlRecibirDanio;
     public GameObject MensajeDeBugActivado;
 
-    public void RecibirDanio(int cantidad) // Este método es requerido por la interfaz IDaniable
+    public void RecibirDanio(int cantidad) 
     {
-        // (Tu código de recibir daño permanece igual)
         Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
         Debug.Log($"ultimo proyectil = {ultimoProyectilRecibido} + congelado {Congelado}", gameObject);
         if ((ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee")) && PendienteDeCargaElectrica == true)
@@ -202,7 +201,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
 
     public GameObject VFXDeRopturaDeHielo;
     public AudioSource S_RupturaDeHielo;
-    public void EfectoDeRopturaDeCongelamiento()
+    public virtual void EfectoDeRopturaDeCongelamiento()
     {
         EfectoDeCongelado.ReanudarAgente();
 
@@ -226,7 +225,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
 
 
     // ... (El resto de tus métodos como RalentizarTiempo, RestaurarTiempo, etc. permanecen exactamente iguales)
-    void RalentizarTiempo()
+    public void RalentizarTiempo()
     {
         Time.timeScale = 0.3f;
         Feedbacks.Componente.UIFadeComboScript.MostrarTexto("¡FRACTURA CONGELADA!", new Color(0.5f, 1f, 1f));
