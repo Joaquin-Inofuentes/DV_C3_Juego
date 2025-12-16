@@ -151,8 +151,10 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     {
         // (Tu código de recibir daño permanece igual)
         Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
-        if (ultimoProyectilRecibido.Contains("hitboxCubo") && PendienteDeCargaElectrica == true)
+        Debug.Log($"ultimo proyectil = {ultimoProyectilRecibido} + congelado {Congelado}", gameObject);
+        if ((ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee")) && PendienteDeCargaElectrica == true)
         {
+            Debug.Log("[Combos]0 Combo de descarga encadenada activado", gameObject);
             if (PrimerAtaqueAAnular) { PrimerAtaqueAAnular = false; return; }
             ultimoProyectilRecibido = "";
             vidaActual -= cantidad;
@@ -176,19 +178,24 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         }
         if (Congelado)
         {
+            Debug.Log("[Combos]1 Combo de fractura congelada", gameObject);
             if (PrimerAtaqueAAnular) { PrimerAtaqueAAnular = false; return; }
-            if (ultimoProyectilRecibido.Contains("hitboxCubo"))
+            if (ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee"))
             {
+                Debug.Log("[Combos]2 Combo de fractura congelada", gameObject);
                 vidaActual -= cantidad * 2;
                 Congelado = false;
                 EfectoDeRopturaDeCongelamiento();
+                /*
                 if (gameObject.name == "ArqueraDuende")
                 {
+                    Debug.Log("[Combos]3 Combo de fractura congelada", gameObject);
                     vidaActual = 0;
                     Morir();
                     MensajeDeBugActivado.SetActive(true);
                     Destroy(MensajeDeBugActivado, 5f);
                 }
+                */
             }
         }
     }

@@ -156,6 +156,7 @@ public class Proyectil : MonoBehaviour
             Debug.Log("Congelando a " + enemigo.name, gameObject);
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
             enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
+            enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().Congelado = true;
         }
 
         else if (gameObject.name.Contains("Electrico") && EfectoEspecial)
