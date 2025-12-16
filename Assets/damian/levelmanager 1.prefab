@@ -246,6 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9214289933816272464}
   - component: {fileID: 4862603074222140561}
+  - component: {fileID: 1812871436656085154}
   m_Layer: 0
   m_Name: levelmanager 1
   m_TagString: Untagged
@@ -282,5 +283,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxTime: 300
-  totalEnemies: 0
   timerText: {fileID: 2826491750718939201}
+--- !u!114 &1812871436656085154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7428125049714570893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ffa086c9847829429eea6975ffa6af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

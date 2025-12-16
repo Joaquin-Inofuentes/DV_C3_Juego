@@ -14,10 +14,6 @@ public class LevelManager : MonoBehaviour
     [Tooltip("Tiempo máximo en segundos para completar la oleada. (5 minutos = 300 segundos)")]
     public float maxTime = 300f;
 
-    [Header("Configuración de Enemigos")]
-    [Tooltip("Total de enemigos que el jugador debe derrotar en esta oleada.")]
-    public int totalEnemies;
-
     public TMP_Text timerText;
     private int minutos, segundos;
 
@@ -36,6 +32,10 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
+        if (enemigosActivos.Instance != null && !enemigosActivos.Instance.AreAnyEnemiesAlive())
+        {
+            Victoria();   
+        }
         if (AccionesJugador != null && AccionesJugador.estaMuerto)
         {
             Derrota();
@@ -74,7 +74,12 @@ public class LevelManager : MonoBehaviour
         AccionesJugador = FindObjectOfType<AccionesJugador>();
     }
 
-   
+   private void Victoria()
+    {
+        timerIsRunning = false;
+        Debug.Log("¡VICTORIA! Todos los enemigos han sido derrotados.");
+        // Aquí puedes agregar lógica adicional para manejar la victoria, como cargar una nueva escena o mostrar una pantalla de victoria.
+    }
 
     private void Derrota()
     {
