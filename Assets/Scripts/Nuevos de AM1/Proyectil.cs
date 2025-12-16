@@ -174,6 +174,7 @@ public class Proyectil : MonoBehaviour
                 enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
                 enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
                 enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().DestinoAsignado = Creador.transform.position;
+                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().PendienteDeCargaElectrica = true;
             }
             Debug.Log(Creador.transform.position, Creador);
             Componente.destinoGuardado = Creador.transform.position;
