@@ -1223,6 +1223,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5138394536280555726, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6969200935386412630, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: _AccionesDeJugador
       value: 
@@ -1271,6 +1275,10 @@ PrefabInstance:
       propertyPath: C_AccionesJugador
       value: 
       objectReference: {fileID: 5282964225816232615}
+    - target: {fileID: 8509255047912086503, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8566902142379720841, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -6793,7 +6801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 793f75c97cc4dd447ae5b0481abcbddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTime: 180
+  maxTime: 5
   timerText: {fileID: 1255958953}
 --- !u!4 &8765182098108244984 stripped
 Transform:

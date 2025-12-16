@@ -66,8 +66,7 @@ public class LevelManager : MonoBehaviour
             {
                 currentTime = 0;
                 timerIsRunning = false;
-                Derrota();
-
+                Victoria();
             }
            
         }
@@ -81,8 +80,6 @@ public class LevelManager : MonoBehaviour
 
     }
 
-
-
     public void InitializeLevel()
     {
         currentTime = maxTime;
@@ -92,17 +89,22 @@ public class LevelManager : MonoBehaviour
         AccionesJugador = FindObjectOfType<AccionesJugador>();
     }
 
-   private void Victoria()
+    private void Victoria()
     {
         timerIsRunning = false;
-        Debug.Log("¡VICTORIA! Todos los enemigos han sido derrotados.");
+
+        PlayerPrefs.SetString("RetryScene", SceneManager.GetActiveScene().name);
+
+        SceneManager.LoadScene("Victoria");
     }
+
 
     private void Derrota()
     {
         timerIsRunning = false;
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        Debug.Log("¡DERROTA! El jugador ha muerto.");
-        SceneManager.LoadScene(currentSceneIndex);
+
+        PlayerPrefs.SetString("RetryScene", SceneManager.GetActiveScene().name);
+
+        SceneManager.LoadScene("Derrota");
     }
 }
