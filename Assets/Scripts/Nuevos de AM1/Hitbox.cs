@@ -75,6 +75,8 @@ public class Hitbox : MonoBehaviour
         // Aplicar daño
         if (other.TryGetComponent<IDaniable>(out var daniable))
         {
+            if(other.GetComponent<A1_A1_H1_MoustroDelAverno>() != null)
+                other.GetComponent<A1_A1_H1_MoustroDelAverno>().ultimoProyectilRecibido = gameObject.name;
             daniable.RecibirDanio(danio); 
         }
 
