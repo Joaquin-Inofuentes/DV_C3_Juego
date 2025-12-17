@@ -76,6 +76,7 @@ public class Proyectil : MonoBehaviour
     public AudioClip AudioAlColisionar;
     private void ColisionoCon(GameObject collision, string TipoDeColision)
     {
+        //Debug.Log("[Proyectil] 1 Proyectil colisionando con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, collision.gameObject);
         if (collision.gameObject == Creador) return;
         if (collision == Creador) return;
         if (Destino != null && Destino != collision)
@@ -131,6 +132,7 @@ public class Proyectil : MonoBehaviour
                         enemigo.IrAlDestino(Creador.transform.position);
                 }
             }
+            Debug.Log("[Proyectil] 2 Proyectil colisionando con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, collision.gameObject);
         }
         if (enemigo == null)
         {
@@ -143,6 +145,7 @@ public class Proyectil : MonoBehaviour
         if (rb != null)
         {
             Destroy(rb);
+            Debug.Log("[Proyectil] 3 Proyectil colisionando con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, collision.gameObject);
         }
 
         if (gameObject.name.Contains("BolaDeHielo") && EfectoEspecial)
@@ -185,6 +188,7 @@ public class Proyectil : MonoBehaviour
             // 5. Destruir objeto
             Destroy(gameObject, 0.1f);
         }
+        Debug.Log("[Proyectil] 3 Proyectil colisionando con " + collision.name + " tag " + collision.tag + " Tipo: " + TipoDeColision, collision.gameObject);
     }
 
     public float Volumen = 1f;

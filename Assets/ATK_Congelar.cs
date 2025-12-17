@@ -14,38 +14,70 @@ public class ATK_Congelar : MonoBehaviour
 
     void Start()
     {
-        // Si ya existe un hielo en el enemigo, destruir este duplicado
-        var enemy = padre.GetComponent<A1_A1_H1_MoustroDelAverno>();
-        if (enemy.EfectoDeCongelado != null && enemy.EfectoDeCongelado != this)
+        // 1. VALIDACIÓN DEL PADRE (No destruimos, solo avisamos y esperamos)
+        if (padre == null)
         {
-            Destroy(gameObject);
+            Debug.LogWarning($"<color=orange>[Hielo]</color> {gameObject.name} no tiene un 'padre' asignado aún. Se cancela la lógica pero NO se destruye por si se asigna luego.");
             return;
         }
 
-        // Registrar este hielo como el único efecto activo
-        enemy.EfectoDeCongelado = this;
+        // 2. OBTENCIÓN DEL COMPONENTE (Si falta, avisamos pero dejamos el objeto vivo por si es decorativo)
+        A1_A1_H1_MoustroDelAverno enemy = padre.GetComponent<A1_A1_H1_MoustroDelAverno>();
 
-        Destroy(gameObject, timer);
-        if (anim != null) anim.speed = 0;
-        if (this == null) return;
-        if (padre == null) return;
-        if (S_Congelar != null) S_Congelar.Play();
+        if (enemy == null)
+        {
+            Debug.LogWarning($"<color=yellow>[Hielo]</color> El padre {padre.name} no tiene el script del monstruo. El hielo quedará como objeto visual simple.");
+        }
+        else
+        {
+            // 3. CONTROL DE DUPLICADOS (Aquí sí destruimos para evitar solapamiento de lógica)
+            if (enemy.EfectoDeCongelado != null && enemy.EfectoDeCongelado != this)
+            {
+                Debug.LogWarning($"<color=cyan>[Hielo]</color> Ya existe un efecto activo en {padre.name}. Eliminando este duplicado para evitar conflictos.");
+                Destroy(gameObject);
+                return;
+            }
 
-        // Ajuste de altura del hielo SOLO para enemigos que lo necesiten
-        float offset = padre.GetComponent<A1_A1_H1_MoustroDelAverno>().offsetCongelamiento;
-        transform.position += Vector3.up * offset;
+            // 4. REGISTRO
+            enemy.EfectoDeCongelado = this;
 
-        agent = padre.GetComponent<A1_A1_H1_MoustroDelAverno>().agent;
+            // 5. CONFIGURACIÓN BASADA EN EL ENEMIGO
+            transform.position += Vector3.up * enemy.offsetCongelamiento;
+            agent = enemy.agent;
 
+            if (agent == null) Debug.LogWarning($"<color=red>[Hielo]</color> El enemigo {padre.name} no tiene NavMeshAgent.");
+        }
+
+        // 6. CONFIGURACIÓN DE AUDIO Y ANIMACIÓN (Segura)
+        if (anim != null)
+        {
+            anim.speed = 0;
+        }
+        else
+        {
+            Debug.LogWarning($"[Hielo] Animator no encontrado en {gameObject.name}.");
+        }
+
+        if (S_Congelar != null)
+        {
+            S_Congelar.Play();
+        }
+
+        // 7. PERSISTENCIA Y VARIABLES
         posOriginal = padre.position;
         rotOriginal = padre.rotation;
         timerActual = timer;
-        Invoke("DetenerAgente", 0.1f);
+
+        // Solo activamos la detención si hay agente
+        if (agent != null) Invoke("DetenerAgente", 0.1f);
+
+        // Destrucción programada (solo al final del tiempo de vida)
+        Destroy(gameObject, timer);
     }
 
 
     public NavMeshAgent agent;
-    public Vector3 destinoGuardado ;
+    public Vector3 destinoGuardado;
 
     void DetenerAgente()
     {
@@ -60,7 +92,7 @@ public class ATK_Congelar : MonoBehaviour
     public void ReanudarAgente()
     {
         if (padre == null) return;
-        if(padre.GetComponent<A1_A1_H1_MoustroDelAverno>() == null) return; // Asegurarse de que el padre tenga el componente necesario
+        if (padre.GetComponent<A1_A1_H1_MoustroDelAverno>() == null) return; // Asegurarse de que el padre tenga el componente necesario
         //Debug.Log("Se desactivo " + gameObject.name, gameObject);
         //Debug.Log(destinoGuardado +" " + agent);
         padre.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = false; // Reanudar el estado del monstruo

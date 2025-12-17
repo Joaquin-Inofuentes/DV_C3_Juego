@@ -117,10 +117,11 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public AudioClip SonidoAlMorir;
     public virtual void Morir() // Este método es requerido por la interfaz IDaniable
     {
+        Debug.Log("Muro el boss de history mode", gameObject);
         if (estaMuerto) return;
         try
         {
-            if(SonidoAlMorir) AudioManager.CrearEfectoSonoro(transform.position, SonidoAlMorir);
+            if (SonidoAlMorir) AudioManager.CrearEfectoSonoro(transform.position, SonidoAlMorir);
             agent.enabled = false;
             // PadreDebarraDevida.SetActive(false); // OPCIONAL: Ya no es necesario, el gestor se destruirá solo.
             anim.SetBool("life", false);
@@ -147,9 +148,9 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public AudioClip AudioAlRecibirDanio;
     public GameObject MensajeDeBugActivado;
 
-    public void RecibirDanio(int cantidad) 
+    public void RecibirDanio(int cantidad)
     {
-        Debug.Log(gameObject.name + " ha recibido " + cantidad + " de daño", gameObject);
+        Debug.Log("Boss" + gameObject.name + " ha recibido " + cantidad + " de daño" + vidaActual, gameObject);
         Debug.Log($"ultimo proyectil = {ultimoProyectilRecibido} + congelado {Congelado}", gameObject);
         if ((ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee")) && PendienteDeCargaElectrica == true)
         {
@@ -164,7 +165,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         if (AudioAlRecibirDanio) { AudioManager.CrearEfectoSonoro(transform.position, AudioAlRecibirDanio); }
 
         vidaActual -= cantidad;
-        S_RecibirDano.Play();
+        if (S_RecibirDano)
+            S_RecibirDano.Play();
         if (RecibiraDobleDanoLaProximaVez)
         {
             vidaActual -= cantidad * 2;
@@ -185,16 +187,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
                 vidaActual -= cantidad * 2;
                 Congelado = false;
                 EfectoDeRopturaDeCongelamiento();
-                /*
-                if (gameObject.name == "ArqueraDuende")
-                {
-                    Debug.Log("[Combos]3 Combo de fractura congelada", gameObject);
-                    vidaActual = 0;
-                    Morir();
-                    MensajeDeBugActivado.SetActive(true);
-                    Destroy(MensajeDeBugActivado, 5f);
-                }
-                */
             }
         }
     }
@@ -211,7 +203,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         Vector3 pos = transform.position + Vector3.up * altura;
 
         GameObject efecto = Instantiate(VFXDeRopturaDeHielo, pos, Quaternion.identity);
-        Destroy(efecto, 2f);
+        //Destroy(efecto, 2f);
 
         S_RupturaDeHielo.Play();
         S_RupturaDeHielo.loop = false;
@@ -400,12 +392,12 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     {
         if (gameObject.name == "ArqueraDuende")
         {
-            SceneManager.LoadScene("Victoria");
+            SceneManager.LoadScene("Victoria_History");
         }
         if (P_PosionDeVida != null)
         {
             float randomX = Random.Range(0f, 1f);
-            if (randomX < 0.5f) return; 
+            if (randomX < 0.5f) return;
             GameObject posion = Instantiate(P_PosionDeVida, transform.position, Quaternion.identity);
         }
     }
@@ -437,7 +429,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
             EnemigoCreado.GetComponent<NavMeshAgent>().speed = 7f;
             EnemigoCreado.GetComponent<NavMeshAgent>().acceleration = 7f; // Asignar velocidad al nuevo aliado
             AliadosCreados.Add(EnemigoCreado); // Agregar el nuevo aliado a la lista
-        }   
+        }
     }
     /// <summary>
     /// Elimina de la lista AliadosCreados todos los elementos que sean null o estén missing.
