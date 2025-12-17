@@ -251,7 +251,7 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
         // ActualizarBarraDevida(); // Ya no es responsabilidad de esta clase.
 
         if (Vector3.Distance(transform.position, DestinoAsignado) < 2f) { Detenerse(); }
-        if (vidaActual < 10) { Morir(); }
+        if (vidaActual < 3) { Morir(); }
         if (EfectoDeCongelado == null && Congelado) { Congelado = false; RecibiraDobleDanoLaProximaVez = false; }
         if (gameObject.name.Contains("ArqueraDuende"))
         {

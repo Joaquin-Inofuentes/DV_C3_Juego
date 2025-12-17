@@ -25822,8 +25822,8 @@ MonoBehaviour:
   rangoAtaque: 4
   objetivoActual: {fileID: 0}
   EstadoActual: {fileID: 0}
-  _vidaMaxima: 1000
-  _vidaActual: 1000
+  _vidaMaxima: 300
+  _vidaActual: 300
   BolaDeAtaque: {fileID: 3314820458270015711, guid: e8d665d28192a004e93bf516da991afe, type: 3}
   AtaqueActual: {fileID: 0}
   estaMuerto: 0
