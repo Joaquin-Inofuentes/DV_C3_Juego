@@ -36,15 +36,7 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        // ❌ NO en modo supervivencia
-        /*
-        if (enemigosActivos.Instance != null && 
-            !enemigosActivos.Instance.AreAnyEnemiesAlive())
-        {
-            Victoria();   
-        }
-        */
-
+     
         if (AccionesJugador != null && AccionesJugador.estaMuerto)
         {
             Derrota();
@@ -54,8 +46,7 @@ public class LevelManager : MonoBehaviour
             if (currentTime > 0)
             {
                 currentTime -= Time.deltaTime;
-                Debug.Log("CurrentTime ahora: " + currentTime);
-
+              
                 if (currentTime < 0)
                 {
                     currentTime = 0;
@@ -70,10 +61,6 @@ public class LevelManager : MonoBehaviour
             }
            
         }
-        Debug.Log(currentTime);
-        Debug.Log("deltaTime: " + Time.deltaTime + " | timeScale: " + Time.timeScale);
-        Debug.Log("timerIsRunning = " + timerIsRunning);
-
         minutos = (int)(currentTime / 60f);
         segundos = (int)(currentTime - minutos * 60f);
         timerText.text = minutos.ToString("00") + ":" + segundos.ToString("00");
