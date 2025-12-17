@@ -6,13 +6,17 @@ public class LevelManager : MonoBehaviour
 {
     public enum DefeatCondition { PlayerDeath, TimeOut }
 
+    [Header("UI y Efectos")]
+    public TextMeshProUGUI timerText; // Arrastra tu texto aquí
+    public float fontSizeNormal = 36f;
+    public float fontSizeGrande = 50f;
+    public float velocidadEfecto = 5f;
+
     [Header("Configuración de Tiempo")]
     [Tooltip("Tiempo máximo en segundos para completar la oleada. (5 minutos = 300 segundos)")]
     public float maxTime;
 
-    public TMP_Text timerText;
     private int minutos, segundos;
-
     private float currentTime;
     private bool timerIsRunning = false;
     private AccionesJugador AccionesJugador;
@@ -46,7 +50,8 @@ public class LevelManager : MonoBehaviour
             if (currentTime > 0)
             {
                 currentTime -= Time.deltaTime;
-              
+                ActualizarInterfaz();
+
                 if (currentTime < 0)
                 {
                     currentTime = 0;
@@ -61,12 +66,42 @@ public class LevelManager : MonoBehaviour
             }
            
         }
-        minutos = (int)(currentTime / 60f);
-        segundos = (int)(currentTime - minutos * 60f);
-        timerText.text = minutos.ToString("00") + ":" + segundos.ToString("00");
+      
 
     }
+    void ActualizarInterfaz()
+    {
+        if (timerText == null) return;
 
+        timerText.text = FormatTime(currentTime);
+
+        // EFECTO CUANDO QUEDAN 10 SEGUNDOS O MENOS
+        if (currentTime <= 10f && currentTime > 0)
+        {
+            // Cambiamos el color a rojo
+            timerText.color = Color.red;
+
+            // Efecto de "Latido" (se agranda y achica)
+            // Mathf.PingPong oscila entre 0 y 1
+            float lerp = Mathf.PingPong(Time.time * velocidadEfecto, 1);
+            timerText.fontSize = Mathf.Lerp(fontSizeNormal, fontSizeGrande, lerp);
+        }
+        else
+        {
+            // Estado normal
+            timerText.color = Color.white;
+            timerText.fontSize = fontSizeNormal;
+        }
+    }
+    public string FormatTime(float timeToDisplay)
+    {
+        if (timeToDisplay < 0) timeToDisplay = 0;
+
+        int minutos = Mathf.FloorToInt(timeToDisplay / 60);
+        int segundos = Mathf.FloorToInt(timeToDisplay % 60);
+
+        return string.Format("{0:00}:{1:00}", minutos, segundos);
+    }
     public void InitializeLevel()
     {
         currentTime = maxTime;
