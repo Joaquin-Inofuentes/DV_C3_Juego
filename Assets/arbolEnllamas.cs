@@ -7,7 +7,7 @@ public class arbolEnllamas : MonoBehaviour
 {
     bool fuego = false;
     public float tiempoParaFuego = 2.5f;
-    public float tiempoParaDesaparecer = 2.0f;
+    public float tiempoParaDesaparecer = 0.5f;
     public GameObject efectoEncendido;
     public Transform puntoDeEfecto;
     // Start is called before the first frame update
