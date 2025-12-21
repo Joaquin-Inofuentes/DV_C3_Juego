@@ -24616,7 +24616,7 @@ GameObject:
   - component: {fileID: -8478183398296487819}
   m_Layer: 9
   m_Name: BolaDeElectrico
-  m_TagString: Untagged
+  m_TagString: ElectricSpell
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24658,6 +24658,7 @@ MonoBehaviour:
   AutoDestruir: 1
   AudioAlAparecer: {fileID: 8300000, guid: bdcbd3b1f1f54b442b8edcaf101dee2a, type: 3}
   velocidad: 10
+  Destino: {fileID: 0}
   danio: 10
   PuntoDeColision: {x: 0, y: 0, z: 0}
   AudioAlColisionar: {fileID: 0}

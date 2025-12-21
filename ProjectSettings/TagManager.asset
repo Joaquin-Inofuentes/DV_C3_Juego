@@ -10,6 +10,7 @@ TagManager:
   - Destruibles
   - Jugador
   - HechizoDeFuego
+  - ElectricSpell
   layers:
   - Default
   - TransparentFX
