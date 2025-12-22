@@ -2183,7 +2183,7 @@ MonoBehaviour:
   puntoDeEfecto: {fileID: 738332542747801942}
   estatico: 0
   contadorCombo: 0
-  tiempodeCombo: 0
+  tiempodeCombo: 5
 --- !u!1 &5832875135069758802
 GameObject:
   m_ObjectHideFlags: 0
