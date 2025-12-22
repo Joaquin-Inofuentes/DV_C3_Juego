@@ -49,9 +49,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public string AnimacionActual = "";
     public Vector3 DestinoDelAtaque = Vector3.zero;
 
-    [Header("Combo rayo")]
-    private Coroutine rutinaCargaElectrica;
-
     public override void Atacar(Vector3 Destino, string Nombre = "")
     {
         if (estaMuerto) return;
@@ -155,30 +152,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     {
         Debug.Log("Boss" + gameObject.name + " ha recibido " + cantidad + " de daño" + vidaActual, gameObject);
         Debug.Log($"ultimo proyectil = {ultimoProyectilRecibido} + congelado {Congelado}", gameObject);
-
-        // COMBO RAYO SINGLE TARGET
-        if (
-    PendienteDeCargaElectrica &&
-    (ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee"))
-)
-        {
-            Debug.Log("[Combo] RAYO DIRECTO", gameObject);
-
-            vidaActual -= cantidad * 4;
-
-            Vector3 pos = transform.position + Vector3.up * 4f;
-            Instantiate(CargaElectrica.gameObject, pos, Quaternion.identity);
-
-            PendienteDeCargaElectrica = false;
-            ultimoProyectilRecibido = "";
-
-            agent.isStopped = false;
-            anim.SetBool("paralizado", false);
-
-            return;
-        }
-
-
         if ((ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee")) && PendienteDeCargaElectrica == true)
         {
             Debug.Log("[Combos]0 Combo de descarga encadenada activado", gameObject);
@@ -464,21 +437,6 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
     public void LimpiarAliadosNulosOMissing()
     {
         AliadosCreados.RemoveAll(item => item == null);
-    }
-    public IEnumerator CargaElectricaRayo(float duracion)
-    {
-        PendienteDeCargaElectrica = true;
-
-        // Paralizar
-        agent.isStopped = true;
-        anim.SetBool("paralizado", true); // si no existe, no rompe
-
-        yield return new WaitForSeconds(duracion);
-
-        // Si no se consumió
-        PendienteDeCargaElectrica = false;
-        agent.isStopped = false;
-        anim.SetBool("paralizado", false);
     }
 
 }
