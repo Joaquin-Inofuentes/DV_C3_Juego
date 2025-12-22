@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +8,8 @@ public class Proyectil : MonoBehaviour
     public GameObject EfectoEspecial;
     public bool AutoDestruir = true;
     public AudioClip AudioAlAparecer;
+    public bool esRayoCargado = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -139,7 +141,7 @@ public class Proyectil : MonoBehaviour
             return;
         }
 
-        // 2. Desactiva collider y arranca animaci�n
+        // 2. Desactiva collider y arranca animación
         GetComponent<BoxCollider>().enabled = false;
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
@@ -166,22 +168,37 @@ public class Proyectil : MonoBehaviour
         {
             GameObject Efecto = Instantiate(EfectoEspecial, collision.transform.position, Quaternion.identity);
             ATK_Congelar Componente = Efecto.GetComponent<ATK_Congelar>();
-            Componente.anim = enemigo.anim;
-            Componente.timer = 5;
-            Componente.timerActual = 5;
-            Componente.padre = enemigo.transform;
-            Debug.Log("Congelando a " + enemigo.name, gameObject);
-            if (enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>())
-            {
 
-                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().RecibiraDobleDanoLaProximaVez = true;
-                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().EfectoDeCongelado = Componente;
-                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().DestinoAsignado = Creador.transform.position;
-                enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>().PendienteDeCargaElectrica = true;
+            Componente.anim = enemigo.anim;
+            Componente.padre = enemigo.transform;
+
+            if (esRayoCargado)
+            {
+                // ⚡ RAYO CARGADO → habilita combo
+                Componente.timer = 3f;
+                Componente.timerActual = 3f;
+
+                if (enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>())
+                {
+                    var m = enemigo.GetComponent<A1_A1_H1_MoustroDelAverno>();
+                    m.PendienteDeCargaElectrica = true;
+                    m.DestinoAsignado = Creador.transform.position;
+                    m.ultimoProyectilRecibido = "ElectricCharged";
+
+                    // ⏱ arranca ventana de combo
+                    m.StartCoroutine(m.CargaElectricaRayo(3f));
+                }
             }
-            Debug.Log(Creador.transform.position, Creador);
+            else
+            {
+                // ⚡ RAYO NORMAL → solo daño / stun leve
+                Componente.timer = 1.2f;
+                Componente.timerActual = 1.2f;
+            }
+
             Componente.destinoGuardado = Creador.transform.position;
         }
+
 
         if (AutoDestruir)
         {

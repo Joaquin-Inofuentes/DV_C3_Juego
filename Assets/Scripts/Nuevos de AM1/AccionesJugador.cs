@@ -107,6 +107,15 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public AudioClip SonidoDeCaminarEnHielo;
     public AudioClip SonidoDeCaminarEnPasto;
 
+    [Header("⚡ Rayo Cargado")]
+    public float tiempoCargaRayo = 3f;
+    public GameObject VFX_CargaRayo;
+
+    private bool cargandoRayo = false;
+    private float timerCargaRayo = 0f;
+    private GameObject vfxCargaInstanciado;
+
+
     #endregion
 
     #region Eventos y Delegados
@@ -322,6 +331,28 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
             if (espada != null && !espada.activeSelf)
                 espada.SetActive(true);
+        }
+        // INICIO CARGA
+        if (modoActual == ModoPelea.Rango && Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            IniciarCargaRayo();
+        }
+
+        // MANTENER CARGA
+        if (cargandoRayo)
+        {
+            timerCargaRayo += Time.deltaTime;
+
+            if (timerCargaRayo >= tiempoCargaRayo)
+            {
+                // Ya está cargado, esperamos que suelte
+            }
+        }
+
+        // SOLTAR
+        if (cargandoRayo && Input.GetKeyUp(KeyCode.Alpha3))
+        {
+            FinalizarCargaRayo();
         }
 
 
@@ -834,4 +865,65 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
         Destroy(cubo, 2f);
     }
     #endregion
+    public void DispararRayoCargado()
+    {
+        if (modoActual != ModoPelea.Rango) return;
+        if (_TimerManager.IsTimerCharging(2)) return;
+
+        Vector3 destino = GameManager.PosicionDelMouseEnElEspacio;
+
+        anim.SetTrigger("magic3");
+        _TimerManager.SetTimerToMax(2);
+
+        GameObject ataque = Instantiate(Rayo, Origen.position,
+            Quaternion.LookRotation((destino - Origen.position).normalized));
+
+        ataque.name = "RayoElectrico_Cargado";
+
+        if (ataque.TryGetComponent<Proyectil>(out var p))
+        {
+            p.Creador = gameObject;
+            p.esRayoCargado = true;
+        }
+    }
+    void IniciarCargaRayo()
+    {
+        if (_TimerManager.IsTimerCharging(2)) return;
+
+        cargandoRayo = true;
+        timerCargaRayo = 0f;
+
+        anim.SetTrigger("magic3");
+
+        if (VFX_CargaRayo != null && vfxCargaInstanciado == null)
+        {
+            vfxCargaInstanciado = Instantiate(
+                VFX_CargaRayo,
+                Origen.position,
+                Quaternion.identity,
+                Origen
+            );
+        }
+    }
+    void FinalizarCargaRayo()
+    {
+        cargandoRayo = false;
+
+        if (vfxCargaInstanciado != null)
+            Destroy(vfxCargaInstanciado);
+
+        if (timerCargaRayo >= tiempoCargaRayo)
+        {
+            DispararRayoCargado();
+        }
+        else
+        {
+            // Tap corto → rayo normal
+            AtacarRayo(GameManager.PosicionDelMouseEnElEspacio);
+        }
+
+        timerCargaRayo = 0f;
+    }
+    
+
 }

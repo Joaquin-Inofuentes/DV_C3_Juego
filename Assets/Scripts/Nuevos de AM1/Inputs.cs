@@ -25,6 +25,13 @@ public class Inputs : MonoBehaviour
 
     public bool enModoMagico = true;
 
+    [Header("⚡ Rayo cargado")]
+    public float tiempoHoldRayo = 3f;
+    private float tiempoRayoPresionado = 0f;
+    private bool rayoPresionado = false;
+    private bool rayoCargadoDisparado = false;
+
+
     void Start()
     {
         ui = FindObjectOfType<UI>();
@@ -133,14 +140,46 @@ public class Inputs : MonoBehaviour
             EjecutarAtaque(enModoMagico ? 1 : 4, enModoMagico ? "BolaDeHielo" : "Melee2");
         }
 
-        // ATAQUE 3
-        else if (Input.GetKeyDown(TeclaAtaque3) &&
-                 !Input.GetKey(TeclaAtaque1) &&
-                 !Input.GetKey(TeclaAtaque2) &&
-                 !Input.GetKey(TeclaCambioModo))
+        // ================= ATAQUE 3 (RAYO TAP vs HOLD) =================
+        if (Input.GetKeyDown(TeclaAtaque3) &&
+            !Input.GetKey(TeclaAtaque1) &&
+            !Input.GetKey(TeclaAtaque2) &&
+            !Input.GetKey(TeclaCambioModo))
         {
-            EjecutarAtaque(enModoMagico ? 2 : 5, enModoMagico ? "RayoElectrico" : "Melee3");
+            rayoPresionado = true;
+            rayoCargadoDisparado = false;
+            tiempoRayoPresionado = 0f;
         }
+
+        if (Input.GetKey(TeclaAtaque3) && rayoPresionado && enModoMagico)
+        {
+            tiempoRayoPresionado += Time.deltaTime;
+
+            if (tiempoRayoPresionado >= tiempoHoldRayo && !rayoCargadoDisparado)
+            {
+                rayoCargadoDisparado = true;
+                rayoPresionado = false;
+
+                // 🔥 DISPARO RAYO CARGADO
+                C_AccionesJugador.DispararRayoCargado();
+            }
+        }
+
+        if (Input.GetKeyUp(TeclaAtaque3) && rayoPresionado)
+        {
+            rayoPresionado = false;
+
+            // 👉 TAP (rayo normal)
+            if (enModoMagico)
+            {
+                EjecutarAtaque(2, "RayoElectrico");
+            }
+            else
+            {
+                EjecutarAtaque(5, "Melee3");
+            }
+        }
+
 
         // CAMBIO DE MODO
         else if (Input.GetKeyDown(TeclaCambioModo) &&
@@ -215,5 +254,5 @@ public class Inputs : MonoBehaviour
 
         Debug.Log("🧽 Memoria limpiada a lo bestia 💥");
     }
-
+        
 }
