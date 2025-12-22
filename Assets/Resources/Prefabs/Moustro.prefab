@@ -1936,6 +1936,7 @@ GameObject:
   - component: {fileID: 7528566081775439387}
   - component: {fileID: 1423284102389582314}
   - component: {fileID: 4886365123928998457}
+  - component: {fileID: 324698201096911532}
   m_Layer: 6
   m_Name: Moustro
   m_TagString: Untagged
@@ -2162,6 +2163,24 @@ MonoBehaviour:
   entidadesCercanas: []
   Componente: {fileID: 1423284102389582314}
   EnemigoFijado: {fileID: 0}
+--- !u!114 &324698201096911532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5780307580212673122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ef081e7e54fab4582f4ca25187055e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemigoScript: {fileID: 0}
+  vfxestatica: {fileID: 2705533495200665743, guid: 1e9c222e70c11ed42a0532626495da2e, type: 3}
+  vfxRayoCae: {fileID: 5627696518775099638, guid: 390cc74915d4a054bbd897e1885047a4, type: 3}
+  estatico: 0
+  contadorCombo: 0
+  tiempodeCombo: 0
 --- !u!1 &5832875135069758802
 GameObject:
   m_ObjectHideFlags: 0

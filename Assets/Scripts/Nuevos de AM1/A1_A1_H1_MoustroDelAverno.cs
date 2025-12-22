@@ -153,8 +153,8 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
 
     public void RecibirDanio(int cantidad)
     {
-        Debug.Log("Boss" + gameObject.name + " ha recibido " + cantidad + " de daño" + vidaActual, gameObject);
-        Debug.Log($"ultimo proyectil = {ultimoProyectilRecibido} + congelado {Congelado}", gameObject);
+       
+       
 
         // COMBO RAYO SINGLE TARGET
         if (
