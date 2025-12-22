@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1046863752393118590}
   - component: {fileID: 8827745643284272893}
   m_Layer: 0
-  m_Name: VFX_EscarchaElectrica
+  m_Name: VFX_Electricidad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2705533495200665743}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.9978479, y: -0, z: -0, w: -0.06557061}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: -1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.4090357, y: 1.178, z: 1}
+  m_LocalScale: {x: 2.403603, y: 2.3546023, z: 0.033328068}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 187.519, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 360, y: 0, z: 0}
 --- !u!198 &1046863752393118590
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -169,7 +169,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 50
+      scalar: 26
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -665,7 +665,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 15
+    angle: 1
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -732,7 +732,7 @@ ParticleSystem:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-    m_Mesh: {fileID: 0}
+    m_Mesh: {fileID: 8602427817694332075, guid: a4faf8767d6d7394f9a726e5f1b1fc1a, type: 3}
     m_MeshRenderer: {fileID: 0}
     m_SkinnedMeshRenderer: {fileID: 0}
     m_Sprite: {fileID: 0}

@@ -5,11 +5,10 @@ using UnityEngine;
 public class DepuradorAcciones : MonoBehaviour
 {
     // CICLO DE VIDA
-    void Awake() => Debug.Log($"{name} [AWAKE]", gameObject);
-    void OnEnable() => Debug.Log($"{name} [ENABLED]", gameObject);
-    void OnDisable() => Debug.Log($"{name} [DISABLED]", gameObject);
-    void OnDestroy() => Debug.Log($"{name} [DESTROYED]", gameObject);
-
+    void Awake() { }
+    void OnEnable() { }
+    void OnDisable() { }
+    void OnDestroy() { }
     // COLISIONES FÍSICAS
     void OnCollisionEnter(Collision col)
     {

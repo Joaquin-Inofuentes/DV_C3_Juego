@@ -331,7 +331,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
     public override void Atacar(Vector3 Destino, string Nombre)
     {
         transform.LookAt(Destino);
-        Debug.Log("Iniciando ataque...");
+       
         if (estaMuerto || _TimerManager == null || _TimerManager.IsTimerCharging(6))
         {
             return;
@@ -443,7 +443,7 @@ public class AccionesJugador : A1_Entidad, IDaniable, IContadormonedas
 
         GameObject ataqueInstanciado = Instantiate(prefab, Origen.position, rotacion);
         ataqueInstanciado.name = nombreAtaque;
-        Debug.Log($"{ataqueInstanciado.name} instanciado en {Origen.position}", ataqueInstanciado);
+       
 
         if (ataqueInstanciado.TryGetComponent<Rigidbody>(out var rb))
         {

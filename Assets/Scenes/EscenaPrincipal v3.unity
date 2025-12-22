@@ -31510,6 +31510,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1071071728}
     m_Modifications:
+    - target: {fileID: 324698201096911532, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
+      propertyPath: tiempodeCombo
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937742937152522468, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3832573296752501424, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5209441214416743401, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: MaxDistance
       value: 30
@@ -31580,7 +31592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 461.8
+      value: 434.1
       objectReference: {fileID: 0}
     - target: {fileID: 7062711217163796105, guid: 0e67b47463bddb445b3fb31414a954f4, type: 3}
       propertyPath: m_LocalRotation.w
