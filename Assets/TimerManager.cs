@@ -56,6 +56,10 @@ public class TimerManager : MonoBehaviour
 
     public static TimerManager Controler;
 
+    void Awake()
+    {
+        Controler = this;
+    }
     void Start()
     {
         originalColors = new Color[6];
@@ -98,7 +102,6 @@ public class TimerManager : MonoBehaviour
 
         if (enTransicionVisual) return;
         EjecutarTimers();
-        if (Controler == null) Controler = this;
     }
 
     public void EjecutarTimers()

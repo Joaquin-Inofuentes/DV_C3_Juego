@@ -24885,8 +24885,8 @@ Transform:
   m_GameObject: {fileID: 1213600166}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49674323, y: -0.5032358, z: -0.50323576, w: 0.49674317}
-  m_LocalPosition: {x: 14.49, y: 3.65, z: -146.05}
-  m_LocalScale: {x: 0.7456565, y: 0.9278204, z: 0.97937393}
+  m_LocalPosition: {x: 14.49, y: 2.67, z: -146.05}
+  m_LocalScale: {x: 0.7456565, y: 0.9278204, z: 0.7648269}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 323520787}
@@ -32678,10 +32678,34 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4291987381
       objectReference: {fileID: 0}
+    - target: {fileID: 6421562642598099576, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421562642598099576, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421562642598099576, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6760791327602965606, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: camara
       value: 
       objectReference: {fileID: 1319252232}
+    - target: {fileID: 6792066145339755558, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6792066145339755558, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6792066145339755558, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6969200935386412630, guid: 493fe3dc00b0ca949bf13904567079cc, type: 3}
       propertyPath: _AccionesDeJugador
       value: 
