@@ -9,6 +9,7 @@ public class comboRayo : MonoBehaviour
     public A1_A1_H1_MoustroDelAverno enemigoScript;
     public GameObject vfxestatica;
     public GameObject vfxRayoCae;
+    public Transform puntoDeEfecto;
     [Header("Estado de combo")]
     public bool estatico;
     public int contadorCombo;
@@ -22,11 +23,11 @@ public class comboRayo : MonoBehaviour
 
     public void ContadorCombo(TipoAtaque tipo)
     {
-        Debug.Log("1");
+        
         if (enemigoScript == null || enemigoScript.estaMuerto) return;
         if (tipo == TipoAtaque.RayoElectrico)
         {
-            Debug.Log("2");
+    
             contadorCombo++;
             if (contadorCombo >= 2 && !estatico ) 
             {
@@ -35,9 +36,13 @@ public class comboRayo : MonoBehaviour
         }
         if (estatico)
         {
-          if( tipo == TipoAtaque.Melee3)
+            Debug.Log(tipo);
+
+          if( tipo == TipoAtaque.Melee1)
             {
+                Debug.Log("2");
                 SuperRayo();
+                
             }
         }
     }
@@ -45,11 +50,23 @@ public class comboRayo : MonoBehaviour
     public void ActivarEstatico() 
     {
         estatico = true;
+        Debug.Log(estatico);
         contadorCombo = 0;
         if (temporizadorEstatico != null) StopCoroutine(temporizadorEstatico);
         temporizadorEstatico = StartCoroutine(TimerEstatico());
-        Instantiate(vfxestatica, transform.position, Quaternion.identity);
+        if (vfxestatica != null)
+        {
+            GameObject fx = Instantiate(vfxestatica, puntoDeEfecto.position, Quaternion.identity);
+            fx.SetActive(true);
+            ParticleSystem ps = fx.GetComponentInChildren<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Clear(true);
+                ps.Play(true);
+            }
 
+            Destroy(fx, tiempodeCombo);
+        }
     }
     IEnumerator TimerEstatico()
     {
@@ -60,6 +77,18 @@ public class comboRayo : MonoBehaviour
     {
         estatico = false;
         if (temporizadorEstatico != null) StopCoroutine(temporizadorEstatico);
-        Instantiate(vfxRayoCae, transform.position, Quaternion.identity);
+        if (vfxRayoCae != null)
+        {
+            GameObject fx = Instantiate(vfxRayoCae, puntoDeEfecto.position, Quaternion.identity);
+            fx.SetActive(true);
+            ParticleSystem ps = fx.GetComponentInChildren<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Clear(true);
+                ps.Play(true);
+            }
+
+            Destroy(fx, tiempodeCombo);
+        }
     }
 }

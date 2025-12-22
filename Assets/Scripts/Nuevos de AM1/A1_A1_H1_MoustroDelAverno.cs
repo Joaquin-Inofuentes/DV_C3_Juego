@@ -153,13 +153,20 @@ public class A1_A1_H1_MoustroDelAverno : A1_A1_Enemigo, IDaniable
 
     public void RecibirDanio(int cantidad)
     {
-       
-       
-
-        // COMBO RAYO SINGLE TARGET
-        if (
-    PendienteDeCargaElectrica &&
-    (ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee"))
+     
+        if(GetComponent<comboRayo>() != null)
+        {
+            if (ultimoProyectilRecibido.Contains("Electrico"))
+            {
+                GetComponent<comboRayo>().ContadorCombo(TipoAtaque.RayoElectrico);
+            }
+            else if (ultimoProyectilRecibido.Contains("Melee1"))
+            {
+                GetComponent<comboRayo>().ContadorCombo(TipoAtaque.Melee1);
+            }
+        }
+        if (PendienteDeCargaElectrica &&
+           (ultimoProyectilRecibido.Contains("hitboxCubo") || ultimoProyectilRecibido.Contains("Melee"))
 )
         {
             Debug.Log("[Combo] RAYO DIRECTO", gameObject);
