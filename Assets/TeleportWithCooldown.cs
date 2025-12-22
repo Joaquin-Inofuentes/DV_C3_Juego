@@ -1,10 +1,10 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.UI; // Necesario para la UI
 using UnityEngine.Events;
 
 public class TeleportSystem : MonoBehaviour
 {
-    [Header("ConfiguraciÛn B·sica")]
+    [Header("Configuraci√≥n B√°sica")]
     [Tooltip("Tiempo de espera en segundos.")]
     public float cooldownTime = 5.0f;
     [Tooltip("Altura fija Y al teletransportarse.")]
@@ -13,13 +13,13 @@ public class TeleportSystem : MonoBehaviour
     [Header("Referencias UI")]
     [Tooltip("IMPORTANTE: En el Inspector, este objeto debe tener un componente 'Image' con Image Type: Filled.")]
     public Image circuloCarga; // Usamos Image para poder usar fillAmount
-    [Tooltip("Imagen que se muestra cuando la habilidad est· lista.")]
+    [Tooltip("Imagen que se muestra cuando la habilidad est√° lista.")]
     public RawImage imagenListo;
 
     [Header("Eventos Unity")]
-    // Evento que envÌa la posiciÛn DESDE donde sales
+    // Evento que env√≠a la posici√≥n DESDE donde sales
     public UnityEvent<Vector3> OnTeleportStart;
-    // Evento que envÌa la posiciÛn HACIA donde llegas
+    // Evento que env√≠a la posici√≥n HACIA donde llegas
     public UnityEvent<Vector3> OnTeleportEnd;
 
     // Variables internas
@@ -37,16 +37,16 @@ public class TeleportSystem : MonoBehaviour
 
     void Update()
     {
-        // 1. LÛgica de Cooldown
+        // 1. L√≥gica de Cooldown
         if (!_estaHabilitado)
         {
             _timerActual -= Time.deltaTime;
 
-            // Actualizar gr·fico del cÌrculo (efecto reloj)
+            // Actualizar gr√°fico del c√≠rculo (efecto reloj)
             if (circuloCarga != null)
             {
                 // Invertimos el valor para que se llene en sentido horario
-                // 1.0 es lleno, 0.0 es vacÌo
+                // 1.0 es lleno, 0.0 es vac√≠o
                 float porcentaje = 1f - (_timerActual / cooldownTime);
                 circuloCarga.fillAmount = porcentaje;
             }
@@ -61,13 +61,13 @@ public class TeleportSystem : MonoBehaviour
             }
         }
 
-        // 2. LÛgica de Input (Solo si est· habilitado)
+        // 2. L√≥gica de Input (Solo si est√° habilitado)
         if (_estaHabilitado && Input.GetKeyDown(KeyCode.Q))
         {
             IntentarTeletransporte();
         }
 
-        // 2. LÛgica de Input (Solo si est· habilitado)
+        // 2. L√≥gica de Input (Solo si est√° habilitado)
         if (_estaHabilitado && Input.GetKeyDown(KeyCode.Space))
         {
             IntentarTeletransporte();
@@ -76,7 +76,7 @@ public class TeleportSystem : MonoBehaviour
 
     void IntentarTeletransporte()
     {
-        // Lanzar rayo desde la c·mara al mouse
+        // Lanzar rayo desde la c√°mara al mouse
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -92,7 +92,7 @@ public class TeleportSystem : MonoBehaviour
             _timerActual = cooldownTime;
             ActualizarVisuales(false);
 
-            // C. Ejecutar lÛgica y eventos
+            // C. Ejecutar l√≥gica y eventos
             Debug.Log($"[TELEPORT START] De: {posOrigen} -> A: {posDestino}");
 
             // Evento Inicio
@@ -104,15 +104,15 @@ public class TeleportSystem : MonoBehaviour
             // Evento Final
             if (OnTeleportEnd != null) OnTeleportEnd.Invoke(posDestino);
 
-            Debug.Log($"[TELEPORT END] Nueva posiciÛn: {transform.position}");
+            Debug.Log($"[TELEPORT END] Nueva posici√≥n: {transform.position}");
         }
         else
         {
-            Debug.LogWarning("No se encontrÛ un lugar v·lido donde apunta el mouse.");
+            Debug.LogWarning("No se encontr√≥ un lugar v√°lido donde apunta el mouse.");
         }
     }
 
-    // Alterna visibilidad entre el cÌrculo de carga y la imagen de listo
+    // Alterna visibilidad entre el c√≠rculo de carga y la imagen de listo
     void ActualizarVisuales(bool estaListo)
     {
         if (imagenListo != null)

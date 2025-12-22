@@ -6947,7 +6947,7 @@ MonoBehaviour:
   fontSizeNormal: 36
   fontSizeGrande: 45
   velocidadEfecto: 4
-  maxTime: 50
+  maxTime: 120
 --- !u!4 &8765182098108244984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6765564615621172670, guid: 9f377b0d764f8b342aa7078726e0f9c7, type: 3}
